@@ -1,0 +1,12 @@
+syntax = "proto3";
+package threefold.threefoldhub.threefoldhub;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/threefold/threefold_hub/x/threefoldhub/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
