@@ -6,6 +6,10 @@
 
 Tokens are vaulted on the Ethereum side and minted/burned on the cosmos side.
 
+The inverse can be done as well but it's a 1-time shot. By default, the etherum part of the bridge contains an endpoint called `deployERC20`. It deploys an ERC20 contract on Ethereum, mints and locks the total amount of tokens presenton the cosmos side after which it functions as if the assets were present on the Ethereum side and sent to the cosmos side.
+
+Minting of extra TFT's on the cosmos side does not seem to be supported.
+
 Every cosmos validator is part of the bridge verification and requires an Ethereum full node.
 
 ### Binance chain
@@ -16,7 +20,7 @@ Gravity bridge does not support Binance chain by default but it is expected that
 
 **TODO**
 
-## Vaults
+## Vaulting
 
 When bridging tokens between chains it is a normal pattern that one chain acts as the "main" chain and that tokens are vaulted on that chain. On the other chains, tokens are minted/burned.
 
@@ -29,3 +33,33 @@ The existing Stellar<->BSC bridge vaults TFT on the Stellar side. This means the
 If an extra bridge is created that supplies TFT's on BSC, the amount of TFT's on BSC will exceed the amount of vaulted TFT's on the Stellar<-> BSC bridge.
 
 The BSC to Stellar flow will fail to function when it's vault is depleted and in a pretty bad way too as the bridge listens to BSC events and currently has no way to mint TFT's on Stellar or refund the TFT's on the BSC side.
+
+If the threefold hub<->BSC bridge vaults TFT's on the BSC side as is it's default, there is no problem as the inflow of TFT's to BSC is restricted to the Stellar<->BSC bridge.
+
+## bridge network
+
+A network of chains with interconnected bridges, for example a tfchain, Threefold hub, BSC and Stellar with bridges connecting some of them:
+
+- Stellar <-> BSC, threefold hub and 2 tfchains
+- Threefold hub <-> BSC and 2 tfchains
+
+Given the explanation in [1 to N chains](#1toNchains), one can easily imagine this scenario to fail.
+
+There might be some solutions:
+
+- Do not use vaulting
+- Make sure all vaults have enough tokens ( fund them when minting for farming payouts)
+
+### No vaulting
+
+Given the issues with vaulting mentioned above, it seems attractive not to use vaulting at all but burn and mint with every bridged transfer.
+
+Every bridge needs minting and burning rights on the chains it connects.
+
+Requires rewrites of vaulting bridges.
+
+Statistics of TFT requires a snapshot over all chains where TFT lives.
+
+### Fat validators
+
+Since Cosmos bridges like Gravity require a full node of the chain it bridges too, validators become very heavy.
