@@ -708,3 +708,13 @@ check [consensus](./consensus.md)
 
 ## bridges
 check [bridges](./bridges.md)
+
+
+## research projects
+
+- [cosmos idgen](https://github.com/xmonader/cosmos-intidgen) 
+- [cosmos kv](https://github.com/threefoldtech/research/tree/development/cosmoskv)
+- [cosmos dwitter](https://github.com/xmonader/dwitter)
+- [cosmos nameservice](https://github.com/xmonader/nameservice)
+- [cosmos polls](https://github.com/threefoldtech/research/tree/development/cosmoskv)
+- cosmos multisig 
