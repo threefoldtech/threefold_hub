@@ -1,4 +1,4 @@
-R# Cosmos
+# Cosmos
 
 a higher layer on top of tendermint consensus engine to develop apps. instead of the flow of having multiple apps (contracts) on the same chain, tendermint allows to build a chain for 1 app.
 
@@ -158,6 +158,9 @@ faucet:
 ### building for production
 `starport chain build`
 
+
+### deploying a chain
+check [deploying chain](./deploying_chain.md)
 
 ### NOTE: collect-txs
 
@@ -696,3 +699,12 @@ pagination:
 ## hub
 
 TOO EMPTY FOR NOW.
+
+
+
+## consensus
+check [consensus](./consensus.md)
+
+
+## bridges
+check [bridges](./bridges.md)
