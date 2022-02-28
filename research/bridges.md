@@ -15,3 +15,5 @@ Gravity bridge does not support Binance chain by default but it is expected that
 ## Vaults
 
 When bridging tokens between chains it is a normal pattern that one chain acts as the "main" chain and that tokens are vaulted on that chain. On the other chains, tokens are minted/burned.
+
+## Bridge to and from tfchains
