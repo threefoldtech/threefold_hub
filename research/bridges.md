@@ -12,9 +12,17 @@ Minting of extra TFT's on the cosmos side does not seem to be supported.
 
 Every cosmos validator is part of the bridge verification and requires an Ethereum full node.
 
+Don't know if a light client node works as well.
+
+Pretty bad docs on the compooonent setup and what to run as a validator.
+
 ### Binance chain
 
 Gravity bridge does not support Binance chain by default but it is expected that this can supported easily.
+
+There already is a `chainID` parameter available.
+
+The integration with Ethereum is a separate process written in Rust which communicates to an ethereum full node using geth's rpc interface.
 
 ## Bridge to and from tfchains
 
