@@ -63,3 +63,19 @@ Statistics of TFT requires a snapshot over all chains where TFT lives.
 ### Fat validators
 
 Since Cosmos bridges like Gravity require a full node of the chain it bridges too, validators become very heavy.
+
+## Kick off bridges with vaulting
+
+Consider the Threefold hub, BSC and Stellar chains and we want bridges between these 3 networks. This means we need 3 bridges:
+
+- Threefold hub <-> BSC
+- Threefold hub <-> Stellar
+- Stellar <-> BSC
+
+The third one (Stellar <-> BSC) already exists and vaults on the Stellar side.
+
+Adding Threefold hub <-> BSC does not pose any problem since the default gravity implementation vaults on the BSC (Ethereum) side.
+
+Adding the Threefold hub <-> Stellar bridge is possible if the Threefold hub <-> Stellar bridge and the Stellar <-> BSC share their vaults and when TFT is transferred from Stellar to Threefold hub, the same amount of TFT's is minted on BSC and added to the Threefold hub <-> BSC bridge vault.
+
+This is a quick but solid solution until bridges to other networks like tfchain are added.  
