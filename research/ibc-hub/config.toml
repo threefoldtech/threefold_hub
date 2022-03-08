@@ -1,0 +1,99 @@
+[global]
+log_level = 'info'
+
+[mode]
+
+[mode.clients]
+enabled = true
+refresh = true
+misbehaviour = true
+
+[mode.connections]
+enabled = false
+
+[mode.channels]
+enabled = false
+
+[mode.packets]
+enabled = true
+clear_interval = 100
+clear_on_start = true
+tx_confirmation = true
+
+[rest]
+enabled = true
+host = '127.0.0.1'
+port = 42556
+
+[telemetry]
+enabled = true
+host = '127.0.0.1'
+port = 4575
+
+[[chains]]
+id = 'venus'
+rpc_addr = 'http://127.0.0.1:26657'
+grpc_addr = 'http://127.0.0.1:9090'
+websocket_addr = 'ws://localhost:26657/websocket'
+rpc_timeout = '10s'
+account_prefix = 'cosmos'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 2000000
+fee_granter = ''
+gas_price = { price = 0.0000001, denom = 'token' }
+gas_adjustment = 0.1
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+
+[[chains]]
+id = 'earth'
+rpc_addr = 'http://127.0.0.1:26659'
+grpc_addr = 'http://127.0.0.1:9092'
+websocket_addr = 'ws://localhost:26659/websocket'
+rpc_timeout = '10s'
+account_prefix = 'cosmos'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 2000000
+fee_granter = ''
+gas_price = { price = 0.0000001, denom = 'token' }
+gas_adjustment = 0.1
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+
+[[chains]]
+id = 'mars'
+rpc_addr = 'http://127.0.0.1:26661'
+grpc_addr = 'http://127.0.0.1:9094'
+websocket_addr = 'ws://localhost:26661/websocket'
+rpc_timeout = '10s'
+account_prefix = 'cosmos'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 2000000
+fee_granter = ''
+gas_price = { price = 0.0000001, denom = 'token' }
+gas_adjustment = 0.1
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+
+[[chains]]
+id = 'hub'
+rpc_addr = 'http://127.0.0.1:26663'
+grpc_addr = 'http://127.0.0.1:9096'
+websocket_addr = 'ws://localhost:26663/websocket'
+rpc_timeout = '10s'
+account_prefix = 'cosmos'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 2000000
+fee_granter = ''
+gas_price = { price = 0.0000001, denom = 'token' }
+gas_adjustment = 0.1
+clock_drift = '5s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }

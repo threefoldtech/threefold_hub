@@ -1,0 +1,7 @@
+{
+  "name": "alice",
+  "type": "local",
+  "address": "cosmos1ts2pyjac9lr99jucdmn4xkx2vnjlwqkyllkz2c",
+  "pubkey": "{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"A3f2B6MgQSTW/Nlig0fMtNbH+ha7yu94WX//LNaj0OCU\"}",
+  "mnemonic": "wrestle upgrade forget lab evoke amazing vague ice world deer fuel tone learn raccoon onion require casino load wing merit legend simple silent month"
+}

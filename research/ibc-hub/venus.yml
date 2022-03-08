@@ -1,0 +1,25 @@
+accounts:
+  - name: alice
+    coins: ["1000token", "1000000000stake"]
+    mnemonic: "garden flavor dry figure cheese okay enact skin boat card tool thank joke ecology element twice again saddle vintage twelve lock vault ritual juice"
+  - name: bob
+    coins: ["500token", "100000000stake"]
+    mnemonic: "trust maze print nephew lesson pledge exchange one wreck joke recycle okay scissors tuition famous crowd rifle tribe burger battle digital hobby acoustic laundry"
+validator:
+  name: alice
+  staked: "100000000stake"
+faucet:
+  host: ":4502"
+  name: bob
+  coins: ["5token", "100000stake"]
+host:
+  rpc: ":26657"
+  p2p: ":26656"
+  prof: ":6060"
+  grpc: ":9090"
+  grpc-web: ":9091"
+  api: ":1317"
+genesis:
+  chain_id: "venus"
+init:
+  home: "$HOME/.venus"
