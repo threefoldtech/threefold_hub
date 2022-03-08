@@ -1,0 +1,25 @@
+accounts:
+  - name: alice
+    coins: ["1000token", "1000000000stake"]
+    mnemonic: "mind hill possible unit motion raccoon puppy finish long magnet behind edit belt hurry unlock gather rather entire action sausage rare avocado winner provide"
+  - name: bob
+    coins: ["500token", "100000000stake"]
+    mnemonic: "diagram useless zone please young tongue carpet axis flash robot pass mansion casual shadow venture adult settle ancient whisper era point rubber fever luxury"
+validator:
+  name: alice
+  staked: "100000000stake"
+faucet:
+  host: ":4501"
+  name: bob
+  coins: ["5token", "100000stake"]
+host:
+  rpc: ":26661"
+  p2p: ":26660"
+  prof: ":6062"
+  grpc: ":9094"
+  grpc-web: ":9095"
+  api: ":1319"
+genesis:
+  chain_id: "mars"
+init:
+  home: "$HOME/.mars"

@@ -1,0 +1,7 @@
+{
+  "name": "alice",
+  "type": "local",
+  "address": "cosmos17t2c9gwra478g8z28syxtqhxn52ypje9tgmxga",
+  "pubkey": "{\"@type\":\"/cosmos.crypto.secp256k1.PubKey\",\"key\":\"A97+u2dDvS5Rjv5ObQVdtGX2PgGDiiGO3BDqzcd/eo62\"}",
+   "mnemonic": "garden flavor dry figure cheese okay enact skin boat card tool thank joke ecology element twice again saddle vintage twelve lock vault ritual juice"
+}

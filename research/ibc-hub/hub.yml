@@ -1,0 +1,25 @@
+accounts:
+  - name: alice
+    coins: ["1000token", "1000000000stake"]
+    mnemonic: "wrestle upgrade forget lab evoke amazing vague ice world deer fuel tone learn raccoon onion require casino load wing merit legend simple silent month"
+  - name: bob
+    coins: ["500token", "100000000stake"]
+    mnemonic: "woman clay early design tissue goat trouble minute empty anxiety pool dress pattern romance fly shuffle odor detail hospital sport domain fix nasty extend"
+validator:
+  name: alice
+  staked: "100000000stake"
+faucet:
+  host: ":4503"
+  name: bob
+  coins: ["5token", "100000stake"]
+host:
+  rpc: ":26663"
+  p2p: ":26662"
+  prof: ":6063"
+  grpc: ":9096"
+  grpc-web: ":9097"
+  api: ":1320"
+genesis:
+  chain_id: "hub"
+init:
+  home: "$HOME/.hub"
