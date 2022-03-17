@@ -1,0 +1,35 @@
+syntax = "proto3";
+package threefold.threefoldhub.validators;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/threefold/threefold_hub/x/validators/types";
+
+// Description defines a validator description.
+message Description {
+  option (gogoproto.equal)            = true;
+  //option (gogoproto.goproto_stringer) = false;
+
+  // moniker defines a human-readable name for the validator.
+  string moniker = 1;
+  // identity defines an optional identity signature.
+  string identity = 2;
+  // website defines an optional website link.
+  string website = 3;
+  // security_contact defines an optional email for security contact.
+  string security_contact = 4;
+  // details define other optional details.
+  string details = 5;
+}
+
+message Validator {
+  option (gogoproto.equal)            = false;
+  //option (gogoproto.goproto_stringer) = false;
+  //option (gogoproto.goproto_getters)  = false;
+
+  string operatorAddress = 2;
+  // consensusPubkey is the consensus public key of the validator
+  string consensusPubkey = 3; 
+  Description description = 4; 
+}
+

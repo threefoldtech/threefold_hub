@@ -1,0 +1,18 @@
+syntax = "proto3";
+package threefold.threefoldhub.validators;
+
+import "gogoproto/gogo.proto";
+import "validators/params.proto";
+import "validators/validator.proto";
+import "validators/historical_info.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/threefold/threefold_hub/x/validators/types";
+
+// GenesisState defines the validators module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated Validator validators = 2 [(gogoproto.nullable) = false];
+  repeated HistoricalInfo historicalInfoList = 3 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

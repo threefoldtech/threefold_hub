@@ -1,0 +1,15 @@
+syntax = "proto3";
+package threefold.threefoldhub.validators;
+
+import "gogoproto/gogo.proto";
+import "validators/validator.proto";
+import "tendermint/types/types.proto";
+
+option go_package = "github.com/threefold/threefold_hub/x/validators/types";
+
+message HistoricalInfo {
+  tendermint.types.Header header = 1 [(gogoproto.nullable) = false];
+  repeated Validator      valset = 2 [(gogoproto.nullable) = false];
+  
+}
+

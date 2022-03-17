@@ -35,7 +35,7 @@ func (app *App) ExportAppStateAndValidators(
 		return servertypes.ExportedApp{}, err
 	}
 
-	validators, err := staking.WriteValidators(ctx, app.StakingKeeper)
+	validators, err := staking.WriteValidators(ctx, app.ValidatorsKeeper)
 	if err != nil {
 		return servertypes.ExportedApp{}, err
 	}
@@ -51,12 +51,6 @@ func (app *App) ExportAppStateAndValidators(
 // NOTE zero height genesis is a temporary feature which will be deprecated
 //      in favour of export at a block height
 func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []string) {
-	applyAllowedAddrs := false
-
-	// check if there is a allowed address list
-	if len(jailAllowedAddrs) > 0 {
-		applyAllowedAddrs = true
-	}
 
 	allowedAddrsMap := make(map[string]bool)
 
@@ -90,23 +84,18 @@ func (app *App) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs []str
 
 	for ; iter.Valid(); iter.Next() {
 		addr := sdk.ValAddress(iter.Key()[1:])
-		validator, found := app.StakingKeeper.GetValidator(ctx, addr)
+		validator, found := app.ValidatorsKeeper.GetValidator(ctx, addr)
 		if !found {
 			panic("expected validator, not found")
 		}
 
-		validator.UnbondingHeight = 0
-		if applyAllowedAddrs && !allowedAddrsMap[addr.String()] {
-			validator.Jailed = true
-		}
-
-		app.StakingKeeper.SetValidator(ctx, validator)
+		app.ValidatorsKeeper.SetValidator(ctx, validator)
 		counter++
 	}
 
 	iter.Close()
 
-	if _, err := app.StakingKeeper.ApplyAndReturnValidatorSetUpdates(ctx); err != nil {
+	if _, err := app.ValidatorsKeeper.ApplyAndReturnValidatorSetUpdates(ctx); err != nil {
 		panic(err)
 	}
 

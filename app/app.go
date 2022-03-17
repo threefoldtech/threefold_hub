@@ -78,6 +78,9 @@ import (
 	threefoldhubmodule "github.com/threefold/threefold_hub/x/threefoldhub"
 	threefoldhubmodulekeeper "github.com/threefold/threefold_hub/x/threefoldhub/keeper"
 	threefoldhubmoduletypes "github.com/threefold/threefold_hub/x/threefoldhub/types"
+	validatorsmodule "github.com/threefold/threefold_hub/x/validators"
+	validatorsmodulekeeper "github.com/threefold/threefold_hub/x/validators/keeper"
+	validatorsmoduletypes "github.com/threefold/threefold_hub/x/validators/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -123,6 +126,7 @@ var (
 		upgrade.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		threefoldhubmodule.AppModuleBasic{},
+		validatorsmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -182,6 +186,8 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	ThreefoldhubKeeper threefoldhubmodulekeeper.Keeper
+
+	ValidatorsKeeper validatorsmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -219,6 +225,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		threefoldhubmoduletypes.StoreKey,
+		validatorsmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -278,6 +285,14 @@ func New(
 	)
 	threefoldhubModule := threefoldhubmodule.NewAppModule(appCodec, app.ThreefoldhubKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.ValidatorsKeeper = *validatorsmodulekeeper.NewKeeper(
+		appCodec,
+		keys[validatorsmoduletypes.StoreKey],
+		keys[validatorsmoduletypes.MemStoreKey],
+		app.GetSubspace(validatorsmoduletypes.ModuleName),
+	)
+	validatorsModule := validatorsmodule.NewAppModule(appCodec, app.ValidatorsKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/****  Module Options ****/
@@ -291,7 +306,7 @@ func New(
 
 	app.mm = module.NewManager(
 		genutil.NewAppModule(
-			app.AccountKeeper, nil, app.BaseApp.DeliverTx,
+			app.AccountKeeper, app.ValidatorsKeeper, app.BaseApp.DeliverTx,
 			encodingConfig.TxConfig,
 		),
 		auth.NewAppModule(appCodec, app.AccountKeeper, nil),
@@ -304,6 +319,7 @@ func New(
 		upgrade.NewAppModule(app.UpgradeKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		threefoldhubModule,
+		validatorsModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -331,6 +347,7 @@ func New(
 		crisistypes.ModuleName,
 		genutiltypes.ModuleName,
 		threefoldhubmoduletypes.ModuleName,
+		validatorsmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -347,6 +364,7 @@ func New(
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		threefoldhubModule,
+		validatorsModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -535,6 +553,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(threefoldhubmoduletypes.ModuleName)
+	paramsKeeper.Subspace(validatorsmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

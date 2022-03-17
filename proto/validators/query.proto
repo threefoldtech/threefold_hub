@@ -1,0 +1,88 @@
+syntax = "proto3";
+package threefold.threefoldhub.validators;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "validators/params.proto";
+import "validators/validator.proto";
+import "validators/historical_info.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/threefold/threefold_hub/x/validators/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/threefold/threefoldhub/validators/params";
+  }
+  // Queries a Validator by index.
+	rpc Validator(QueryGetValidatorRequest) returns (QueryGetValidatorResponse) {
+		option (google.api.http).get = "/threefold/threefoldhub/validators/validator/{index}";
+	}
+
+	// Queries a list of Validator items.
+	rpc ValidatorAll(QueryAllValidatorRequest) returns (QueryAllValidatorResponse) {
+		option (google.api.http).get = "/threefold/threefoldhub/validators/validator";
+	}
+
+// Queries a HistoricalInfo by index.
+	rpc HistoricalInfo(QueryGetHistoricalInfoRequest) returns (QueryGetHistoricalInfoResponse) {
+		option (google.api.http).get = "/threefold/threefoldhub/validators/historical_info/{height}";
+	}
+
+	// Queries a list of HistoricalInfo items.
+	rpc HistoricalInfoAll(QueryAllHistoricalInfoRequest) returns (QueryAllHistoricalInfoResponse) {
+		option (google.api.http).get = "/threefold/threefoldhub/validators/historical_info";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetValidatorRequest {
+	  string index = 1;
+
+}
+
+message QueryGetValidatorResponse {
+	Validator validator = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllValidatorRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllValidatorResponse {
+	repeated Validator validator = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetHistoricalInfoRequest {
+	  int64 height = 1;
+
+}
+
+message QueryGetHistoricalInfoResponse {
+	HistoricalInfo historicalInfo = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllHistoricalInfoRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllHistoricalInfoResponse {
+	repeated HistoricalInfo historicalInfo = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3
