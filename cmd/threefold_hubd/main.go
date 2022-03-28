@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
@@ -17,6 +18,10 @@ func main() {
 		app.New,
 		// this line is used by starport scaffolding # root/arguments
 	)
+	if err := extendGravitySubcommands(rootCmd); err != nil {
+		log.Printf("Error: couldn't extend gravity subcommands: %s", err.Error())
+		os.Exit(1)
+	}
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
 		os.Exit(1)
 	}
