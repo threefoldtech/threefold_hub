@@ -1,0 +1,84 @@
+syntax = "proto3";
+package threefoldtech.threefoldhub.multisigwallet;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/threefoldtech/threefold_hub/x/multisigwallet/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateWallet(MsgCreateWallet) returns (MsgCreateWalletResponse);
+  rpc CreateTransaction(MsgCreateTransaction) returns (MsgCreateTransactionResponse);
+  rpc SignTransaction(MsgSignTransaction) returns (MsgSignTransactionResponse);
+  rpc ExecuteTransaction(MsgExecuteTransaction) returns (MsgExecuteTransactionResponse);
+  rpc AddSigners(MsgAddSigners) returns (MsgAddSignersResponse);
+  rpc RemoveSigners(MsgRemoveSigners) returns (MsgRemoveSignersResponse);
+  rpc UpdateMinSigns(MsgUpdateMinSigns) returns (MsgUpdateMinSignsResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateWallet {
+  string creator = 1;
+  string name = 2;
+  string members = 3;
+  string minSigns = 4;
+}
+
+message MsgCreateWalletResponse {
+  string address = 1;
+}
+
+message MsgCreateTransaction {
+  string creator = 1;
+  string walltName = 2;
+  string toAddress = 3;
+  string amount = 4;
+}
+
+message MsgCreateTransactionResponse {
+}
+
+message MsgSignTransaction {
+  string creator = 1;
+  string transactionID = 2;
+}
+
+message MsgSignTransactionResponse {
+}
+
+message MsgExecuteTransaction {
+  string creator = 1;
+  string transactionID = 2;
+}
+
+message MsgExecuteTransactionResponse {
+}
+
+message MsgAddSigners {
+  string creator = 1;
+  string walletName = 2;
+  string members = 3;
+}
+
+message MsgAddSignersResponse {
+}
+
+message MsgRemoveSigners {
+  string creator = 1;
+  string walletName = 2;
+  string members = 3;
+}
+
+message MsgRemoveSignersResponse {
+}
+
+message MsgUpdateMinSigns {
+  string creator = 1;
+  string walletName = 2;
+  string minSigns = 3;
+}
+
+message MsgUpdateMinSignsResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package threefoldtech.threefoldhub.multisigwallet;
+
+option go_package = "github.com/threefoldtech/threefold_hub/x/multisigwallet/types";
+
+message Wallet {
+  string index = 1; 
+  string name = 2; 
+  string address = 3; 
+  string members = 4; 
+  string minSigns = 5; 
+  
+}
+
