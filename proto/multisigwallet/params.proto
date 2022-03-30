@@ -1,0 +1,12 @@
+syntax = "proto3";
+package threefoldtech.threefoldhub.multisigwallet;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/threefoldtech/threefold_hub/x/multisigwallet/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
