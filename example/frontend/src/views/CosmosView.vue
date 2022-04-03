@@ -2,17 +2,7 @@
   <v-container>
     <h1>Cosmos</h1>
 
-    <form>
-      <v-text-field
-        label="Gravity Contract Address"
-        placeholder="Gravity Contract Address"
-        v-model="gravity"
-      />
-      <v-text-field
-        label="Token Contract Address"
-        placeholder="Token Contract Address"
-        v-model="token"
-      />
+    <form @submit.prevent="onSendToCosmos()">
       <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
       <v-text-field
         label="Destination"
@@ -21,7 +11,7 @@
       />
 
       <v-row justify="center">
-        <v-btn color="primary" x-large type="submit" :disabled="inValid">
+        <v-btn color="primary" x-large type="submit" :disabled="inValid || !$store.state.configLoaded">
           Send
         </v-btn>
       </v-row>
@@ -32,28 +22,28 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { sendToCosmos } from "@/utils";
+import { Config } from "@/utils/config";
+import { parseUnits } from "ethers/lib/utils";
 
 @Component({
   name: "CosmosView",
 })
 export default class Cosmos extends Vue {
-  gravity = "";
-  token = "";
   amount = "";
   destination = "";
 
   get inValid() {
     return (
-      this.gravity === "" ||
-      this.token === "" ||
       this.amount === "" ||
       this.destination === ""
     );
   }
 
   onSendToCosmos() {
-    const { token, gravity, amount, destination } = this;
-    sendToCosmos(token, gravity, destination, amount)
+    const { amount, destination } = this;
+    const config = this.$store.state.config as Config;
+    let amountBN = parseUnits(amount, config.tft_decimals);
+    sendToCosmos(config.tft_token_contract_address, config.gravity_contract_address, destination, amountBN)
       .then((res) => {
         console.log(res);
       })

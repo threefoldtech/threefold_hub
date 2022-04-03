@@ -3,10 +3,12 @@ import {
   defaultRegistryTypes as defaultStargateTypes,
   SigningStargateClient,
 } from "@cosmjs/stargate";
-import { MsgSendToEth } from "../types/gravity/v1/msgs"; // Replace with your own Msg import
-import { ethers } from "ethers";
-import bepapi from "../json/bepapi.json";
-import gravityabi from "../json/bepapi.json";
+import { MsgCancelSendToEth, MsgSendToEth } from "../types/gravity/v1/msgs"; // Replace with your own Msg import
+import { BigNumber, ethers } from "ethers";
+import bepapi from "../json/bepabi.json";
+import gravityabi from "../json/gravityabi.json";
+import { loadConfig } from "./config";
+import { Api, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 
 const GAS = "100000";
 const FEE = "120000";
@@ -19,11 +21,13 @@ const UINT256_MAX_INT = ethers.BigNumber.from(
 const myRegistry = new Registry(defaultStargateTypes);
 myRegistry.register("/gravity.v1.MsgSendToEth", MsgSendToEth); // Replace with your own type URL and Msg class
 
+const config = loadConfig();
+
 export async function sendToCosmos(
   token_contract_address: string,
   gravity_contract_address: string,
   destination: string,
-  amountStr: string
+  amount: BigNumber
 ) {
   if (!window.ethereum) {
     throw new Error("metamask is not installed");
@@ -53,7 +57,6 @@ export async function sendToCosmos(
   const allowance = ethers.BigNumber.from(
     await bepContract.allowance(senderAddress, gravity_contract_address)
   );
-  const amount = ethers.BigNumber.from(amountStr);
   if (allowance.lt(amount)) {
     // TODO: should we get only the allowance we need for this operation or require the max
     //             gbt client does the max thing but it seems fishy
@@ -82,9 +85,10 @@ export async function sendToCosmos(
 }
 
 export function sendToEth(
+  tendermint_rpc: string,
   destination: string,
-  amount: string,
-  bridge_fees: string,
+  amount: BigNumber,
+  bridge_fees: BigNumber,
   denom: string
 ) {
   if (!window.keplr) {
@@ -95,7 +99,7 @@ export function sendToEth(
   let client: any;
 
   return SigningStargateClient.connectWithSigner(
-    "http://localhost:26657", // Replace with your own RPC endpoint
+    tendermint_rpc, // Replace with your own RPC endpoint
     offlineSigner,
     { registry: myRegistry }
   )
@@ -107,11 +111,11 @@ export function sendToEth(
         value: MsgSendToEth.fromPartial({
           sender: account.bech32Address,
           amount: {
-            amount: amount,
+            amount: amount.toString(),
             denom: denom,
           },
           bridgeFee: {
-            amount: bridge_fees,
+            amount: bridge_fees.toString(),
             denom: denom,
           },
           ethDest: destination,
@@ -129,33 +133,61 @@ export function sendToEth(
       return client.signAndBroadcast(account.bech32Address, [message], fee);
     });
 
-  // Inside an async function...
-  // This method uses the registry you provided
   // TODO: how to check transaction errors
 }
 
-// window.onload = function () {
-//   function value(v) {
-//     console.log(v);
-//     console.log(document.getElementById(v));
-//     return (document.getElementById(v) as HTMLInputElement).value;
-//   }
-//   document
-//     .getElementById("cosmos_button")
-//     .addEventListener("click", function () {
-//       sendToCosmos(
-//         value("token_contract_address"),
-//         value("gravity_contract_address"),
-//         value("cosmos_destination"),
-//         value("cosmos_amount")
-//       );
-//     });
-//   document.getElementById("eth_button").addEventListener("click", function () {
-//     sendToEth(
-//       value("eth_destination"),
-//       value("eth_amount"),
-//       value("bridge_fee"),
-//       value("denom")
-//     );
-//   });
-// };
+export async function cancelSendToEth(
+  tendermint_rpc: string,
+  transactionId: string,
+) {
+  if (!window.keplr) {
+    throw new Error("keplr is not installed");
+  }
+  // TODO: should this be done globally one time?
+  const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+  const sender = (await offlineSigner.getAccounts())[0];
+  let client: any;
+
+  return SigningStargateClient.connectWithSigner(
+    tendermint_rpc, // Replace with your own RPC endpoint
+    offlineSigner,
+    { registry: myRegistry }
+  )
+    .then((_client) => (client = _client))
+    .then(() => window.keplr.getKey("threefold-hub"))
+    .then((account) => {
+      const message = {
+        typeUrl: "/gravity.v1.MsgCancelSendToEth", // Same as above
+        value: MsgCancelSendToEth.fromPartial({
+          sender: sender,
+          transactionId: transactionId
+        })
+      };
+      const fee = {
+        amount: [
+          {
+            denom: FEE_DENOM, // Use the appropriate fee denom for your chain
+            amount: FEE,
+          },
+        ],
+        gas: GAS,
+      };
+      return client.signAndBroadcast(account.bech32Address, [message], fee);
+    });
+
+  // TODO: how to check transaction errors
+}
+
+export async function pendingSendToEth(cosmos_rest: string): Promise<GravityV1QueryPendingSendToEthResponse> {
+  if (!window.keplr) {
+    throw new Error("keplr is not installed");
+  }
+  const signer = window.keplr.getOfflineSigner("threefold-hub");
+  const sender = (await signer.getAccounts())[0].address;
+  const queryClient = new Api({ baseUrl: cosmos_rest });
+  const response = await queryClient.gravity.gravityV1GetPendingSendToEth({senderAddress: sender}, {format: "json"});
+  return response.data as GravityV1QueryPendingSendToEthResponse;
+}
+window.onload = async function() {
+  console.log(await pendingSendToEth("http://localhost:1317"))
+}
