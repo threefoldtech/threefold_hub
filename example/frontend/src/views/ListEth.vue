@@ -40,6 +40,13 @@ import { GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import { Component, Vue } from "vue-property-decorator";
 import { pendingSendToEth, cancelSendToEth } from "../utils";
 
+function fixTransaction(tx: any) {
+  tx.destAddress = tx.dest_address;
+  tx.erc20Token = tx.erc20_token;
+  tx.erc20Fee = tx.erc20_fee;
+  return tx;
+}
+
 @Component({
   name: "ListEth",
 })
@@ -107,8 +114,11 @@ export default class ListEth extends Vue {
       //     },
       //   ],
       // })
-      .then((res) => {
-        this.list = res;
+      .then((res: any) => {
+        this.list = {
+          transfersInBatches: res.transfers_in_batches.map(fixTransaction),
+          unbatchedTransfers: res.unbatched_transfers.map(fixTransaction),
+        };
       })
       .catch((err) => {
         console.log("Error", err);
