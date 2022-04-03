@@ -29,7 +29,6 @@ async function validateConfig(config: {[key: string]: any}) {
         "TENDERMINT_RPC"
     ]
     const numbers = ["BRIDGE_FEES", "TFT_DECIMALS"]
-    console.log(config)
     for (const prop of props) {
         if (config[prop] === undefined) {
             throw new Error(prop + " is required and not present in the env vars")

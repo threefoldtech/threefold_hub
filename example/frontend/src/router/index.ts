@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Cosmos from "@/views/CosmosView.vue";
 import Eth from "@/views/EthView.vue";
+import ListEth from "@/views/ListEth.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,10 @@ const routes: Array<RouteConfig> = [
     path: "/eth",
     name: "Eth",
     component: Eth,
+  },
+  {
+    path: "/list-eth",
+    component: ListEth,
   },
 ];
 

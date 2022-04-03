@@ -138,7 +138,7 @@ export function sendToEth(
 
 export async function cancelSendToEth(
   tendermint_rpc: string,
-  transactionId: string,
+  transactionId: string
 ) {
   if (!window.keplr) {
     throw new Error("keplr is not installed");
@@ -160,8 +160,8 @@ export async function cancelSendToEth(
         typeUrl: "/gravity.v1.MsgCancelSendToEth", // Same as above
         value: MsgCancelSendToEth.fromPartial({
           sender: sender,
-          transactionId: transactionId
-        })
+          transactionId: transactionId,
+        }),
       };
       const fee = {
         amount: [
@@ -178,16 +178,22 @@ export async function cancelSendToEth(
   // TODO: how to check transaction errors
 }
 
-export async function pendingSendToEth(cosmos_rest: string): Promise<GravityV1QueryPendingSendToEthResponse> {
+export async function pendingSendToEth(
+  cosmos_rest: string
+): Promise<GravityV1QueryPendingSendToEthResponse> {
   if (!window.keplr) {
     throw new Error("keplr is not installed");
   }
   const signer = window.keplr.getOfflineSigner("threefold-hub");
   const sender = (await signer.getAccounts())[0].address;
   const queryClient = new Api({ baseUrl: cosmos_rest });
-  const response = await queryClient.gravity.gravityV1GetPendingSendToEth({senderAddress: sender}, {format: "json"});
+  const response = await queryClient.gravity.gravityV1GetPendingSendToEth(
+    { senderAddress: sender },
+    { format: "json" }
+  );
   return response.data as GravityV1QueryPendingSendToEthResponse;
 }
-window.onload = async function() {
-  console.log(await pendingSendToEth("http://localhost:1317"))
-}
+
+// window.onload = async function() {
+//   console.log(await pendingSendToEth("http://localhost:1317"))
+// }

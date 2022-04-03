@@ -1,9 +1,20 @@
 <template>
   <v-app>
     <div>
-      <v-btn tile color="primary" @click="$router.push('/')"> Cosmos </v-btn>
-      <div class="mr-2" />
-      <v-btn tile color="primary" @click="$router.push('/eth')"> Eth </v-btn>
+      <v-btn tile color="primary" class="mr-2" @click="$router.push('/')">
+        Cosmos
+      </v-btn>
+      <v-btn tile color="primary" class="mr-2" @click="$router.push('/eth')">
+        Eth
+      </v-btn>
+      <v-btn
+        tile
+        color="primary"
+        class="mr-2"
+        @click="$router.push('/list-eth')"
+      >
+        List Eth
+      </v-btn>
 
       <v-divider class="mt-2 mb-2" />
     </div>
