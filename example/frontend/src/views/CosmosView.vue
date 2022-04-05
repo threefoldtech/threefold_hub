@@ -3,7 +3,13 @@
     <h1>Cosmos</h1>
 
     <form @submit.prevent="onSendToCosmos()">
-      <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
+      <v-text-field
+        label="Amount"
+        placeholder="Amount"
+        v-model="amount"
+        type="number"
+      />
+
       <v-text-field
         label="Destination"
         placeholder="Destination"
@@ -23,15 +29,7 @@
       </v-row>
     </form>
 
-    <v-alert
-      class="mt-10"
-      :type="error ? 'error' : 'success '"
-      border="left"
-      outlined
-      v-if="!loading && (result || error)"
-    >
-      {{ result || error }}
-    </v-alert>
+    <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
 </template>
 
@@ -40,9 +38,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { sendToCosmos } from "@/utils";
 import { Config } from "@/utils/config";
 import { parseUnits } from "ethers/lib/utils";
+import CustomAlert from "@/components/CustomAlert.vue";
 
 @Component({
   name: "CosmosView",
+  components: {
+    CustomAlert,
+  },
 })
 export default class Cosmos extends Vue {
   loading = false;

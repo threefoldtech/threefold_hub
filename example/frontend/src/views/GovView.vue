@@ -29,15 +29,7 @@
       </v-row>
     </form>
 
-    <v-alert
-      class="mt-10"
-      :type="error ? 'error' : 'success '"
-      border="left"
-      outlined
-      v-if="!loading && (result || error)"
-    >
-      {{ result || error }}
-    </v-alert>
+    <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
 </template>
 
@@ -45,9 +37,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import { submitProposal } from "@/utils/gov";
 import { BigNumber } from "ethers";
+import CustomAlert from "@/components/CustomAlert.vue";
 
 @Component({
   name: "GovView",
+  components: {
+    CustomAlert,
+  },
 })
 export default class GovView extends Vue {
   loading = false;

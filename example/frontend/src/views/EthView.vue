@@ -3,7 +3,13 @@
     <h1>Eth</h1>
 
     <form @submit.prevent="onSendToEth()">
-      <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
+      <v-text-field
+        label="Amount"
+        placeholder="Amount"
+        v-model="amount"
+        type="number"
+      />
+
       <v-text-field
         label="Destination"
         placeholder="Destination"
@@ -37,15 +43,7 @@
       </v-row>
     </form>
 
-    <v-alert
-      class="mt-10"
-      :type="error ? 'error' : 'success '"
-      border="left"
-      outlined
-      v-if="!loading && (result || error)"
-    >
-      {{ result || error }}
-    </v-alert>
+    <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
 </template>
 
@@ -55,9 +53,13 @@ import { sendToEth } from "@/utils";
 import { Config } from "@/utils/config";
 import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import CustomAlert from "@/components/CustomAlert.vue";
 
 @Component({
   name: "EthView",
+  components: {
+    CustomAlert,
+  },
 })
 export default class Eth extends Vue {
   loading = false;

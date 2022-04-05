@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar fixed dark scroll-target="#scrolling-techniques-6">
+    <v-app-bar fixed dark>
       <v-toolbar-title>
         <v-img src="./assets/logo.png" height="40" width="40" alt="logo" />
       </v-toolbar-title>
