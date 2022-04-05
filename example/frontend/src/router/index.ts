@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Cosmos from "@/views/CosmosView.vue";
 import Eth from "@/views/EthView.vue";
 import ListEth from "@/views/ListEth.vue";
+import GovView from "@/views/GovView.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/list-eth",
     component: ListEth,
+  },
+  {
+    path: "/gov",
+    component: GovView,
   },
 ];
 

@@ -7,6 +7,9 @@
       <v-btn tile color="primary" class="mr-2" @click="$router.push('/eth')">
         Eth
       </v-btn>
+      <v-btn tile color="primary" class="mr-2" @click="$router.push('/gov')">
+        Gov
+      </v-btn>
       <v-btn
         tile
         color="primary"
@@ -30,6 +33,5 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({
   name: "App",
 })
-export default class App extends Vue {
-}
+export default class App extends Vue {}
 </script>
