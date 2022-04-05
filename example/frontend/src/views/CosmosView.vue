@@ -11,11 +11,25 @@
       />
 
       <v-row justify="center">
-        <v-btn color="primary" x-large type="submit" :disabled="inValid">
+        <v-btn
+          color="primary"
+          x-large
+          type="submit"
+          :disabled="inValid || loading"
+          :loading="loading"
+        >
           Send
         </v-btn>
       </v-row>
     </form>
+
+    <v-alert
+      class="mt-10"
+      :type="error ? 'error' : 'info'"
+      v-if="!loading && (result || error)"
+    >
+      {{ result || error }}
+    </v-alert>
   </v-container>
 </template>
 
@@ -29,26 +43,40 @@ import { parseUnits } from "ethers/lib/utils";
   name: "CosmosView",
 })
 export default class Cosmos extends Vue {
+  loading = false;
+  result: any = null;
+  error: string | null = null;
+
   amount = "";
   destination = "";
 
   get inValid() {
-    return (
-      this.amount === "" ||
-      this.destination === ""
-    );
+    return this.amount === "" || this.destination === "";
   }
 
   onSendToCosmos() {
     const { amount, destination } = this;
     const config = this.$store.state.config as Config;
     let amountBN = parseUnits(amount, config.tft_decimals);
-    sendToCosmos(config.tft_token_contract_address, config.gravity_contract_address, destination, amountBN)
+
+    this.loading = true;
+    this.result = null;
+    this.error = null;
+    sendToCosmos(
+      config.tft_token_contract_address,
+      config.gravity_contract_address,
+      destination,
+      amountBN
+    )
       .then((res) => {
-        console.log(res);
+        this.result = res;
       })
       .catch((err) => {
         console.log("Error", err);
+        this.error = err.message;
+      })
+      .finally(() => {
+        this.loading = false;
       });
   }
 }
