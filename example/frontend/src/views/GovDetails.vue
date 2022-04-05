@@ -10,9 +10,7 @@
         Deposit
       </v-btn>
     </v-row>
-    <p>
-      {{ proposal.content.description }}
-    </p>
+    <p v-html="getDescription()" />
 
     <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'">
       <h2>Vote</h2>
@@ -33,6 +31,7 @@
 import { VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
 import { submitVote, getProposal } from "@/utils/gov";
 import { Component, Vue } from "vue-property-decorator";
+import { marked } from "marked";
 
 interface IAction {
   label: string;
@@ -45,6 +44,10 @@ interface IAction {
 })
 export default class GovDetails extends Vue {
   proposal: any = null;
+
+  getDescription() {
+    return marked(this.proposal.description);
+  }
 
   actions: IAction[] = [
     {
