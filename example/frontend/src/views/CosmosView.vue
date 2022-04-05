@@ -25,7 +25,9 @@
 
     <v-alert
       class="mt-10"
-      :type="error ? 'error' : 'info'"
+      :type="error ? 'error' : 'success '"
+      border="left"
+      outlined
       v-if="!loading && (result || error)"
     >
       {{ result || error }}
@@ -55,29 +57,35 @@ export default class Cosmos extends Vue {
   }
 
   onSendToCosmos() {
-    const { amount, destination } = this;
-    const config = this.$store.state.config as Config;
-    let amountBN = parseUnits(amount, config.tft_decimals);
-
     this.loading = true;
     this.result = null;
     this.error = null;
-    sendToCosmos(
-      config.tft_token_contract_address,
-      config.gravity_contract_address,
-      destination,
-      amountBN
-    )
-      .then((res) => {
-        this.result = res;
-      })
-      .catch((err) => {
-        console.log("Error", err);
-        this.error = err.message;
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+
+    try {
+      const { amount, destination } = this;
+      const config = this.$store.state.config as Config;
+      let amountBN = parseUnits(amount, config.tft_decimals);
+
+      sendToCosmos(
+        config.tft_token_contract_address,
+        config.gravity_contract_address,
+        destination,
+        amountBN
+      )
+        .then((res) => {
+          this.result = "Transaction submitted succefully!";
+        })
+        .catch((err) => {
+          console.log("Error", err);
+          this.error = err.message;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    } catch (err: any) {
+      this.error = err.message;
+      this.loading = false;
+    }
   }
 }
 </script>
