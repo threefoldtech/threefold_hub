@@ -73,6 +73,19 @@ async function listDeposites(
     return response.data as CosmosGovV1Beta1QueryDepositsResponse;
 }
 
+async function getProposal(
+    cosmos_rest: string,
+    proposalId: string
+): Promise<CosmosGovV1Beta1QueryProposalResponse> {
+    if (!window.keplr) {
+        throw new Error("keplr is not installed");
+    }
+    const queryClient = new Api({ baseUrl: cosmos_rest });
+    const response = await queryClient.cosmos.cosmosGovV1Beta1Proposal(proposalId, { format: "json" });
+    snakeToCamelCase(response.data)
+    return response.data as CosmosGovV1Beta1QueryProposalResponse;
+}
+
 async function parameters(
     cosmos_rest: string,
 ): Promise<CosmosGovV1Beta1QueryParamsResponse> {
@@ -237,6 +250,7 @@ export {
     listProposals,
     listVotes,
     listDeposites,
+    getProposal,
     parameters,
     submitProposal,
     submitVote
