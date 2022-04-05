@@ -18,6 +18,14 @@
       >
         List Eth
       </v-btn>
+      <v-btn
+        tile
+        color="primary"
+        class="mr-2"
+        @click="$router.push('/list-gov')"
+      >
+        List Gov
+      </v-btn>
 
       <v-divider class="mt-2 mb-2" />
     </div>

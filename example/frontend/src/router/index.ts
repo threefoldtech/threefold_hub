@@ -4,6 +4,8 @@ import Cosmos from "@/views/CosmosView.vue";
 import Eth from "@/views/EthView.vue";
 import ListEth from "@/views/ListEth.vue";
 import GovView from "@/views/GovView.vue";
+import ListGov from "@/views/ListGov.vue";
+import GovDetails from "@/views/GovDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -25,6 +27,14 @@ const routes: Array<RouteConfig> = [
   {
     path: "/gov",
     component: GovView,
+  },
+  {
+    path: "/list-gov",
+    component: ListGov,
+  },
+  {
+    path: "/gov/:id",
+    component: GovDetails,
   },
 ];
 
