@@ -2,7 +2,7 @@
   <v-container>
     <h1>Gov</h1>
 
-    <form @submit.prevent>
+    <form @submit.prevent="onSubmitProposal()">
       <v-text-field label="Title" placeholder="Title" v-model="title" />
 
       <v-text-field
@@ -18,7 +18,7 @@
       />
 
       <v-row justify="center">
-        <v-btn color="primary"> Submit </v-btn>
+        <v-btn color="primary" type="submit"> Submit </v-btn>
       </v-row>
     </form>
   </v-container>

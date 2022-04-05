@@ -183,7 +183,7 @@ async function deposit(
                         amount: deposit.toString(),
                         denom: denom
                     })],
-                    depositor: sender,
+                    depositor: sender.address,
                     proposalId: proposalId
                 }),
             };

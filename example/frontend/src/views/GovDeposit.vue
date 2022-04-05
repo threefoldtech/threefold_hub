@@ -27,7 +27,7 @@ export default class GovDeposit extends Vue {
   created() {
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
-        this.proposal = proposal;
+        this.proposal = proposal.proposal;
       })
       .catch((err) => {
         console.log("Error", err);
@@ -37,7 +37,7 @@ export default class GovDeposit extends Vue {
   onDeposit() {
     deposit(
       this.$store.state.config.tendermint_rpc,
-      this.proposal.proposal_id,
+      this.proposal.proposalId,
       BigNumber.from(this.amount),
       this.$store.state.config.proposal_denom
     )

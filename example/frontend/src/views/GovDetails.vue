@@ -1,10 +1,11 @@
 <template>
   <v-container v-if="proposal">
     <v-row justify="space-between" align="center">
-      <h1>{{ proposal.content.title }} #{{ proposal.proposal_id }}</h1>
+      <h1>{{ proposal.content.title }} #{{ proposal.proposalId }}</h1>
       <v-btn
+        v-if="proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
         color="primary"
-        @click="$router.push('/gov/deposit/' + proposal.proposal_id)"
+        @click="$router.push('/gov/deposit/' + proposal.proposalId)"
       >
         Deposit
       </v-btn>
@@ -43,7 +44,7 @@ interface IAction {
   name: "GovDetails",
 })
 export default class GovDetails extends Vue {
-  proposal: any;
+  proposal: any = null;
 
   actions: IAction[] = [
     {
@@ -67,7 +68,7 @@ export default class GovDetails extends Vue {
   created() {
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
-        this.proposal = proposal;
+        this.proposal = proposal.proposal;
       })
       .catch((err) => {
         console.log("Error", err);
@@ -76,14 +77,14 @@ export default class GovDetails extends Vue {
 
   onSubmitVote(action: IAction) {
     const vote = confirm(
-      `Are your sure you want to vote \`${action.label}\` for proposal(${this.proposal.proposal_id})?`
+      `Are your sure you want to vote \`${action.label}\` for proposal(${this.proposal.proposalId})?`
     );
 
     if (!vote) return;
 
     submitVote(
       this.$store.state.config.tendermint_rpc,
-      this.proposal.proposal_id,
+      this.proposal.proposalId,
       action.value
     )
       .then((res) => {

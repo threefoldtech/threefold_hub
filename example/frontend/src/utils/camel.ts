@@ -6,7 +6,7 @@ const toCamel = (s: string) => {
     });
 };
 export function snakeToCamelCase(obj: any) {
-    if (typeof(obj) != "object")
+    if (typeof(obj) != "object" || obj === undefined || obj === null)
         return;
 
     if (Array.isArray(obj)) {
