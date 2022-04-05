@@ -1,6 +1,4 @@
-import { Registry } from "@cosmjs/proto-signing";
 import {
-  defaultRegistryTypes as defaultStargateTypes,
   SigningStargateClient,
 } from "@cosmjs/stargate";
 import { MsgCancelSendToEth, MsgSendToEth } from "../types/gravity/v1/msgs"; // Replace with your own Msg import
@@ -9,17 +7,15 @@ import bepapi from "../json/bepabi.json";
 import gravityabi from "../json/gravityabi.json";
 import { loadConfig } from "./config";
 import { Api, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
-
-const GAS = "100000";
-const FEE = "120000";
-const FEE_DENOM = "uETH";
-
+import Long from "long";
+import { snakeToCamelCase } from "./camel";
+import { myRegistry } from "./registry"
+import { GAS, FEE, FEE_DENOM } from "./fees" 
+import { submitProposal, submitVote } from "./gov";
+import { TextProposal, VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
 const UINT256_MAX_INT = ethers.BigNumber.from(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 );
-
-const myRegistry = new Registry(defaultStargateTypes);
-myRegistry.register("/gravity.v1.MsgSendToEth", MsgSendToEth); // Replace with your own type URL and Msg class
 
 const config = loadConfig();
 
@@ -147,7 +143,7 @@ export async function cancelSendToEth(
   const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
   const sender = (await offlineSigner.getAccounts())[0];
   let client: any;
-
+  console.log(sender);
   return SigningStargateClient.connectWithSigner(
     tendermint_rpc, // Replace with your own RPC endpoint
     offlineSigner,
@@ -159,8 +155,8 @@ export async function cancelSendToEth(
       const message = {
         typeUrl: "/gravity.v1.MsgCancelSendToEth", // Same as above
         value: MsgCancelSendToEth.fromPartial({
-          sender: sender,
-          transactionId: transactionId,
+          sender: sender.address,
+          transactionId: Long.fromString(transactionId),
         }),
       };
       const fee = {
@@ -191,9 +187,6 @@ export async function pendingSendToEth(
     { senderAddress: sender },
     { format: "json" }
   );
+  snakeToCamelCase(response.data)
   return response.data as GravityV1QueryPendingSendToEthResponse;
 }
-
-// window.onload = async function() {
-//   console.log(await pendingSendToEth("http://localhost:1317"))
-// }

@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import { GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
+import { snakeToCamelCase } from "@/utils/camel";
 import { Component, Vue } from "vue-property-decorator";
 import { pendingSendToEth, cancelSendToEth } from "../utils";
 
@@ -79,46 +80,21 @@ export default class ListEth extends Vue {
 
   list: GravityV1QueryPendingSendToEthResponse = {};
   tab: string | null = null;
-
   created() {
+    // sometimes created is executed before keplr gets injected
+    this.updateWhenLoaded();
+  }
+  updateWhenLoaded() {
+    if (document.readyState === "complete") {
+      this.updateList();
+    } else {
+      setTimeout(this.updateWhenLoaded.bind(this), 500);
+    }
+  }
+  updateList() {
     pendingSendToEth(this.$store.state.config.cosmos_rest)
-      // Promise.resolve({
-      //   transfersInBatches: [
-      //     {
-      //       id: "4",
-      //       sender: "tf1cy8z8dhcmzrf497klt47nvgrcxfnwv9evm4ymw",
-      //       destAddress: "0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc",
-      //       erc20Token: {
-      //         contract: "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
-      //         amount: "400000000000000",
-      //       },
-      //       erc20Fee: {
-      //         contract: "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
-      //         amount: "100000000000000",
-      //       },
-      //     },
-      //   ],
-      //   unbatchedTransfers: [
-      //     {
-      //       id: "5",
-      //       sender: "tf1cy8z8dhcmzrf497klt47nvgrcxfnwv9evm4ymw",
-      //       destAddress: "0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc",
-      //       erc20Token: {
-      //         contract: "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
-      //         amount: "400000000000000",
-      //       },
-      //       erc20Fee: {
-      //         contract: "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
-      //         amount: "100000000000000",
-      //       },
-      //     },
-      //   ],
-      // })
-      .then((res: any) => {
-        this.list = {
-          transfersInBatches: res.transfers_in_batches.map(fixTransaction),
-          unbatchedTransfers: res.unbatched_transfers.map(fixTransaction),
-        };
+      .then((res: GravityV1QueryPendingSendToEthResponse) => {
+        this.list = res;
       })
       .catch((err) => {
         console.log("Error", err);
@@ -135,6 +111,7 @@ export default class ListEth extends Vue {
     cancelSendToEth(this.$store.state.config.tendermint_rpc, txId)
       .then((res) => {
         console.log("Canceled", res);
+        this.updateList();
       })
       .catch((err) => {
         console.log("Error", err);

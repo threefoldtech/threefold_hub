@@ -11,7 +11,7 @@
       />
 
       <v-row justify="center">
-        <v-btn color="primary" x-large type="submit" :disabled="inValid || !$store.state.configLoaded">
+        <v-btn color="primary" x-large type="submit" :disabled="inValid">
           Send
         </v-btn>
       </v-row>

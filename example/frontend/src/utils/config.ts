@@ -13,11 +13,6 @@ export interface Config {
     tendermint_rpc: string;
 }
 
-async function loadJSONConfig(): Promise<{[key: string]: any}> {
-    const runtimeConfig = await fetch('/config.json');
-    return await runtimeConfig.json();
-}
-
 async function validateConfig(config: {[key: string]: any}) {
     const props = [
         "BRIDGE_FEES",
@@ -41,8 +36,8 @@ async function validateConfig(config: {[key: string]: any}) {
     }
 }
 
-export async function loadConfig(): Promise<Config> {
-    const config = await loadJSONConfig();
+export function loadConfig(): Config {
+    const config = window.config;
     validateConfig(config);
     const tft_decimals = +(config["TFT_DECIMALS"] as string);
     return {

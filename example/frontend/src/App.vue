@@ -31,8 +31,5 @@ import { Component, Vue } from "vue-property-decorator";
   name: "App",
 })
 export default class App extends Vue {
-  created() {
-    this.$store.dispatch("init");
-  }
 }
 </script>

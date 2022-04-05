@@ -1,9 +1,10 @@
-{
+window.config = {
     "GRAVITY_CONTRACT_ADDRESS": "0x4Ab0D941285FBA5e577332403929B168e5CD2e72",
     "TFT_TOKEN_CONTRACT_ADDRESS": "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
     "BRIDGE_FEES": ".0001",
     "TFT_DECIMALS": 18,
     "TFT_DENOM": "uETH",
+    "PROPOSAL_DENOM": "stake",
     "COSMOS_REST": "http://localhost:1317/",
     "TENDERMINT_RPC": "http://localhost:26657/"
 }

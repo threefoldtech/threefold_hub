@@ -12,6 +12,7 @@ declare global {
   interface Window {
     keplr: any;
     ethereum: any;
+    config: any;
   }
 
   declare module "*.json" {

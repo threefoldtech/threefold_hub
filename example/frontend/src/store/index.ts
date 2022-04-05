@@ -6,16 +6,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    config: {},
-    configLoaded: false,
+    config: loadConfig(),
   },
   getters: {},
   mutations: {},
-  actions: {
-    async init({ state }) {
-      state.config = await loadConfig();
-      state.configLoaded = true;
-    },
-  },
+  actions: {},
   modules: {},
 });
