@@ -1,35 +1,27 @@
 <template>
   <v-app>
-    <div>
-      <v-btn tile color="primary" class="mr-2" @click="$router.push('/')">
-        Cosmos
-      </v-btn>
-      <v-btn tile color="primary" class="mr-2" @click="$router.push('/eth')">
-        Eth
-      </v-btn>
-      <v-btn tile color="primary" class="mr-2" @click="$router.push('/gov')">
-        Gov
-      </v-btn>
-      <v-btn
-        tile
-        color="primary"
-        class="mr-2"
-        @click="$router.push('/list-eth')"
-      >
-        List Eth
-      </v-btn>
-      <v-btn
-        tile
-        color="primary"
-        class="mr-2"
-        @click="$router.push('/list-gov')"
-      >
-        List Gov
-      </v-btn>
+    <v-app-bar fixed dark scroll-target="#scrolling-techniques-6">
+      <v-toolbar-title>
+        <v-img src="./assets/logo.png" height="40" width="40" alt="logo" />
+      </v-toolbar-title>
 
-      <v-divider class="mt-2 mb-2" />
-    </div>
-    <v-main>
+      <v-spacer />
+
+      <div>
+        <v-btn
+          depressed
+          :color="$route.path === route.path ? 'primary' : 'transparent'"
+          class="ml-2"
+          v-for="route in routes"
+          :key="route.path"
+          @click="$router.push(route.path)"
+        >
+          {{ route.label }}
+        </v-btn>
+      </div>
+    </v-app-bar>
+
+    <v-main style="padding-top: 64px">
       <router-view />
     </v-main>
   </v-app>
@@ -41,5 +33,13 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({
   name: "App",
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  routes = [
+    { label: "Cosmos", path: "/" },
+    { label: "Eth", path: "/eth" },
+    { label: "Gov", path: "/gov" },
+    { label: "List Eth", path: "/list-eth" },
+    { label: "List Gov", path: "/list-gov" },
+  ];
+}
 </script>
