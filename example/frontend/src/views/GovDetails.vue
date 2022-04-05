@@ -1,6 +1,14 @@
 <template>
   <v-container v-if="proposal">
-    <h1>#{{ proposal.proposal_id }} {{ proposal.content.title }}</h1>
+    <v-row justify="space-between" align="center">
+      <h1>{{ proposal.content.title }} #{{ proposal.proposal_id }}</h1>
+      <v-btn
+        color="primary"
+        @click="$router.push('/gov/deposit/' + proposal.proposal_id)"
+      >
+        Deposit
+      </v-btn>
+    </v-row>
     <p>
       {{ proposal.content.description }}
     </p>
@@ -22,7 +30,7 @@
 
 <script lang="ts">
 import { VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
-import { submitVote } from "@/utils/gov";
+import { submitVote, getProposal } from "@/utils/gov";
 import { Component, Vue } from "vue-property-decorator";
 
 interface IAction {
@@ -57,60 +65,13 @@ export default class GovDetails extends Vue {
   ];
 
   created() {
-    const proposal = [
-      {
-        proposal_id: "1",
-        content: {
-          "@type": "/cosmos.gov.v1beta1.TextProposal",
-          title: "My first text proposal",
-          description: "description of my first proposal",
-        },
-        status: "PROPOSAL_STATUS_VOTING_PERIOD",
-        final_tally_result: {
-          yes: "0",
-          abstain: "0",
-          no: "0",
-          no_with_veto: "0",
-        },
-        submit_time: "2022-04-04T11:47:13.985289635Z",
-        deposit_end_time: "2022-04-06T11:47:13.985289635Z",
-        total_deposit: [
-          {
-            denom: "stake",
-            amount: "10000200",
-          },
-        ],
-        voting_start_time: "2022-04-04T11:49:29.816616431Z",
-        voting_end_time: "2022-04-06T11:49:29.816616431Z",
-      },
-      {
-        proposal_id: "2",
-        content: {
-          "@type": "/cosmos.gov.v1beta1.TextProposal",
-          title: "hi",
-          description: "hello",
-        },
-        status: "PROPOSAL_STATUS_DEPOSIT_PERIOD",
-        final_tally_result: {
-          yes: "0",
-          abstain: "0",
-          no: "0",
-          no_with_veto: "0",
-        },
-        submit_time: "2022-04-04T15:02:16.204147223Z",
-        deposit_end_time: "2022-04-06T15:02:16.204147223Z",
-        total_deposit: [
-          {
-            denom: "stake",
-            amount: "10",
-          },
-        ],
-        voting_start_time: "0001-01-01T00:00:00Z",
-        voting_end_time: "0001-01-01T00:00:00Z",
-      },
-    ].find(({ proposal_id }) => proposal_id === this.$route.params.id);
-
-    this.proposal = proposal;
+    getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
+      .then((proposal) => {
+        this.proposal = proposal;
+      })
+      .catch((err) => {
+        console.log("Error", err);
+      });
   }
 
   onSubmitVote(action: IAction) {
