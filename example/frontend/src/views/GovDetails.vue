@@ -20,10 +20,14 @@
         :color="action.color"
         class="mr-2"
         @click="onSubmitVote(action)"
+        :disabled="!!loading"
+        :loading="loading === action.value"
       >
         {{ action.label }}
       </v-btn>
     </div>
+
+    <CustomAlert :loading="!!loading" :result="result" :error="error" />
   </v-container>
 </template>
 
@@ -32,6 +36,7 @@ import { VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
 import { submitVote, getProposal } from "@/utils/gov";
 import { Component, Vue } from "vue-property-decorator";
 import { marked } from "marked";
+import CustomAlert from "@/components/CustomAlert.vue";
 
 interface IAction {
   label: string;
@@ -41,9 +46,16 @@ interface IAction {
 
 @Component({
   name: "GovDetails",
+  components: {
+    CustomAlert,
+  },
 })
 export default class GovDetails extends Vue {
   proposal: any = null;
+
+  loading: VoteOption | null = null;
+  result: any = null;
+  error: string | null = null;
 
   getDescription() {
     return marked(this.proposal.description);
@@ -85,6 +97,10 @@ export default class GovDetails extends Vue {
 
     if (!vote) return;
 
+    this.loading = action.value;
+    this.result = null;
+    this.error = null;
+
     submitVote(
       this.$store.state.config.tendermint_rpc,
       this.proposal.proposalId,
@@ -92,9 +108,14 @@ export default class GovDetails extends Vue {
     )
       .then((res) => {
         console.log(res);
+        this.result = `Successfully voted with '${action.label}'.`;
       })
       .catch((err) => {
         console.log("Error", err);
+        this.error = err.message;
+      })
+      .finally(() => {
+        this.loading = null;
       });
   }
 }
