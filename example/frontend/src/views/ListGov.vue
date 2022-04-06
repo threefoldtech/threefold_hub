@@ -78,16 +78,16 @@
       </div>
     </v-row>
 
-    <v-data-table :headers="headers" :items="proposals">
+    <v-data-table :headers="headers" :items="proposals" :loading="loading">
       <template v-slot:[`item.status`]="{ item }">
         {{ item.status.replace("PROPOSAL_STATUS_", "") }}
       </template>
 
       <template v-slot:[`item.finalTallyResult`]="{ item }">
         <VoteCircle
-          :yes="item.finalTallyResult.yes"
-          :no="item.finalTallyResult.no"
-          :noWithVeto="item.finalTallyResult.noWithVeto"
+          :yes="+item.finalTallyResult.yes"
+          :no="+item.finalTallyResult.no"
+          :noWithVeto="+item.finalTallyResult.noWithVeto"
         />
       </template>
 
@@ -133,6 +133,7 @@ export default class ListGov extends Vue {
   ];
 
   proposals: CosmosGovV1Beta1QueryProposalsResponse["proposals"] = [];
+  loading = false;
 
   // params
   tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"] | null = null;
@@ -146,6 +147,8 @@ export default class ListGov extends Vue {
   }
 
   created() {
+    this.loading = true;
+
     parameters(this.$store.state.config.cosmos_rest)
       .then((res) => {
         this.tally = res.tallyParams!;
@@ -162,6 +165,9 @@ export default class ListGov extends Vue {
       })
       .catch((err) => {
         console.log("Error", err);
+      })
+      .finally(() => {
+        this.loading = false;
       });
   }
 }

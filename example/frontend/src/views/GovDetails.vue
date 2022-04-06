@@ -1,33 +1,99 @@
 <template>
-  <v-container v-if="proposal">
-    <v-row class="mb-2" justify="space-between" align="center">
-      <h1>{{ proposal.content.title }} #{{ proposal.proposalId }}</h1>
-      <v-btn
-        v-if="proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
-        color="primary"
-        @click="$router.push('/gov/deposit/' + proposal.proposalId)"
-      >
-        Deposit
-      </v-btn>
+  <v-container>
+    <v-row justify="center" v-if="!proposal">
+      <v-progress-circular indeterminate />
     </v-row>
-    <p v-html="getDescription()" />
+    <div v-if="proposal">
+      <v-row class="mb-2" justify="space-between" align="center">
+        <h1>{{ proposal.content.title }} #{{ proposal.proposalId }}</h1>
+        <v-btn
+          v-if="proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
+          color="primary"
+          @click="$router.push('/proposal/deposit/' + proposal.proposalId)"
+        >
+          Deposit
+        </v-btn>
+      </v-row>
 
-    <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'">
-      <h2>Vote</h2>
-      <v-btn
-        v-for="action in actions"
-        :key="action.label"
-        :color="action.color"
-        class="mr-2"
-        @click="onSubmitVote(action)"
-        :disabled="!!loading"
-        :loading="loading === action.value"
+      <div
+        style="display: flex"
+        v-if="proposal.status !== 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
       >
-        {{ action.label }}
-      </v-btn>
-    </div>
+        <v-card
+          v-for="item of [
+            { label: 'YES', symbol: 'yes', color: 'success' },
+            { label: 'NO', symbol: 'no', color: 'red' },
+            { label: 'ABSTAIN', symbol: 'abstain', color: 'grey' },
+            { label: 'NO (VETO)', symbol: 'noWithVeto', color: '#c40404' },
+          ]"
+          :key="item.symbol"
+          :color="item.color"
+          dark
+          style="min-width: 150px"
+          class="mr-2"
+        >
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="text-overline">{{ item.label }}</div>
+              <v-list-item-title class="text-h5 mt-1 mb-1">
+                {{
+                  (proposal.finalTallyResult[item.symbol] * 100) / totalVotes
+                }}%
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ proposal.finalTallyResult[item.symbol] }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
 
-    <CustomAlert :loading="!!loading" :result="result" :error="error" />
+        <v-card style="width: 100%" dark v-if="bondedTokens">
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="text-overline">Percent Voted</div>
+              <v-list-item-title class="text-h5 mt-1 mb-1">
+                <v-progress-linear
+                  :value="(totalVotes * 100) / +bondedTokens"
+                  :height="30"
+                >
+                  {{ totalVotes }} / {{ bondedTokens }}
+                </v-progress-linear>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </div>
+
+      <h3 class="mt-6">Total Deposit</h3>
+      <p>
+        {{ proposal.totalDeposit.length ? proposal.totalDeposit[0].amount : 0 }}
+        <strong>
+          {{
+            proposal.totalDeposit.length ? proposal.totalDeposit[0].denom : ""
+          }}</strong
+        >
+      </p>
+
+      <h3 class="mt-6">Description</h3>
+      <p v-html="getDescription()" />
+
+      <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'">
+        <h2>Vote</h2>
+        <v-btn
+          v-for="action in actions"
+          :key="action.label"
+          :color="action.color"
+          class="mr-2"
+          @click="onSubmitVote(action)"
+          :disabled="!!loading"
+          :loading="loading === action.value"
+        >
+          {{ action.label }}
+        </v-btn>
+      </div>
+
+      <CustomAlert :loading="!!loading" :result="result" :error="error" />
+    </div>
   </v-container>
 </template>
 
@@ -37,6 +103,7 @@ import { submitVote, getProposal } from "@/utils/gov";
 import { Component, Vue } from "vue-property-decorator";
 import { marked } from "marked";
 import CustomAlert from "@/components/CustomAlert.vue";
+import { pool } from "@/utils/staking";
 
 interface IAction {
   label: string;
@@ -52,6 +119,7 @@ interface IAction {
 })
 export default class GovDetails extends Vue {
   proposal: any = null;
+  bondedTokens: string | null = null;
 
   loading: VoteOption | null = null;
   result: any = null;
@@ -59,6 +127,11 @@ export default class GovDetails extends Vue {
 
   getDescription() {
     return marked(this.proposal.content.description);
+  }
+
+  get totalVotes(): number {
+    const { yes, no, abstain, noWithVeto } = this.proposal.finalTallyResult;
+    return +yes + +no + +abstain + +noWithVeto;
   }
 
   actions: IAction[] = [
@@ -81,9 +154,22 @@ export default class GovDetails extends Vue {
   ];
 
   created() {
+    this.loading = 1;
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
         this.proposal = proposal.proposal;
+      })
+      .catch((err) => {
+        console.log("Error", err);
+      })
+      .finally(() => {
+        this.loading = null;
+      });
+
+    pool(this.$store.state.config.cosmos_rest)
+      .then((res: any) => {
+        console.log(res);
+        this.bondedTokens = res.pool.bondedTokens!;
       })
       .catch((err) => {
         console.log("Error", err);

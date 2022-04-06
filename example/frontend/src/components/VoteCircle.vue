@@ -44,7 +44,7 @@ export default class VoteCircle extends Vue {
     const { total, yes, no, noWithVeto, colors } = this;
 
     if (total === 0) {
-      return [{ color: "grey", start: 0, end: 1 }];
+      return [{ color: "", start: 0, end: 1 }];
     }
 
     return [
