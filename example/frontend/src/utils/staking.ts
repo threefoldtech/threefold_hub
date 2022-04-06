@@ -6,9 +6,6 @@ import { snakeToCamelCase } from "./camel"
 async function pool(
     cosmos_rest: string
 ): Promise<CosmosStakingV1Beta1Pool> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosStakingV1Beta1Pool({ format: "json" });
     snakeToCamelCase(response.data)

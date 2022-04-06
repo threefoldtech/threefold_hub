@@ -21,9 +21,6 @@ async function listProposals(
     offset?: number,
     limit?: number,
 ): Promise<CosmosGovV1Beta1QueryProposalsResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Proposals(
         {
@@ -43,9 +40,6 @@ async function listVotes(
     offset?: number,
     limit?: number,
 ): Promise<CosmosGovV1Beta1QueryVotesResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Votes(proposalId, {
         "pagination.limit": limit?.toString(),
@@ -61,9 +55,6 @@ async function listDeposites(
     offset?: number,
     limit?: number,
 ): Promise<CosmosGovV1Beta1QueryDepositsResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Deposits(proposalId, {
         "pagination.limit": limit?.toString(),
@@ -77,9 +68,6 @@ async function getProposal(
     cosmos_rest: string,
     proposalId: string
 ): Promise<CosmosGovV1Beta1QueryProposalResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Proposal(proposalId, { format: "json" });
     snakeToCamelCase(response.data)
@@ -90,9 +78,6 @@ async function tally(
     cosmos_rest: string,
     proposalId: string
 ): Promise<CosmosGovV1Beta1QueryTallyResultResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1TallyResult(proposalId, { format: "json" });
     snakeToCamelCase(response.data)
@@ -102,9 +87,6 @@ async function tally(
 async function parameters(
     cosmos_rest: string,
 ): Promise<CosmosGovV1Beta1QueryParamsResponse> {
-    if (!window.keplr) {
-        throw new Error("keplr is not installed");
-    }
     const queryClient = new Api({ baseUrl: cosmos_rest });
     // requesting all params is not supported over rest
     const params = await queryClient.cosmos.cosmosGovV1Beta1Params("deposit", {format: "json"});
@@ -114,7 +96,7 @@ async function parameters(
     snakeToCamelCase(tallying_params.data)
     snakeToCamelCase(voting_params.data)
     params.data.tallyParams = tallying_params.data.tallyParams
-    params.data.votingParams = tallying_params.data.votingParams
+    params.data.votingParams = voting_params.data.votingParams
     return params.data as CosmosGovV1Beta1QueryParamsResponse;
 }
 
