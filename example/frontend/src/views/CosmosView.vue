@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Cosmos</h1>
+    <h1>Send to Cosmos</h1>
 
     <form @submit.prevent="onSendToCosmos()">
       <v-text-field

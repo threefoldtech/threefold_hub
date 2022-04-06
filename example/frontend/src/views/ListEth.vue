@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Eth List</h1>
+    <h1>BSC transactions</h1>
     <v-tabs v-model="tab">
       <v-tab v-for="t in tabs" :key="t.symbol">
         {{ t.label }}
@@ -10,6 +10,9 @@
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="t in tabs" :key="t.symbol">
         <v-data-table :headers="t.headers" :items="list[t.symbol]">
+          <template v-slot:[`item.erc20Token.amount`]="{ item }">
+            {{ normalize(item.erc20Token.amount) }}
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
@@ -37,16 +40,10 @@
 
 <script lang="ts">
 import { GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
-import { snakeToCamelCase } from "@/utils/camel";
+import { BigNumber } from "ethers";
 import { Component, Vue } from "vue-property-decorator";
+import { formatUnits } from "ethers/lib/utils";
 import { pendingSendToEth, cancelSendToEth } from "../utils";
-
-function fixTransaction(tx: any) {
-  tx.destAddress = tx.dest_address;
-  tx.erc20Token = tx.erc20_token;
-  tx.erc20Fee = tx.erc20_fee;
-  return tx;
-}
 
 @Component({
   name: "ListEth",
@@ -84,6 +81,11 @@ export default class ListEth extends Vue {
     // sometimes created is executed before keplr gets injected
     this.updateWhenLoaded();
   }
+
+  normalize(tokens: string): string {
+    return formatUnits(BigNumber.from(tokens), this.$store.state.config.tft_decimals);
+  }
+
   updateWhenLoaded() {
     if (document.readyState === "complete") {
       this.updateList();

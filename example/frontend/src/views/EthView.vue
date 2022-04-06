@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Eth</h1>
+    <h1>Send to BSC</h1>
 
     <form @submit.prevent="onSendToEth()">
       <v-text-field

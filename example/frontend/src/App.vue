@@ -35,11 +35,11 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class App extends Vue {
   routes = [
-    { label: "Cosmos", path: "/" },
-    { label: "Eth", path: "/eth" },
-    { label: "Gov", path: "/gov" },
-    { label: "List Eth", path: "/list-eth" },
-    { label: "List Gov", path: "/list-gov" },
+    { label: "Send to Cosmos", path: "/" },
+    { label: "Send to BSC", path: "/bsc" },
+    { label: "Add proposal", path: "/proposal" },
+    { label: "Pending BSC transactions", path: "/list-bsc" },
+    { label: "Proposals", path: "/list-proposals" },
   ];
 }
 </script>

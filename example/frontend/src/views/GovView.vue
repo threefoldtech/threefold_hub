@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Gov</h1>
+    <h1>Add Proposal</h1>
 
     <form @submit.prevent="onSubmitProposal()">
       <v-text-field label="Title" placeholder="Title" v-model="title" />
@@ -70,7 +70,7 @@ export default class GovView extends Vue {
         this.$store.state.config.proposal_denom
       )
         .then((res) => {
-          this.result = "Transaction submitted succefully!";
+          this.result = "Proposal added succefully!";
         })
         .catch((err) => {
           console.log("Error", err);

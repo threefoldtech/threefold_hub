@@ -17,28 +17,28 @@ const routes: Array<RouteConfig> = [
     component: Cosmos,
   },
   {
-    path: "/eth",
-    name: "Eth",
+    path: "/bsc",
+    name: "BSC",
     component: Eth,
   },
   {
-    path: "/list-eth",
+    path: "/list-bsc",
     component: ListEth,
   },
   {
-    path: "/gov",
+    path: "/proposal",
     component: GovView,
   },
   {
-    path: "/list-gov",
+    path: "/list-proposals",
     component: ListGov,
   },
   {
-    path: "/gov/:id",
+    path: "/proposal/:id",
     component: GovDetails,
   },
   {
-    path: "/gov/deposit/:id",
+    path: "/proposal/deposit/:id",
     component: GovDeposit,
   },
 ];

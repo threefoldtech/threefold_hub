@@ -58,7 +58,7 @@ export default class GovDetails extends Vue {
   error: string | null = null;
 
   getDescription() {
-    return marked(this.proposal.description);
+    return marked(this.proposal.content.description);
   }
 
   actions: IAction[] = [

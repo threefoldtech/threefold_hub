@@ -1,4 +1,4 @@
-import { CosmosGovV1Beta1QueryProposalsResponse, Api, CosmosGovV1Beta1QueryProposalResponse, CosmosGovV1Beta1QueryParamsResponse, CosmosGovV1Beta1QueryVotesResponse, CosmosGovV1Beta1QueryDepositsResponse } from "@/rest/cosmos";
+import { CosmosGovV1Beta1QueryProposalsResponse, Api, CosmosGovV1Beta1QueryProposalResponse, CosmosGovV1Beta1QueryParamsResponse, CosmosGovV1Beta1QueryVotesResponse, CosmosGovV1Beta1QueryDepositsResponse, CosmosGovV1Beta1QueryTallyResultResponse } from "@/rest/cosmos";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { snakeToCamelCase } from "./camel"
 import { myRegistry } from "./registry";
@@ -84,6 +84,19 @@ async function getProposal(
     const response = await queryClient.cosmos.cosmosGovV1Beta1Proposal(proposalId, { format: "json" });
     snakeToCamelCase(response.data)
     return response.data as CosmosGovV1Beta1QueryProposalResponse;
+}
+
+async function tally(
+    cosmos_rest: string,
+    proposalId: string
+): Promise<CosmosGovV1Beta1QueryTallyResultResponse> {
+    if (!window.keplr) {
+        throw new Error("keplr is not installed");
+    }
+    const queryClient = new Api({ baseUrl: cosmos_rest });
+    const response = await queryClient.cosmos.cosmosGovV1Beta1TallyResult(proposalId, { format: "json" });
+    snakeToCamelCase(response.data)
+    return response.data as CosmosGovV1Beta1QueryTallyResultResponse;
 }
 
 async function parameters(
@@ -251,6 +264,7 @@ export {
     listVotes,
     listDeposites,
     getProposal,
+    tally,
     parameters,
     submitProposal,
     submitVote
