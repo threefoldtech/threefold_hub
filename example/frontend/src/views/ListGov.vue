@@ -2,26 +2,70 @@
   <v-container>
     <v-row justify="space-between" class="mb-6">
       <h1>Proposals</h1>
-      <div>
-        <ul style="list-style: none">
-          <li
-            v-for="color in [
-              ['#2ecc71', 'Yes'],
-              ['#e74c3c', 'No'],
-              ['#c0392b', 'No With Veto'],
-            ]"
-            :key="color[0]"
-            style="display: flex; align-items: center"
-          >
-            <span
-              :style="
-                'display: inline-block; margin-right: 10px;height: 20px; width: 20px; background-color:' +
-                color[0]
-              "
-            />
-            <span>{{ color[1] }}</span>
-          </li>
-        </ul>
+
+      <div style="display: flex">
+        <div v-if="tally">
+          <h4>Tally Parameters</h4>
+          <ul style="list-style: square">
+            <li>
+              Quorum: <strong>{{ tally.quorum }}</strong>
+            </li>
+            <li>
+              Threshold: <strong>{{ tally.threshold }}</strong>
+            </li>
+            <li>
+              Veto Threshold: <strong>{{ tally.vetoThreshold }}</strong>
+            </li>
+          </ul>
+        </div>
+
+        <v-divider vertical class="mr-2 ml-2" v-if="tally" />
+
+        <div v-if="deposit || voting">
+          <div v-if="deposit">
+            <h4>Deposit Parameters</h4>
+            <ul style="list-style: square">
+              <li>
+                Min Deposit: <strong>{{ deposit.minDeposit }}</strong>
+              </li>
+            </ul>
+          </div>
+
+          <v-divider v-if="deposit && voting" />
+
+          <div v-if="voting">
+            <h4>Voting Parameters</h4>
+            <ul style="list-style: square">
+              <li>
+                Voting Period: <strong>{{ voting.votingPeriod }}</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <v-divider vertical class="mr-2 ml-2" v-if="deposit || voting" />
+
+        <div>
+          <ul style="list-style: none">
+            <li
+              v-for="color in [
+                ['#2ecc71', 'Yes'],
+                ['#e74c3c', 'No'],
+                ['#c0392b', 'No With Veto'],
+              ]"
+              :key="color[0]"
+              style="display: flex; align-items: center"
+            >
+              <span
+                :style="
+                  'display: inline-block; margin-right: 10px;height: 20px; width: 20px; background-color:' +
+                  color[0]
+                "
+              />
+              <span>{{ color[1] }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </v-row>
 
@@ -68,8 +112,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { CosmosGovV1Beta1QueryProposalsResponse } from "@/rest/cosmos";
-import { listProposals } from "@/utils/gov";
+import {
+  CosmosGovV1Beta1QueryParamsResponse,
+  CosmosGovV1Beta1QueryProposalsResponse,
+} from "@/rest/cosmos";
+import { listProposals, parameters } from "@/utils/gov";
 import VoteCircle from "@/components/VoteCircle.vue";
 
 @Component({
@@ -90,15 +137,28 @@ export default class ListGov extends Vue {
 
   proposals: CosmosGovV1Beta1QueryProposalsResponse["proposals"] = [];
 
+  // params
+  tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"];
+  deposit: CosmosGovV1Beta1QueryParamsResponse["depositParams"];
+  voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"];
+
   created() {
-    listProposals(this.$store.state.config.cosmos_rest)
-      .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
-        this.proposals = res.proposals;
-        console.log(res.proposals?.[0]);
+    parameters(this.$store.state.config.cosmos_rest)
+      .then((res) => {
+        this.tally = res.tallyParams!;
+        this.deposit = res.depositParams!;
+        this.voting = res.votingParams!;
       })
       .catch((err) => {
         console.log("Error", err);
-        console.log(err);
+      });
+
+    listProposals(this.$store.state.config.cosmos_rest)
+      .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
+        this.proposals = res.proposals;
+      })
+      .catch((err) => {
+        console.log("Error", err);
       });
   }
 }
