@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="proposal">
-    <v-row justify="space-between" align="center">
+    <v-row class="mb-2" justify="space-between" align="center">
       <h1>{{ proposal.content.title }} #{{ proposal.proposalId }}</h1>
       <v-btn
         v-if="proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
