@@ -1,24 +1,26 @@
 <template>
-  <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
-      <div class="circle-container" v-bind="attrs" v-on="on">
-        <v-progress-circular
-          v-for="vote in votes"
-          class="circle"
-          :size="24"
-          :width="12"
-          :rotate="vote.start * 360"
-          :value="vote.end * 100"
-          :color="vote.color"
-          :key="vote.color"
-        />
-      </div>
-    </template>
+  <div>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <div class="circle-container" v-bind="attrs" v-on="on">
+          <v-progress-circular
+            v-for="vote in votes"
+            class="circle"
+            :size="24"
+            :width="12"
+            :rotate="vote.start * 360"
+            :value="vote.end * 100"
+            :color="vote.color"
+            :key="vote.color"
+          />
+        </div>
+      </template>
 
-    <span>
-      Yes: <strong>{{ total ? (votes[0].end * 100).toFixed(2) : 0 }}%</strong>
-    </span>
-  </v-tooltip>
+      <span>
+        Yes: <strong>{{ total ? (votes[0].end * 100).toFixed(2) : 0 }}%</strong>
+      </span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,7 +30,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   name: "VoteCircle",
 })
 export default class VoteCircle extends Vue {
-  @Prop({ default: ["#2ecc71", "#e74c3c", "#c0392b"] }) colors!: [string, string, string, string]; // prettier-ignore
+  private readonly colors = ["#2ecc71", "#e74c3c", "#c0392b"]; // prettier-ignore
   @Prop({ required: true }) yes!: number;
   @Prop({ required: true }) no!: number;
   @Prop({ required: true }) noWithVeto!: number;
