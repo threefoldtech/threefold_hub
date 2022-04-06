@@ -75,23 +75,11 @@
       </template>
 
       <template v-slot:[`item.finalTallyResult`]="{ item }">
-        <v-col>
-          <VoteCircle
-            :yes="item.finalTallyResult.yes"
-            :no="item.finalTallyResult.no"
-            :noWithVeto="item.finalTallyResult.noWithVeto"
-          />
-          <!-- ["#2ecc71", "#e74c3c", "#c0392b"] -->
-          <p>
-            Yes:
-            {{
-              item.finalTallyResult.yes /
-              (item.finalTallyResult.yes +
-                item.finalTallyResult.no +
-                item.finalTallyResult.noWithVeto)
-            }}
-          </p>
-        </v-col>
+        <VoteCircle
+          :yes="item.finalTallyResult.yes"
+          :no="item.finalTallyResult.no"
+          :noWithVeto="item.finalTallyResult.noWithVeto"
+        />
       </template>
 
       <template v-slot:[`item.submitTime`]="{ item }">
@@ -138,9 +126,9 @@ export default class ListGov extends Vue {
   proposals: CosmosGovV1Beta1QueryProposalsResponse["proposals"] = [];
 
   // params
-  tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"];
-  deposit: CosmosGovV1Beta1QueryParamsResponse["depositParams"];
-  voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"];
+  tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"] | null = null;
+  deposit: CosmosGovV1Beta1QueryParamsResponse["depositParams"] | null = null;
+  voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"] | null = null;
 
   created() {
     parameters(this.$store.state.config.cosmos_rest)

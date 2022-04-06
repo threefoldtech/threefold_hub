@@ -1,16 +1,24 @@
 <template>
-  <div class="circle-container">
-    <v-progress-circular
-      v-for="vote in votes"
-      class="circle"
-      :size="50"
-      :width="20"
-      :rotate="vote.start * 360"
-      :value="vote.end * 100"
-      :color="vote.color"
-      :key="vote.color"
-    />
-  </div>
+  <v-tooltip>
+    <template v-slot:activator="{ on, attrs }">
+      <div class="circle-container" v-bind="attrs" v-on="on">
+        <v-progress-circular
+          v-for="vote in votes"
+          class="circle"
+          :size="50"
+          :width="20"
+          :rotate="vote.start * 360"
+          :value="vote.end * 100"
+          :color="vote.color"
+          :key="vote.color"
+        />
+      </div>
+    </template>
+
+    <span>
+      Yes: <strong>{{ total ? votes[0].end * 100 : 0 }}%</strong>
+    </span>
+  </v-tooltip>
 </template>
 
 <script lang="ts">
@@ -32,6 +40,11 @@ export default class VoteCircle extends Vue {
 
   get votes() {
     const { total, yes, no, noWithVeto, colors } = this;
+
+    if (total === 0) {
+      return [{ color: "grey", start: 0, end: 1 }];
+    }
+
     return [
       { color: colors[0], start: 0, end: yes / total },
       { color: colors[1], start: yes / total, end: no / total },
