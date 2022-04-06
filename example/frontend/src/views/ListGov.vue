@@ -8,13 +8,14 @@
           <h4>Tally Parameters</h4>
           <ul style="list-style: square">
             <li>
-              Quorum: <strong>{{ tally.quorum }}</strong>
+              Quorum: <strong>{{ normalize(tally.quorum) }}</strong>
             </li>
             <li>
-              Threshold: <strong>{{ tally.threshold }}</strong>
+              Threshold: <strong>{{ normalize(tally.threshold) }}</strong>
             </li>
             <li>
-              Veto Threshold: <strong>{{ tally.vetoThreshold }}</strong>
+              Veto Threshold:
+              <strong>{{ normalize(tally.vetoThreshold) }}</strong>
             </li>
           </ul>
         </div>
@@ -27,7 +28,14 @@
             <ul style="list-style: square">
               <li>
                 Min Deposit:
-                <strong>{{ deposit[0].amount }} {{ deposit[0].denom }}</strong>
+                <strong>
+                  {{ deposit.minDeposit[0].amount }}
+                  {{ deposit.minDeposit[0].denom }}
+                </strong>
+              </li>
+              <li>
+                Max Deposit Period:
+                <strong>{{ deposit.maxDepositPeriod }}</strong>
               </li>
             </ul>
           </div>
@@ -108,11 +116,6 @@ import {
 import { listProposals, parameters } from "@/utils/gov";
 import VoteCircle from "@/components/VoteCircle.vue";
 
-type Deposit = Exclude<
-  CosmosGovV1Beta1QueryParamsResponse["depositParams"],
-  undefined
->["minDeposit"];
-
 @Component({
   name: "ListGov",
   components: {
@@ -133,14 +136,20 @@ export default class ListGov extends Vue {
 
   // params
   tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"] | null = null;
-  deposit: Deposit | null = null;
+  deposit: any | null = null;
   voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"] | null = null;
+
+  normalize(v?: string): string {
+    if (typeof v !== "string") return v as any;
+
+    return +v * 100 + "%";
+  }
 
   created() {
     parameters(this.$store.state.config.cosmos_rest)
       .then((res) => {
         this.tally = res.tallyParams!;
-        this.deposit = res.depositParams!.minDeposit;
+        this.deposit = res.depositParams!;
         this.voting = res.votingParams!;
       })
       .catch((err) => {

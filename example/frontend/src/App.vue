@@ -21,7 +21,7 @@
       </div>
     </v-app-bar>
 
-    <v-main style="padding-top: 100px; padding-left: 50px">
+    <v-main style="padding-top: 64px">
       <router-view />
     </v-main>
   </v-app>

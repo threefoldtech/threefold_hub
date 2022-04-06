@@ -1,12 +1,12 @@
 <template>
-  <v-tooltip>
+  <v-tooltip bottom>
     <template v-slot:activator="{ on, attrs }">
       <div class="circle-container" v-bind="attrs" v-on="on">
         <v-progress-circular
           v-for="vote in votes"
           class="circle"
-          :size="30"
-          :width="17"
+          :size="24"
+          :width="12"
           :rotate="vote.start * 360"
           :value="vote.end * 100"
           :color="vote.color"
@@ -16,7 +16,7 @@
     </template>
 
     <span>
-      Yes: <strong>{{ total ? votes[0].end * 100 : 0 }}%</strong>
+      Yes: <strong>{{ total ? (votes[0].end * 100).toFixed(2) : 0 }}%</strong>
     </span>
   </v-tooltip>
 </template>
@@ -57,8 +57,8 @@ export default class VoteCircle extends Vue {
 <style lang="scss">
 .circle-container {
   position: relative;
-  height: 50px;
-  width: 50px;
+  height: 24px;
+  width: 24px;
 
   .circle {
     position: absolute;
