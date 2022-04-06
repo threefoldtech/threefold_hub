@@ -6,15 +6,17 @@
       <v-text-field label="Title" placeholder="Title" v-model="title" />
 
       <v-text-field
-        label="Description"
-        placeholder="Description"
-        v-model="description"
-      />
-      <v-text-field
         label="Initial Deposit"
         placeholder="Initial Deposit"
         type="number"
         v-model="initialDeposit"
+      />
+
+      <v-textarea
+        label="Description"
+        placeholder="Description"
+        v-model="description"
+        hint="Markdown is supported"
       />
 
       <v-row justify="center">
