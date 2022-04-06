@@ -6,7 +6,12 @@
       </h1>
 
       <form @submit.prevent="onDeposit()">
-        <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
+        <v-text-field
+          label="Amount"
+          placeholder="Amount"
+          v-model="amount"
+          :hint="'Min deposit is ' + proposal.minDeposit"
+        />
 
         <v-btn
           color="primary"
