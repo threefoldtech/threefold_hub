@@ -5,8 +5,8 @@
         <v-progress-circular
           v-for="vote in votes"
           class="circle"
-          :size="50"
-          :width="20"
+          :size="30"
+          :width="17"
           :rotate="vote.start * 360"
           :value="vote.end * 100"
           :color="vote.color"
