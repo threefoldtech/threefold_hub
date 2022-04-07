@@ -7,27 +7,38 @@ import GovView from "@/views/GovView.vue";
 import ListGov from "@/views/ListGov.vue";
 import GovDetails from "@/views/GovDetails.vue";
 import GovDeposit from "@/views/GovDeposit.vue";
+import { checkKeplr } from "@/utils/checkKeplr";
 
 Vue.use(VueRouter);
+
+function requireKeplr(_: unknown, __: unknown, next: any) {
+  checkKeplr()
+    .then(() => next())
+    .catch(() => next("/list-proposals"));
+}
 
 const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Cosmos",
     component: Cosmos,
+    beforeEnter: requireKeplr,
   },
   {
     path: "/bsc",
     name: "BSC",
     component: Eth,
+    beforeEnter: requireKeplr,
   },
   {
     path: "/list-bsc",
     component: ListEth,
+    beforeEnter: requireKeplr,
   },
   {
     path: "/proposal",
     component: GovView,
+    beforeEnter: requireKeplr,
   },
   {
     path: "/list-proposals",

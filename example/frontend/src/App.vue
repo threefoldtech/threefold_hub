@@ -8,28 +8,35 @@
       <v-spacer />
 
       <div>
-        <v-btn
-          depressed
-          :color="$route.path === route.path ? 'primary' : 'transparent'"
-          class="ml-2"
+        <v-badge
+          dot
           v-for="route in routes"
           :key="route.path"
-          @click="$router.push(route.path)"
+          :value="keplr !== 'loaded' && route.keplr"
+          color="red"
         >
-          {{ route.label }}
-        </v-btn>
+          <v-btn
+            depressed
+            :color="$route.path === route.path ? 'primary' : 'transparent'"
+            class="ml-2"
+            @click="$router.push(route.path)"
+            :disabled="keplr !== 'loaded' && route.keplr"
+          >
+            {{ route.label }}
+          </v-btn>
+        </v-badge>
       </div>
     </v-app-bar>
 
     <v-main style="padding-top: 100px">
       <router-view />
     </v-main>
-    <!-- </div> -->
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Actions, Keplr } from "./store";
 
 @Component({
   name: "App",
@@ -39,38 +46,19 @@ export default class App extends Vue {
   error = false;
 
   routes = [
-    { label: "Send to Cosmos", path: "/" },
-    { label: "Send to BSC", path: "/bsc" },
-    { label: "Add proposal", path: "/proposal" },
-    { label: "Pending BSC transactions", path: "/list-bsc" },
-    { label: "Proposals", path: "/list-proposals" },
+    { label: "Send to Cosmos", path: "/", keplr: true },
+    { label: "Send to BSC", path: "/bsc", keplr: true },
+    { label: "Add proposal", path: "/proposal", keplr: true },
+    { label: "Pending BSC transactions", path: "/list-bsc", keplr: true },
+    { label: "Proposals", path: "/list-proposals", keplr: false },
   ];
 
-  created() {
-    this.__checkKeplr()
-      .then(() => {
-        this.loading = false;
-      })
-      .catch(() => {
-        this.error = true;
-      });
+  get keplr(): Keplr {
+    return this.$store.state.keplr;
   }
 
-  private __checkKeplr(): Promise<any> {
-    let i = 0;
-
-    return new Promise((res, rej) => {
-      function _checkKeplr() {
-        if (window.keplr) res(window.keplr);
-        else if (i === 10) {
-          rej();
-        } else {
-          i++;
-          setTimeout(_checkKeplr, 500);
-        }
-      }
-      _checkKeplr();
-    });
+  created() {
+    this.$store.dispatch(Actions.CHECK_KEPLR);
   }
 }
 </script>
