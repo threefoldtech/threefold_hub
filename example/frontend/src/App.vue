@@ -15,15 +15,28 @@
           :value="keplr !== 'loaded' && route.keplr"
           color="red"
         >
-          <v-btn
-            depressed
-            :color="$route.path === route.path ? 'primary' : 'transparent'"
-            class="ml-2"
-            @click="$router.push(route.path)"
-            :disabled="keplr !== 'loaded' && route.keplr"
+          <v-tooltip
+            bottom
+            :disabled="!(keplr !== 'loaded' && route.keplr)"
+            color="error"
           >
-            {{ route.label }}
-          </v-btn>
+            <template v-slot:activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn
+                  depressed
+                  :color="
+                    $route.path === route.path ? 'primary' : 'transparent'
+                  "
+                  class="ml-2"
+                  @click="$router.push(route.path)"
+                  :disabled="keplr !== 'loaded' && route.keplr"
+                >
+                  {{ route.label }}
+                </v-btn>
+              </div>
+            </template>
+            <span>Keplr must be installed first</span>
+          </v-tooltip>
         </v-badge>
       </div>
     </v-app-bar>
