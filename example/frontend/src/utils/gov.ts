@@ -8,6 +8,7 @@ import { Any } from "@/types/google/protobuf/any";
 import { BigNumber } from "ethers";
 import { Coin } from "@/types/cosmos/base/v1beta1/coin";
 import { GAS, FEE, FEE_DENOM } from "./fees"
+import { submitWithCheck } from "./txs";
 
 async function listProposals(
     cosmos_rest: string,
@@ -112,7 +113,7 @@ async function submitProposal(
     // TODO: should this be done globally one time?
     const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
     const sender = (await offlineSigner.getAccounts())[0];
-    let client: any;
+    let client: SigningStargateClient;
     return SigningStargateClient.connectWithSigner(
         tendermint_rpc, // Replace with your own RPC endpoint
         offlineSigner,
@@ -144,7 +145,7 @@ async function submitProposal(
                 ],
                 gas: GAS,
             };
-            return client.signAndBroadcast(account.bech32Address, [message], fee);
+            return submitWithCheck(client, account.bech32Address, [message], fee);
         });
 
     // TODO: how to check transaction errors
@@ -191,7 +192,7 @@ async function deposit(
                 ],
                 gas: GAS,
             };
-            return client.signAndBroadcast(account.bech32Address, [message], fee);
+            return submitWithCheck(client, account.bech32Address, [message], fee);
         });
 
     // TODO: how to check transaction errors
@@ -234,7 +235,7 @@ async function submitVote(
                 ],
                 gas: GAS,
             };
-            return client.signAndBroadcast(account.bech32Address, [message], fee);
+            return submitWithCheck(client, account.bech32Address, [message], fee);
         });
 
     // TODO: how to check transaction errors

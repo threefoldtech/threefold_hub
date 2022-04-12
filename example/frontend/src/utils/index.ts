@@ -13,6 +13,7 @@ import { myRegistry } from "./registry"
 import { GAS, FEE, FEE_DENOM } from "./fees" 
 import { submitProposal, submitVote } from "./gov";
 import { TextProposal, VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
+import { submitWithCheck } from "./txs";
 const UINT256_MAX_INT = ethers.BigNumber.from(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 );
@@ -126,7 +127,7 @@ export function sendToEth(
         ],
         gas: GAS,
       };
-      return client.signAndBroadcast(account.bech32Address, [message], fee);
+      return submitWithCheck(client, account.bech32Address, [message], fee);
     });
 
   // TODO: how to check transaction errors
@@ -168,7 +169,7 @@ export async function cancelSendToEth(
         ],
         gas: GAS,
       };
-      return client.signAndBroadcast(account.bech32Address, [message], fee);
+      return submitWithCheck(client, account.bech32Address, [message], fee);
     });
 
   // TODO: how to check transaction errors
