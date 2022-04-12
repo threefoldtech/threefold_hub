@@ -4,15 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateValidator } from "./types/validators/tx";
-import { MsgCreateValidator } from "./types/validators/tx";
 import { MsgDeleteValidator } from "./types/validators/tx";
+import { MsgCreateValidator } from "./types/validators/tx";
+import { MsgUpdateValidator } from "./types/validators/tx";
 
 
 const types = [
-  ["/threefold.threefoldhub.validators.MsgUpdateValidator", MsgUpdateValidator],
-  ["/threefold.threefoldhub.validators.MsgCreateValidator", MsgCreateValidator],
   ["/threefold.threefoldhub.validators.MsgDeleteValidator", MsgDeleteValidator],
+  ["/threefold.threefoldhub.validators.MsgCreateValidator", MsgCreateValidator],
+  ["/threefold.threefoldhub.validators.MsgUpdateValidator", MsgUpdateValidator],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,9 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUpdateValidator: (data: MsgUpdateValidator): EncodeObject => ({ typeUrl: "/threefold.threefoldhub.validators.MsgUpdateValidator", value: MsgUpdateValidator.fromPartial( data ) }),
-    msgCreateValidator: (data: MsgCreateValidator): EncodeObject => ({ typeUrl: "/threefold.threefoldhub.validators.MsgCreateValidator", value: MsgCreateValidator.fromPartial( data ) }),
     msgDeleteValidator: (data: MsgDeleteValidator): EncodeObject => ({ typeUrl: "/threefold.threefoldhub.validators.MsgDeleteValidator", value: MsgDeleteValidator.fromPartial( data ) }),
+    msgCreateValidator: (data: MsgCreateValidator): EncodeObject => ({ typeUrl: "/threefold.threefoldhub.validators.MsgCreateValidator", value: MsgCreateValidator.fromPartial( data ) }),
+    msgUpdateValidator: (data: MsgUpdateValidator): EncodeObject => ({ typeUrl: "/threefold.threefoldhub.validators.MsgUpdateValidator", value: MsgUpdateValidator.fromPartial( data ) }),
     
   };
 };

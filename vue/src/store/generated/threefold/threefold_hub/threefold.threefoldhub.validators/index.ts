@@ -267,18 +267,18 @@ export default {
 		},
 		
 		
-		async sendMsgUpdateValidator({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgDeleteValidator({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUpdateValidator(value)
+				const msg = await txClient.msgDeleteValidator(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgUpdateValidator:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgDeleteValidator:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgUpdateValidator:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgDeleteValidator:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -297,32 +297,32 @@ export default {
 				}
 			}
 		},
-		async sendMsgDeleteValidator({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgUpdateValidator({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDeleteValidator(value)
+				const msg = await txClient.msgUpdateValidator(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgDeleteValidator:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgUpdateValidator:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgDeleteValidator:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgUpdateValidator:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
 		
-		async MsgUpdateValidator({ rootGetters }, { value }) {
+		async MsgDeleteValidator({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUpdateValidator(value)
+				const msg = await txClient.msgDeleteValidator(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgUpdateValidator:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgDeleteValidator:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgUpdateValidator:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgDeleteValidator:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}
@@ -341,16 +341,16 @@ export default {
 				}
 			}
 		},
-		async MsgDeleteValidator({ rootGetters }, { value }) {
+		async MsgUpdateValidator({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDeleteValidator(value)
+				const msg = await txClient.msgUpdateValidator(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgDeleteValidator:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgUpdateValidator:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgDeleteValidator:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgUpdateValidator:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}

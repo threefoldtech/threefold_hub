@@ -33,9 +33,9 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 // WriteValidators returns a slice of tendermint genesis validators.
 func WriteValidators(ctx sdk.Context, keeper keeper.Keeper) (vals []tmtypes.GenesisValidator, err error) {
 	for _, validator := range keeper.GetLastValidators(ctx) {
-		storedPK := validator.GetConsensusPubkey()
+		storedPublicKey := validator.GetConsensusPubkey()
 
-		tmPk, err := cryptocodec.ToTmPubKeyInterface(pk)
+		tmPk, err := cryptocodec.ToTmPubKeyInterface(storedPublicKey)
 		if err != nil {
 			break
 		}
