@@ -7,7 +7,6 @@
         label="Amount"
         placeholder="Amount"
         v-model="amount"
-        type="number"
       />
 
       <v-text-field
