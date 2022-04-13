@@ -37,7 +37,7 @@
               <div class="text-overline">{{ item.label }}</div>
               <v-list-item-title class="text-h5 mt-1 mb-1">
                 {{
-                  (proposal.finalTallyResult[item.symbol] * 100) / totalVotes
+                  totalVotes ? (proposal.finalTallyResult[item.symbol] * 100) / totalVotes : 0
                 }}%
               </v-list-item-title>
               <v-list-item-subtitle>
@@ -76,7 +76,6 @@
 
       <h3 class="mt-6">Description</h3>
       <p v-html="getDescription()" />
-
       <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'">
         <h2>Vote</h2>
         <v-btn
