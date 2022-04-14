@@ -3,6 +3,7 @@ import { GasPrice, SigningStargateClient } from "@cosmjs/stargate";
 import { snakeToCamelCase } from "./camel"
 import { myRegistry } from "./registry";
 import { MsgDeposit, MsgSubmitProposal, MsgVote } from "../types/cosmos/gov/v1beta1/tx";
+import { MsgDelegate } from "../types/cosmos/staking/v1beta1/tx";
 import { TextProposal, VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
 import { Any } from "@/types/google/protobuf/any";
 import { BigNumber } from "ethers";
@@ -221,6 +222,45 @@ async function deposit(
     // TODO: how to check transaction errors
 }
 
+async function delegate(
+    tendermint_rpc: string,
+    gas_price: string,
+    validatorAddress: string,
+    amount: BigNumber,
+    denom: string
+) {
+    if (!window.keplr) {
+        throw new Error("keplr is not installed");
+    }
+    // TODO: should this be done globally one time?
+    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const sender = (await offlineSigner.getAccounts())[0];
+    let client: any;
+    return SigningStargateClient.connectWithSigner(
+        tendermint_rpc, // Replace with your own RPC endpoint
+        offlineSigner,
+        { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
+    )
+        .then((_client) => (client = _client))
+        .then(() => window.keplr.getKey("threefold-hub"))
+        .then((account) => {
+            const message = {
+                typeUrl: "/cosmos.staking.v1beta1.MsgDelegate", // Same as above
+                value: MsgDelegate.fromPartial({
+                    amount: Coin.fromPartial({
+                        amount: amount.toString(),
+                        denom: denom
+                    }),
+                    delegatorAddress: sender.address,
+                    validatorAddress: validatorAddress
+                }),
+            };
+            return submitWithCheck(client, account.bech32Address, [message], "auto");
+        });
+
+    // TODO: how to check transaction errors
+}
+
 async function submitVote(
     tendermint_rpc: string,
     gas_price: string,
@@ -267,6 +307,7 @@ async function submitVote(
 
 export {
     deposit,
+    delegate,
     listProposals,
     listValidators,
     listVotes,

@@ -2,6 +2,19 @@
   <v-container>
     <h1>Validators</h1>
     <v-data-table :headers="headers" :items="validators" :loading="loading">
+
+      <template v-slot:[`item.commission`]="{ item }">
+        {{ +item.commission.commissionRates.rate * 100 }}%
+      </template>
+
+      <template v-slot:[`item.details`]="{ item }">
+        <v-btn
+          color="primary"
+          @click="$router.push('/delegate/' + item.operatorAddress)"
+        >
+          Delegate
+        </v-btn>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -24,7 +37,9 @@ import VoteCircle from "@/components/VoteCircle.vue";
 export default class ListGov extends Vue {
   headers: { text: string; value: string }[] = [
     { text: "Address", value: "operatorAddress" },
-    { text: "Tokens", value: "tokens" },
+    { text: "Voting power", value: "tokens" },
+    { text: "Commission", value: "commission" },
+    { text: "Delegate", value: "details" },
   ];
 
   validators: CosmosStakingV1Beta1QueryValidatorsResponse["validators"] = [];
@@ -34,6 +49,7 @@ export default class ListGov extends Vue {
     let validators = this.validators || [];
     for (const validator of validators) {
       validator.tokens = formatUnits(validator.tokens || "0", this.$store.state.config.tft_decimals) + " " + this.$store.state.config.tft_denom
+      console.log(validator.commission)
     }
   }
 
