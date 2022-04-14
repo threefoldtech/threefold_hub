@@ -113,7 +113,8 @@ import {
   CosmosGovV1Beta1QueryParamsResponse,
   CosmosGovV1Beta1QueryProposalsResponse,
 } from "@/rest/cosmos";
-import { listProposals, parameters } from "@/utils/gov";
+import { listProposals, parameters, tally } from "@/utils/gov";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import VoteCircle from "@/components/VoteCircle.vue";
 
 @Component({
@@ -146,6 +147,16 @@ export default class ListGov extends Vue {
     return +v * 100 + "%";
   }
 
+  async fillPendingProposalsVotes() {
+    let proposals = this.proposals || [];
+    for (const proposal of proposals) {
+      if (proposal.status == "PROPOSAL_STATUS_VOTING_PERIOD") {
+        let currentTally = await tally(this.$store.state.config.cosmos_rest, proposal.proposalId || "");
+        proposal.finalTallyResult = currentTally.tally;
+      }
+    }
+  }
+
   created() {
     this.loading = true;
 
@@ -153,22 +164,28 @@ export default class ListGov extends Vue {
       .then((res) => {
         this.tally = res.tallyParams!;
         this.deposit = res.depositParams!;
+        console.log(this.deposit.minDeposit)
+        this.deposit.minDeposit[0].amount = formatUnits(
+          this.deposit.minDeposit[0].amount,
+          this.$store.state.config.tft_decimals
+          )
         this.voting = res.votingParams!;
       })
       .catch((err) => {
         console.log("Error", err);
       });
 
-    listProposals(this.$store.state.config.cosmos_rest)
-      .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
-        this.proposals = res.proposals;
-      })
-      .catch((err) => {
-        console.log("Error", err);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+      listProposals(this.$store.state.config.cosmos_rest)
+        .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
+          this.proposals = res.proposals;
+          this.fillPendingProposalsVotes()
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
   }
 }
 </script>

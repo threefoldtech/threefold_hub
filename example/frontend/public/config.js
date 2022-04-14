@@ -1,10 +1,11 @@
 window.config = {
-    "GRAVITY_CONTRACT_ADDRESS": "0xDB1ad4794028b4D8dCF25cd1DC6534Af64D1a949",
-    "TFT_TOKEN_CONTRACT_ADDRESS": "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
+    "GRAVITY_CONTRACT_ADDRESS": "0xBc53FF5916762d929A2917a383453c3db391AFDE",
+    "TFT_TOKEN_CONTRACT_ADDRESS": "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
     "BRIDGE_FEES": ".0001",
     "TFT_DECIMALS": 18,
-    "TFT_DENOM": "uETH",
-    "PROPOSAL_DENOM": "stake",
-    "COSMOS_REST": "http://localhost:1317/",
-    "TENDERMINT_RPC": "http://localhost:26657/"
+    "TFT_DENOM": "TFT",
+    "PROPOSAL_DENOM": "TFT",
+    "COSMOS_REST": "https://threefoldhub.test.gridtesting.xyz:1317/",
+    "TENDERMINT_RPC": "https://threefoldhub.test.gridtesting.xyz:26657/",
+    "GAS_PRICE": "60000000000TFT"
 }

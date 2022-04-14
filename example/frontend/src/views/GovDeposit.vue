@@ -37,6 +37,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { BigNumber } from "ethers";
 import { getProposal, deposit } from "@/utils/gov";
 import CustomAlert from "@/components/CustomAlert.vue";
+import { parseUnits } from "ethers/lib/utils";
 
 @Component({
   name: "GovDeposit",
@@ -46,7 +47,7 @@ import CustomAlert from "@/components/CustomAlert.vue";
 })
 export default class GovDeposit extends Vue {
   proposal: any = null;
-  amount = 0;
+  amount = "0";
 
   loading = false;
   result: any = null;
@@ -75,8 +76,9 @@ export default class GovDeposit extends Vue {
 
     deposit(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.gas_price,
       this.proposal.proposalId,
-      BigNumber.from(this.amount),
+      parseUnits(this.amount, this.$store.state.config.tft_decimals),
       this.$store.state.config.proposal_denom
     )
       .then((res) => {

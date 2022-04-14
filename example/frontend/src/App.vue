@@ -50,6 +50,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Actions, Keplr } from "./store";
+import { checkKeplr } from "@/utils/checkKeplr";
+import { ensureChain } from "@/utils/keplr";
 
 @Component({
   name: "App",
@@ -59,11 +61,12 @@ export default class App extends Vue {
   error = false;
 
   routes = [
-    { label: "Send to Cosmos", path: "/", keplr: true },
+    { label: "Send to Cosmos", path: "/", keplr: false },
     { label: "Send to BSC", path: "/bsc", keplr: true },
-    { label: "Add proposal", path: "/proposal", keplr: true },
     { label: "Pending BSC transactions", path: "/list-bsc", keplr: true },
+    { label: "Add proposal", path: "/proposal", keplr: true },
     { label: "Proposals", path: "/list-proposals", keplr: false },
+    { label: "Validators", path: "/validators", keplr: false },
   ];
 
   get keplr(): Keplr {
@@ -72,6 +75,18 @@ export default class App extends Vue {
 
   created() {
     this.$store.dispatch(Actions.CHECK_KEPLR);
+    checkKeplr()
+      .then((_) => {
+        ensureChain(
+          "threefold-hub", // TODO: make configurable
+          "tf",
+          this.$store.state.config.tendermint_rpc,
+          this.$store.state.config.cosmos_rest,
+        ).catch((e) => {
+          // TODO: how to show this error to the user
+          console.log(e)
+        })
+      })
   }
 }
 </script>

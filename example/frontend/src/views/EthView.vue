@@ -97,6 +97,7 @@ export default class Eth extends Vue {
       let amountBN = parseUnits(amount, config.tft_decimals);
       sendToEth(
         config.tendermint_rpc,
+        config.gas_price,
         destination,
         amountBN,
         config.bridge_fees,

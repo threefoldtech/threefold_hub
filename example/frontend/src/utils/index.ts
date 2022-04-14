@@ -1,4 +1,5 @@
 import {
+  GasPrice,
   SigningStargateClient,
 } from "@cosmjs/stargate";
 import { MsgCancelSendToEth, MsgSendToEth } from "../types/gravity/v1/msgs"; // Replace with your own Msg import
@@ -12,6 +13,7 @@ import { snakeToCamelCase } from "./camel";
 import { myRegistry } from "./registry"
 import { GAS, FEE, FEE_DENOM } from "./fees" 
 import { submitWithCheck } from "./txs";
+import { waitBscTransaction } from "./eth";
 const UINT256_MAX_INT = ethers.BigNumber.from(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 );
@@ -45,9 +47,9 @@ export async function sendToCosmos(
     gravityabi as any,
     signer
   );
-  const senderAddress = (
-    await window.ethereum.request({ method: "eth_requestAccounts" })
-  )[0];
+    const senderAddress = (
+      await window.ethereum.request({ method: "eth_requestAccounts" })
+    )[0];
   // console.log(senderAddress)
   const allowance = ethers.BigNumber.from(
     await bepContract.allowance(senderAddress, gravity_contract_address)
@@ -59,7 +61,12 @@ export async function sendToCosmos(
     //             and the ability to change it
     //             performing allowance everytime will cost extra fees
     //
-    await bepContract.approve(gravity_contract_address, UINT256_MAX_INT);
+    const tx = await bepContract.approve(gravity_contract_address, UINT256_MAX_INT);
+    try {
+      await waitBscTransaction(provider, tx.hash);
+    } catch(_) {
+      throw new Error("Allowance tx with hash " + tx.hash + " took more than 15 seconds. Try sending again after it succeeds.")
+    }
   }
   console.log(
     "sending " +
@@ -81,6 +88,7 @@ export async function sendToCosmos(
 
 export function sendToEth(
   tendermint_rpc: string,
+  gas_price: string,
   destination: string,
   amount: BigNumber,
   bridge_fees: BigNumber,
@@ -96,7 +104,7 @@ export function sendToEth(
   return SigningStargateClient.connectWithSigner(
     tendermint_rpc, // Replace with your own RPC endpoint
     offlineSigner,
-    { registry: myRegistry }
+    { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
   )
     .then((_client) => (client = _client))
     .then(() => window.keplr.getKey("threefold-hub"))
@@ -125,7 +133,7 @@ export function sendToEth(
         ],
         gas: GAS,
       };
-      return submitWithCheck(client, account.bech32Address, [message], fee);
+      return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
 
   // TODO: how to check transaction errors
@@ -133,6 +141,7 @@ export function sendToEth(
 
 export async function cancelSendToEth(
   tendermint_rpc: string,
+  gas_price: string,
   transactionId: string
 ) {
   if (!window.keplr) {
@@ -146,7 +155,7 @@ export async function cancelSendToEth(
   return SigningStargateClient.connectWithSigner(
     tendermint_rpc, // Replace with your own RPC endpoint
     offlineSigner,
-    { registry: myRegistry }
+    { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
   )
     .then((_client) => (client = _client))
     .then(() => window.keplr.getKey("threefold-hub"))
@@ -167,7 +176,7 @@ export async function cancelSendToEth(
         ],
         gas: GAS,
       };
-      return submitWithCheck(client, account.bech32Address, [message], fee);
+      return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
 
   // TODO: how to check transaction errors
