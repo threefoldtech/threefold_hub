@@ -11,6 +11,7 @@ export interface Config {
   cosmos_rest: string;
   tendermint_rpc: string;
   proposal_denom: string;
+  gas_price: string;
 }
 
 async function validateConfig(config: { [key: string]: any }) {
@@ -23,6 +24,7 @@ async function validateConfig(config: { [key: string]: any }) {
     "COSMOS_REST",
     "TENDERMINT_RPC",
     "PROPOSAL_DENOM",
+    "GAS_PRICE",
   ];
   const numbers = ["BRIDGE_FEES", "TFT_DECIMALS"];
   for (const prop of props) {
@@ -52,5 +54,6 @@ export function loadConfig(): Config {
     cosmos_rest: config["COSMOS_REST"] as string,
     tendermint_rpc: config["TENDERMINT_RPC"] as string,
     proposal_denom: config["PROPOSAL_DENOM"] as string,
+    gas_price: config["GAS_PRICE"] as string,
   };
 }

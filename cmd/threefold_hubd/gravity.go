@@ -16,6 +16,7 @@ func extendGravitySubcommands(rootCmd *cobra.Command) error {
 	g.AddCommand(
 		CmdGetParams(),
 		CmdGetOutgoingTxBatches(),
+		CmdGetAttestations(),
 	)
 	return nil
 }
@@ -57,6 +58,30 @@ func CmdGetOutgoingTxBatches() *cobra.Command {
 			req := &types.QueryOutgoingTxBatchesRequest{}
 
 			res, err := queryClient.OutgoingTxBatches(cmd.Context(), req)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
+
+func CmdGetAttestations() *cobra.Command {
+	//nolint: exhaustivestruct
+	cmd := &cobra.Command{
+		Use:   "attestations",
+		Short: "Query attestations",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+			queryClient := types.NewQueryClient(clientCtx)
+
+			req := &types.QueryAttestationsRequest{}
+
+			res, err := queryClient.GetAttestations(cmd.Context(), req)
 			if err != nil {
 				return err
 			}

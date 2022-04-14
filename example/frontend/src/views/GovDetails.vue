@@ -103,6 +103,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { marked } from "marked";
 import CustomAlert from "@/components/CustomAlert.vue";
 import { pool } from "@/utils/staking";
+import { formatUnits } from "ethers/lib/utils";
 
 interface IAction {
   label: string;
@@ -157,6 +158,11 @@ export default class GovDetails extends Vue {
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
         this.proposal = proposal.proposal;
+        this.proposal.totalDeposit[0].amount = formatUnits(this.proposal.totalDeposit[0].amount, this.$store.state.config.tft_decimals)
+        this.proposal.finalTallyResult.yes = formatUnits(this.proposal.finalTallyResult.yes, this.$store.state.config.tft_decimals)
+        this.proposal.finalTallyResult.no = formatUnits(this.proposal.finalTallyResult.no, this.$store.state.config.tft_decimals)
+        this.proposal.finalTallyResult.noWithVeto = formatUnits(this.proposal.finalTallyResult.noWithVeto, this.$store.state.config.tft_decimals)
+        this.proposal.finalTallyResult.abstain = formatUnits(this.proposal.finalTallyResult.abstain, this.$store.state.config.tft_decimals)
       })
       .catch((err) => {
         console.log("Error", err);
@@ -168,7 +174,7 @@ export default class GovDetails extends Vue {
     pool(this.$store.state.config.cosmos_rest)
       .then((res: any) => {
         console.log(res);
-        this.bondedTokens = res.pool.bondedTokens!;
+        this.bondedTokens = formatUnits(res.pool.bondedTokens!, this.$store.state.config.tft_decimals);
       })
       .catch((err) => {
         console.log("Error", err);
@@ -188,6 +194,7 @@ export default class GovDetails extends Vue {
 
     submitVote(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.gas_price,
       this.proposal.proposalId,
       action.value
     )

@@ -8,7 +8,6 @@
       <v-text-field
         label="Initial Deposit"
         placeholder="Initial Deposit"
-        type="number"
         v-model="initialDeposit"
       />
 
@@ -40,6 +39,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { submitProposal } from "@/utils/gov";
 import { BigNumber } from "ethers";
 import CustomAlert from "@/components/CustomAlert.vue";
+import { parseUnits } from "ethers/lib/utils";
 
 @Component({
   name: "GovView",
@@ -54,7 +54,7 @@ export default class GovView extends Vue {
 
   title = "";
   description = "";
-  initialDeposit = 0;
+  initialDeposit = "0";
 
   onSubmitProposal() {
     this.loading = true;
@@ -65,8 +65,9 @@ export default class GovView extends Vue {
       const { title, description, initialDeposit } = this;
       submitProposal(
         this.$store.state.config.tendermint_rpc,
+        this.$store.state.config.gas_price,
         { title, description },
-        BigNumber.from(initialDeposit),
+        parseUnits(initialDeposit, this.$store.state.config.tft_decimals),
         this.$store.state.config.proposal_denom
       )
         .then((res) => {

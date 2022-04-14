@@ -110,7 +110,11 @@ export default class ListEth extends Vue {
 
     if (!cancel) return;
 
-    cancelSendToEth(this.$store.state.config.tendermint_rpc, txId)
+    cancelSendToEth(
+      this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.gas_price,
+      txId
+      )
       .then((res) => {
         console.log("Canceled", res);
         this.updateList();

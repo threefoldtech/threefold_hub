@@ -5,6 +5,7 @@ import Eth from "@/views/EthView.vue";
 import ListEth from "@/views/ListEth.vue";
 import GovView from "@/views/GovView.vue";
 import ListGov from "@/views/ListGov.vue";
+import ListValidators from "@/views/ListValidators.vue";
 import GovDetails from "@/views/GovDetails.vue";
 import GovDeposit from "@/views/GovDeposit.vue";
 import { checkKeplr } from "@/utils/checkKeplr";
@@ -34,6 +35,10 @@ const routes: Array<RouteConfig> = [
     path: "/list-bsc",
     component: ListEth,
     beforeEnter: requireKeplr,
+  },
+  {
+    path: "/validators",
+    component: ListValidators,
   },
   {
     path: "/proposal",
