@@ -8,6 +8,7 @@ import ListGov from "@/views/ListGov.vue";
 import ListValidators from "@/views/ListValidators.vue";
 import GovDetails from "@/views/GovDetails.vue";
 import GovDeposit from "@/views/GovDeposit.vue";
+import Delegate from "@/views/Delegate.vue";
 import { checkKeplr } from "@/utils/checkKeplr";
 
 Vue.use(VueRouter);
@@ -39,6 +40,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/validators",
     component: ListValidators,
+  },
+  {
+    path: "/delegate/:address",
+    component: Delegate,
   },
   {
     path: "/proposal",
