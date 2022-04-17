@@ -18,8 +18,8 @@ To configure the chain:
 threefold_hubd keys add alice --keyring-backend test --recover # enter the mnemonics here
 threefold_hubd keys list alice --keyring-backend test # to view alice address
 threefold_hubd init test-node --chain-id threefold-hub
-threefold_hubd add-genesis-account alice 200000000stake,10000TFT --keyring-backend=test
-threefold_hubd gentx --moniker test-node alice 100000000stake 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc <alice-address> --chain-id=threefold-hub --keyring-backend=test
+threefold_hubd add-genesis-account alice 2000000000000000000TFT --keyring-backend=test
+threefold_hubd gentx --moniker test-node alice 1000000000000000000TFT 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc <alice-address> --chain-id=threefold-hub --keyring-backend=test
 threefold_hubd collect-gentxs
 ```
 
@@ -31,6 +31,23 @@ The starport's `serve` subcommand doesn't work as the gentx format is changed. T
 The gravity params in the genesis file should be modified:
 
 - the gravity_id must match the `gravity_id` in the `Gravity.sol` contract. In other words, (hex(genesis.gravity_id) + "0" * 64).substr(0, 64) must equal to the gravity id in the contract.
+- crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. `600000000000000000TFT`)
+- gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. `1000000000000000TFT`)
+- `gravity_id` should be unique to chain (in case of hard forks?) (e.g. `threefold-hub`)
+- `bridge_ethereum_address` to `<bridge-contract-address>`. This corresponds to the gravity smart contract address. It's currently not used by the module (i.e. it's for doc-purposes only for now).
+- `bridge_chain_id` is 97. The BSC testnet chain id.
+- Gravity's `average_ethereum_block_time` to 3000. This value is used to estimate blocks timeout.
+- The following `erc20` token is added to gravity:
+```json
+       "eth_erc20_to_denoms": [
+          {
+            "erc20": "<TFT-BSC-contract-address>",
+            "denom": "TFT"
+         }
+       ]
+```
+- `mint_denom` to TFT
+- `bond_denom` to TFT
 
 The chain is started then by executing `threefold_hubd start`.
 
@@ -85,7 +102,7 @@ To transfer money from binance to threefold_hub chain:
 Note that transferring the money back requires that the tokens was originated from Binance (TODO: check if some tokens can be configured in genesis):
 
 ```bash
-./gbt client cosmos-to-eth --amount <amount-to-transfer> -b <bridge-fee> -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 1gravity
+./gbt client cosmos-to-eth --amount <amount-to-transfer> -b <bridge-fee> -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 1TFT
 ```
 
 Bridge fees must be in the same tokens being transfered.
