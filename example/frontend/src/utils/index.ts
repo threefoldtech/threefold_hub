@@ -34,7 +34,6 @@ export async function sendToCosmos(
       "using something else than metamask. we only support metamask."
     );
   }
-  // TODO: should this be done one time?
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner(0);
   const bepContract = new ethers.Contract(
@@ -55,11 +54,11 @@ export async function sendToCosmos(
     await bepContract.allowance(senderAddress, gravity_contract_address)
   );
   if (allowance.lt(amount)) {
-    // TODO: should we get only the allowance we need for this operation or require the max
-    //             gbt client does the max thing but it seems fishy
-    //             metamask however provides the user with the given amount
-    //             and the ability to change it
-    //             performing allowance everytime will cost extra fees
+    // should we get only the allowance we need for this operation or require the max
+    //        gbt client does the max thing but it seems fishy
+    //        metamask however provides the user with the given amount
+    //        and the ability to change it
+    //        performing allowance everytime will cost extra fees
     //
     const tx = await bepContract.approve(gravity_contract_address, UINT256_MAX_INT);
     try {
@@ -89,6 +88,7 @@ export async function sendToCosmos(
 export function sendToEth(
   tendermint_rpc: string,
   gas_price: string,
+  chain_id: string,
   destination: string,
   amount: BigNumber,
   bridge_fees: BigNumber,
@@ -97,8 +97,7 @@ export function sendToEth(
   if (!window.keplr) {
     throw new Error("keplr is not installed");
   }
-  // TODO: should this be done globally one time?
-  const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+  const offlineSigner = window.keplr.getOfflineSigner(chain_id);
   let client: any;
 
   return SigningStargateClient.connectWithSigner(
@@ -107,7 +106,7 @@ export function sendToEth(
     { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
   )
     .then((_client) => (client = _client))
-    .then(() => window.keplr.getKey("threefold-hub"))
+    .then(() => window.keplr.getKey(chain_id))
     .then((account) => {
       const message = {
         typeUrl: "/gravity.v1.MsgSendToEth", // Same as above
@@ -136,19 +135,18 @@ export function sendToEth(
       return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
 
-  // TODO: how to check transaction errors
 }
 
 export async function cancelSendToEth(
   tendermint_rpc: string,
   gas_price: string,
+  chain_id: string,
   transactionId: string
 ) {
   if (!window.keplr) {
     throw new Error("keplr is not installed");
   }
-  // TODO: should this be done globally one time?
-  const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+  const offlineSigner = window.keplr.getOfflineSigner(chain_id);
   const sender = (await offlineSigner.getAccounts())[0];
   let client: any;
   console.log(sender);
@@ -158,7 +156,7 @@ export async function cancelSendToEth(
     { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
   )
     .then((_client) => (client = _client))
-    .then(() => window.keplr.getKey("threefold-hub"))
+    .then(() => window.keplr.getKey(chain_id))
     .then((account) => {
       const message = {
         typeUrl: "/gravity.v1.MsgCancelSendToEth", // Same as above
@@ -178,17 +176,16 @@ export async function cancelSendToEth(
       };
       return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
-
-  // TODO: how to check transaction errors
 }
 
 export async function pendingSendToEth(
-  cosmos_rest: string
+  cosmos_rest: string,
+  chain_id: string
 ): Promise<GravityV1QueryPendingSendToEthResponse> {
   if (!window.keplr) {
     throw new Error("keplr is not installed");
   }
-  const signer = window.keplr.getOfflineSigner("threefold-hub");
+  const signer = window.keplr.getOfflineSigner(chain_id);
   const sender = (await signer.getAccounts())[0].address;
   const queryClient = new Api({ baseUrl: cosmos_rest });
   const response = await queryClient.gravity.gravityV1GetPendingSendToEth(

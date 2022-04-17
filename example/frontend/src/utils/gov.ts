@@ -126,6 +126,7 @@ async function parameters(
 async function submitProposal(
     tendermint_rpc: string,
     gas_price: string,
+    chain_id: string,
     content: TextProposal,
     initialDeposit: BigNumber,
     denom: string
@@ -133,8 +134,7 @@ async function submitProposal(
     if (!window.keplr) {
         throw new Error("keplr is not installed");
     }
-    // TODO: should this be done globally one time?
-    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
     let client: SigningStargateClient;
     return SigningStargateClient.connectWithSigner(
@@ -143,7 +143,7 @@ async function submitProposal(
         { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
     )
         .then((_client) => (client = _client))
-        .then(() => window.keplr.getKey("threefold-hub"))
+        .then(() => window.keplr.getKey(chain_id))
         .then((account) => {
             const message = {
                 typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal", // Same as above
@@ -171,12 +171,12 @@ async function submitProposal(
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
-    // TODO: how to check transaction errors
 }
 
 async function deposit(
     tendermint_rpc: string,
     gas_price: string,
+    chain_id: string,
     proposalId: string,
     deposit: BigNumber,
     denom: string
@@ -184,8 +184,7 @@ async function deposit(
     if (!window.keplr) {
         throw new Error("keplr is not installed");
     }
-    // TODO: should this be done globally one time?
-    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
     let client: any;
     return SigningStargateClient.connectWithSigner(
@@ -194,7 +193,7 @@ async function deposit(
         { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
     )
         .then((_client) => (client = _client))
-        .then(() => window.keplr.getKey("threefold-hub"))
+        .then(() => window.keplr.getKey(chain_id))
         .then((account) => {
             const message = {
                 typeUrl: "/cosmos.gov.v1beta1.MsgDeposit", // Same as above
@@ -219,12 +218,12 @@ async function deposit(
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
-    // TODO: how to check transaction errors
 }
 
 async function delegate(
     tendermint_rpc: string,
     gas_price: string,
+    chain_id: string,
     validatorAddress: string,
     amount: BigNumber,
     denom: string
@@ -232,8 +231,7 @@ async function delegate(
     if (!window.keplr) {
         throw new Error("keplr is not installed");
     }
-    // TODO: should this be done globally one time?
-    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
     let client: any;
     return SigningStargateClient.connectWithSigner(
@@ -242,7 +240,7 @@ async function delegate(
         { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
     )
         .then((_client) => (client = _client))
-        .then(() => window.keplr.getKey("threefold-hub"))
+        .then(() => window.keplr.getKey(chain_id))
         .then((account) => {
             const message = {
                 typeUrl: "/cosmos.staking.v1beta1.MsgDelegate", // Same as above
@@ -258,20 +256,19 @@ async function delegate(
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
-    // TODO: how to check transaction errors
 }
 
 async function submitVote(
     tendermint_rpc: string,
     gas_price: string,
+    chain_id: string,
     proposalId: string,
     vote: VoteOption
 ) {
     if (!window.keplr) {
         throw new Error("keplr is not installed");
     }
-    // TODO: should this be done globally one time?
-    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
     let client: any;
     return SigningStargateClient.connectWithSigner(
@@ -280,7 +277,7 @@ async function submitVote(
         { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
     )
         .then((_client) => (client = _client))
-        .then(() => window.keplr.getKey("threefold-hub"))
+        .then(() => window.keplr.getKey(chain_id))
         .then((account) => {
             const message = {
                 typeUrl: "/cosmos.gov.v1beta1.MsgVote", // Same as above
@@ -302,7 +299,6 @@ async function submitVote(
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
-    // TODO: how to check transaction errors
 }
 
 export {

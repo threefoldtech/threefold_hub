@@ -195,6 +195,7 @@ export default class GovDetails extends Vue {
     submitVote(
       this.$store.state.config.tendermint_rpc,
       this.$store.state.config.gas_price,
+      this.$store.state.config.chain_id,
       this.proposal.proposalId,
       action.value
     )
