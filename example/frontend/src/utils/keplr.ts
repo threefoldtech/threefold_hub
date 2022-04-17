@@ -1,6 +1,6 @@
 async function ensureChain(chain_id: string, address_prefix: string, rpc: string, rest: string) {
     try {
-        const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+        const offlineSigner = window.keplr.getOfflineSigner("threefold-hub-testnet");
         (await offlineSigner.getAccounts())[0];
     } catch (e: any) {
         await window.keplr.experimentalSuggestChain({
@@ -45,9 +45,9 @@ async function ensureChain(chain_id: string, address_prefix: string, rpc: string
                 // proportioned as the keplr example
                 // the min low should always work as long as it's more than min-gas-price in the validators
                 // does it affect how fast the tx goes through?
-                low: 600000000000,
-                average: 1500000000000,
-                high: 1800000000000,
+                low:      6000000000,
+                average: 15000000000,
+                high:    18000000000,
             },
         });
     }

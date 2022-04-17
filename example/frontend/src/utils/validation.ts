@@ -13,11 +13,11 @@ function checkKeplr(): Promise<any> {
 }
 
 
-async function ensureKeplr(): Promise<any> {
+async function ensureKeplr(chain_id: string): Promise<any> {
     let offlineSigner: any;
     return checkKeplr()
         .then((_) => {
-            return window.keplr.getOfflineSigner("threefold-hub")
+            return window.keplr.getOfflineSigner(chain_id)
         })
         .then((signer) => {
             offlineSigner = signer

@@ -66,6 +66,7 @@ export default class GovView extends Vue {
       submitProposal(
         this.$store.state.config.tendermint_rpc,
         this.$store.state.config.gas_price,
+        this.$store.state.config.chain_id,
         { title, description },
         parseUnits(initialDeposit, this.$store.state.config.tft_decimals),
         this.$store.state.config.proposal_denom

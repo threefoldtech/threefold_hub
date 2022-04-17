@@ -66,6 +66,7 @@ export default class GovDeposit extends Vue {
     delegate(
       this.$store.state.config.tendermint_rpc,
       this.$store.state.config.gas_price,
+      this.$store.state.config.chain_id,
       this.address,
       parseUnits(this.amount, this.$store.state.config.tft_decimals),
       this.$store.state.config.tft_denom

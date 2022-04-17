@@ -94,7 +94,7 @@ export default class ListEth extends Vue {
     }
   }
   updateList() {
-    pendingSendToEth(this.$store.state.config.cosmos_rest)
+    pendingSendToEth(this.$store.state.config.cosmos_rest, this.$store.state.config.chain_id)
       .then((res: GravityV1QueryPendingSendToEthResponse) => {
         this.list = res;
       })
@@ -113,6 +113,7 @@ export default class ListEth extends Vue {
     cancelSendToEth(
       this.$store.state.config.tendermint_rpc,
       this.$store.state.config.gas_price,
+      this.$store.state.config.chain_id,
       txId
       )
       .then((res) => {

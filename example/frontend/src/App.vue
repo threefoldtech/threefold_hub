@@ -78,7 +78,7 @@ export default class App extends Vue {
     checkKeplr()
       .then((_) => {
         ensureChain(
-          "threefold-hub", // TODO: make configurable
+          this.$store.state.config.chain_id,
           "tf",
           this.$store.state.config.tendermint_rpc,
           this.$store.state.config.cosmos_rest,

@@ -12,6 +12,7 @@ export interface Config {
   tendermint_rpc: string;
   proposal_denom: string;
   gas_price: string;
+  chain_id: string;
 }
 
 async function validateConfig(config: { [key: string]: any }) {
@@ -25,6 +26,7 @@ async function validateConfig(config: { [key: string]: any }) {
     "TENDERMINT_RPC",
     "PROPOSAL_DENOM",
     "GAS_PRICE",
+    "CHAIN_ID",
   ];
   const numbers = ["BRIDGE_FEES", "TFT_DECIMALS"];
   for (const prop of props) {
@@ -55,5 +57,6 @@ export function loadConfig(): Config {
     tendermint_rpc: config["TENDERMINT_RPC"] as string,
     proposal_denom: config["PROPOSAL_DENOM"] as string,
     gas_price: config["GAS_PRICE"] as string,
+    chain_id: config["CHAIN_ID"] as string,
   };
 }
