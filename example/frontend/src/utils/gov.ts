@@ -8,7 +8,6 @@ import { TextProposal, VoteOption } from "@/types/cosmos/gov/v1beta1/gov";
 import { Any } from "@/types/google/protobuf/any";
 import { BigNumber } from "ethers";
 import { Coin } from "@/types/cosmos/base/v1beta1/coin";
-import { GAS, FEE, FEE_DENOM } from "./fees"
 import { submitWithCheck } from "./txs";
 
 async function listProposals(
@@ -159,15 +158,6 @@ async function submitProposal(
                     proposer: sender.address
                 }),
             };
-            const fee = {
-                amount: [
-                    {
-                        denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-                        amount: FEE,
-                    },
-                ],
-                gas: GAS,
-            };
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
@@ -205,15 +195,6 @@ async function deposit(
                     depositor: sender.address,
                     proposalId: proposalId
                 }),
-            };
-            const fee = {
-                amount: [
-                    {
-                        denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-                        amount: FEE,
-                    },
-                ],
-                gas: GAS,
             };
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
@@ -286,15 +267,6 @@ async function submitVote(
                     proposalId: proposalId,
                     option: vote
                 }),
-            };
-            const fee = {
-                amount: [
-                    {
-                        denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-                        amount: FEE,
-                    },
-                ],
-                gas: GAS,
             };
             return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
