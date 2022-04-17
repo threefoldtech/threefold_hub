@@ -10,7 +10,7 @@ Frontend: https://threefoldhub.test.gridtesting.xyz
 Tendermint endpoint: https://threefoldhub.test.gridtesting.xyz:26657
 Cosmos REST endpoint: https://threefoldhub.test.gridtesting.xyz:1317
 
-## Configuration
+## Chain Configuration
 
 ### Genesis
 
@@ -49,11 +49,29 @@ The [genesis](./config/genesis.json) file contains the default generated genesis
 
 ### Tendermint configuration
 
-The `cors_allowed_origins` propert is changed to `["*"]` to allow connecting from any website. The listening address is changed for reverse-proxying puropses. Everything else is the default.
+The `cors_allowed_origins` property in the tenderming [config](./config/config.toml) file is changed to `["*"]` to allow connecting from any website. The listening address is changed for reverse-proxying puropses. Everything else is the default.
 
 ### App configuration
-The min gas price is set as the approximate value of .025uatom in USDs. A couple of zeroes are removed because of precision issues in the frontend. This is done instead of a proper fix because the decimals of TFT is 7 so it won't be a problem.
+The min gas price is set in the [app](./config/app.toml) config flie as the approximate value of .025uatom in USDs. A couple of zeroes are removed because of precision issues in the frontend. This is done instead of a proper fix because the decimals of TFT is 7 so it won't be a problem.
 - The `minimum-gas-prices` is specified as `6000000000TFT`.
 - The REST endpoint and swagger is enabled
 - The listening address is changed for reverse-proxying puropses
 - `enabled-unsafe-cors` is changed to `true`
+
+## Orchestrator configuration
+
+The orchestrator is [configured](./config/gbt.yaml) to request batch for every send-to-eth tx. The relayer is enabled and it relays only batches with fees larger than .0001 BUSD. The orchestrator must be run by every validator in the cosmos chain. But they don't have to necessarily run the relayer, only one is sufficient. 
+
+The service file used to run it can be found [here](./services/threefold-gbt.service).
+## Chain node service
+
+The service file used to run the chain node service can be found [here](./services/threefold-node.service). It's run using cosmovisor to manage auto-updates. Initially, the `threefold_hubd` binary must be copied to `~/.threefold_hub/cosmovisor/genesis/bin/threefold_hubd`.
+
+## Gravity contract
+
+The contract is created with the following parameters:
+- gravity id: `0x7468726565666F6C642D6875622D746573746E65740000000000000000000000`
+- validator set: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
+- validator powers: `[4294967296]`
+
+Its address is `0x3cA7E73486aCe8f18662AeA0B6BC23A580B9d04e`
