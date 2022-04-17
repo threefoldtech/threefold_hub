@@ -11,7 +11,6 @@ import { Api, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import Long from "long";
 import { snakeToCamelCase } from "./camel";
 import { myRegistry } from "./registry"
-import { GAS, FEE, FEE_DENOM } from "./fees" 
 import { submitWithCheck } from "./txs";
 import { waitBscTransaction } from "./eth";
 const UINT256_MAX_INT = ethers.BigNumber.from(
@@ -123,15 +122,6 @@ export function sendToEth(
           ethDest: destination,
         }),
       };
-      const fee = {
-        amount: [
-          {
-            denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-            amount: FEE,
-          },
-        ],
-        gas: GAS,
-      };
       return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
 
@@ -164,15 +154,6 @@ export async function cancelSendToEth(
           sender: sender.address,
           transactionId: Long.fromString(transactionId),
         }),
-      };
-      const fee = {
-        amount: [
-          {
-            denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-            amount: FEE,
-          },
-        ],
-        gas: GAS,
       };
       return submitWithCheck(client, account.bech32Address, [message], "auto");
     });
