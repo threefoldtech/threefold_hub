@@ -23,6 +23,9 @@ threefold_hubd gentx --moniker test-node alice 100000000stake 0xD6DBC796aC81DC34
 threefold_hubd collect-gentxs
 ```
 
+The genesis file contains the following default parameters:
+- `max_validators` are set to 100
+
 The starport's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc`. This address will be used later in the gravity contract and the orchestrator setup.
 
 The gravity params in the genesis file should be modified:
