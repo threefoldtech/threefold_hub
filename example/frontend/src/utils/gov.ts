@@ -9,6 +9,7 @@ import { Any } from "@/types/google/protobuf/any";
 import { BigNumber } from "ethers";
 import { Coin } from "@/types/cosmos/base/v1beta1/coin";
 import { submitWithCheck } from "./txs";
+import { SoftwareUpgradeProposal } from "../types/cosmos/upgrade/v1beta1/upgrade"
 
 async function listProposals(
     cosmos_rest: string,
@@ -163,6 +164,56 @@ async function submitProposal(
 
 }
 
+async function submitSoftwareUpgradeProposal(
+    tendermint_rpc: string,
+    content: SoftwareUpgradeProposal,
+    initialDeposit: BigNumber,
+    denom: string
+) {
+    if (!window.keplr) {
+        throw new Error("keplr is not installed");
+    }
+    // TODO: should this be done globally one time?
+    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const sender = (await offlineSigner.getAccounts())[0];
+    let client: SigningStargateClient;
+    return SigningStargateClient.connectWithSigner(
+        tendermint_rpc, // Replace with your own RPC endpoint
+        offlineSigner,
+        { registry: myRegistry }
+    )
+        .then((_client) => (client = _client))
+        .then(() => window.keplr.getKey("threefold-hub"))
+        .then((account) => {
+            const message = {
+                typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal", // Same as above
+                value: MsgSubmitProposal.fromPartial({
+                    content: Any.fromPartial({
+                        typeUrl: "/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal",
+                        value: SoftwareUpgradeProposal.encode(content).finish()
+                    }),
+                    initialDeposit: [Coin.fromPartial({
+                        amount: initialDeposit.toString(),
+                        denom: denom
+                    })],
+                    proposer: sender.address
+                }),
+            };
+            const fee = {
+                amount: [
+                    {
+                        denom: FEE_DENOM, // Use the appropriate fee denom for your chain
+                        amount: FEE,
+                    },
+                ],
+                gas: GAS,
+            };
+            return submitWithCheck(client, account.bech32Address, [message], fee);
+        });
+
+    // TODO: how to check transaction errors
+}
+
 async function deposit(
     tendermint_rpc: string,
     gas_price: string,
@@ -284,5 +335,6 @@ export {
     tally,
     parameters,
     submitProposal,
-    submitVote
+    submitVote,
+    submitSoftwareUpgradeProposal
 }
