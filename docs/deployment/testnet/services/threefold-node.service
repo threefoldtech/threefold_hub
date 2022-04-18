@@ -1,0 +1,14 @@
+[Unit]
+Description=Threefold node
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=/root/go/bin/cosmovisor start
+Restart=always
+Environment="DAEMON_HOME=/root/.threefold_hub"
+Environment="DAEMON_NAME=threefold_hubd"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
+
+[Install]
+WantedBy=multi-user.target
