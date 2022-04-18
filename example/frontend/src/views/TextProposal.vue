@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Add Proposal</h1>
+    <h1>Add Text Proposal</h1>
 
     <form @submit.prevent="onSubmitProposal()">
       <v-text-field label="Title" placeholder="Title" v-model="title" />
@@ -42,12 +42,12 @@ import CustomAlert from "@/components/CustomAlert.vue";
 import { parseUnits } from "ethers/lib/utils";
 
 @Component({
-  name: "GovView",
+  name: "TextProposal",
   components: {
     CustomAlert,
   },
 })
-export default class GovView extends Vue {
+export default class TextProposal extends Vue {
   loading = false;
   result: any = null;
   error: string | null = null;

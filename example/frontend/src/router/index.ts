@@ -3,12 +3,14 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Cosmos from "@/views/CosmosView.vue";
 import Eth from "@/views/EthView.vue";
 import ListEth from "@/views/ListEth.vue";
-import GovView from "@/views/GovView.vue";
+import TextProposal from "@/views/TextProposal.vue";
 import ListGov from "@/views/ListGov.vue";
 import ListValidators from "@/views/ListValidators.vue";
 import GovDetails from "@/views/GovDetails.vue";
 import GovDeposit from "@/views/GovDeposit.vue";
 import Delegate from "@/views/Delegate.vue";
+import AddProposal from "@/views/AddProposal.vue";
+import SoftwareProposal from "@/views/SoftwareProposal.vue";
 import { checkKeplr } from "@/utils/checkKeplr";
 
 Vue.use(VueRouter);
@@ -46,8 +48,18 @@ const routes: Array<RouteConfig> = [
     component: Delegate,
   },
   {
-    path: "/proposal",
-    component: GovView,
+    path: "/add-proposal",
+    component: AddProposal,
+    children: [
+      {
+        path: "/",
+        component: TextProposal,
+      },
+      {
+        path: "/add-proposal/software",
+        component: SoftwareProposal,
+      },
+    ],
     beforeEnter: requireKeplr,
   },
   {
