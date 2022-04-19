@@ -1,0 +1,14 @@
+exec: |
+  bash -c '
+    # Adding key
+    echo $MNEMONICS | threefold_hubd keys add $KEYNAME --recover --keyring-backend test
+    # Getting genesis file
+    curl $GENESIS_URL --output  /root/.threefold_hub/config/genesis.json
+    # Adding persistent peers
+    sed -i -r "s/^(persistent_peers =).*/\1 \"$PERSISTENT_PEERS\"/" /root/.threefold_hub/config/config.toml
+    envsubst < /etc/zinit/setup_validator.yaml >> /etc/zinit/setup_validator.yaml.new
+    mv /etc/zinit/setup_validator.yaml.new /etc/zinit/setup_validator.yaml
+  '
+oneshot: true
+after: 
+  - sshd
