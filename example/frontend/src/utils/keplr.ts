@@ -45,9 +45,9 @@ async function ensureChain(chain_id: string, address_prefix: string, rpc: string
                 // proportioned as the keplr example
                 // the min low should always work as long as it's more than min-gas-price in the validators
                 // does it affect how fast the tx goes through?
-                low:      6000000000,
-                average: 15000000000,
-                high:    18000000000,
+                low:      80,
+                average: 80,
+                high:    80,
             },
         });
     }
