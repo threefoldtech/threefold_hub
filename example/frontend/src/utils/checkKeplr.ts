@@ -3,7 +3,7 @@ export function checkKeplr(): Promise<any> {
     function _checkKeplr() {
       if (window.keplr) res(window.keplr);
       else if (document.readyState == "complete") {
-        rej();
+        rej(new Error("Keplr is not installed."));
       } else {
         setTimeout(_checkKeplr, 500);
       }

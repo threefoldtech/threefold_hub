@@ -64,7 +64,7 @@ export default class App extends Vue {
     { label: "Send to Cosmos", path: "/", keplr: false },
     { label: "Send to BSC", path: "/bsc", keplr: true },
     { label: "Pending BSC transactions", path: "/list-bsc", keplr: true },
-    { label: "Add proposal", path: "/proposal", keplr: true },
+    { label: "Add proposal", path: "/add-proposal", keplr: true },
     { label: "Proposals", path: "/list-proposals", keplr: false },
     { label: "Validators", path: "/validators", keplr: false },
   ];
