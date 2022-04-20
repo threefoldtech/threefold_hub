@@ -37,7 +37,10 @@
               <div class="text-overline">{{ item.label }}</div>
               <v-list-item-title class="text-h5 mt-1 mb-1">
                 {{
-                  totalVotes ? (proposal.finalTallyResult[item.symbol] * 100) / totalVotes : 0
+                  totalVotes
+                    ? (proposal.finalTallyResult[item.symbol] * 100) /
+                      totalVotes
+                    : 0
                 }}%
               </v-list-item-title>
               <v-list-item-subtitle>
@@ -76,6 +79,21 @@
 
       <h3 class="mt-6">Description</h3>
       <p v-html="getDescription()" />
+
+      <div v-if="proposal.content['@type'].indexOf('SoftwareUpgrade') > -1">
+        <v-divider class="mb-2"/>
+        <p class="mb-0"><strong>Name:</strong> {{ proposal.content.plan.name }}</p>
+        <p class="mb-0"><strong>Height:</strong> {{ proposal.content.plan.height }}</p>
+        <p class="mb-0">
+          <strong>info:</strong>
+          <ul>
+            <li v-for="(u, i) in normalizeInfo(proposal.content.plan.info)" :key="i">
+              <strong>{{ u[0] }}:</strong> {{  u[1] }}
+            </li>
+          </ul>
+        </p>
+      </div>
+
       <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'">
         <h2>Vote</h2>
         <v-btn
@@ -158,11 +176,26 @@ export default class GovDetails extends Vue {
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
         this.proposal = proposal.proposal;
-        this.proposal.totalDeposit[0].amount = formatUnits(this.proposal.totalDeposit[0].amount, this.$store.state.config.tft_decimals)
-        this.proposal.finalTallyResult.yes = formatUnits(this.proposal.finalTallyResult.yes, this.$store.state.config.tft_decimals)
-        this.proposal.finalTallyResult.no = formatUnits(this.proposal.finalTallyResult.no, this.$store.state.config.tft_decimals)
-        this.proposal.finalTallyResult.noWithVeto = formatUnits(this.proposal.finalTallyResult.noWithVeto, this.$store.state.config.tft_decimals)
-        this.proposal.finalTallyResult.abstain = formatUnits(this.proposal.finalTallyResult.abstain, this.$store.state.config.tft_decimals)
+        this.proposal.totalDeposit[0].amount = formatUnits(
+          this.proposal.totalDeposit[0].amount,
+          this.$store.state.config.tft_decimals
+        );
+        this.proposal.finalTallyResult.yes = formatUnits(
+          this.proposal.finalTallyResult.yes,
+          this.$store.state.config.tft_decimals
+        );
+        this.proposal.finalTallyResult.no = formatUnits(
+          this.proposal.finalTallyResult.no,
+          this.$store.state.config.tft_decimals
+        );
+        this.proposal.finalTallyResult.noWithVeto = formatUnits(
+          this.proposal.finalTallyResult.noWithVeto,
+          this.$store.state.config.tft_decimals
+        );
+        this.proposal.finalTallyResult.abstain = formatUnits(
+          this.proposal.finalTallyResult.abstain,
+          this.$store.state.config.tft_decimals
+        );
       })
       .catch((err) => {
         console.log("Error", err);
@@ -174,7 +207,10 @@ export default class GovDetails extends Vue {
     pool(this.$store.state.config.cosmos_rest)
       .then((res: any) => {
         console.log(res);
-        this.bondedTokens = formatUnits(res.pool.bondedTokens!, this.$store.state.config.tft_decimals);
+        this.bondedTokens = formatUnits(
+          res.pool.bondedTokens!,
+          this.$store.state.config.tft_decimals
+        );
       })
       .catch((err) => {
         console.log("Error", err);
@@ -210,6 +246,10 @@ export default class GovDetails extends Vue {
       .finally(() => {
         this.loading = null;
       });
+  }
+
+  normalizeInfo(info: string): Array<[string, string]> {
+    return Object.entries(JSON.parse(info));
   }
 }
 </script>

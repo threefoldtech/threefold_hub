@@ -95,6 +95,10 @@
         {{ item.submitTime | toUTC }}
       </template>
 
+      <template v-slot:[`item.type`]="{ item }">
+        {{ getType(item.content["@type"]) }}
+      </template>
+
       <template v-slot:[`item.details`]="{ item }">
         <v-btn
           color="primary"
@@ -127,6 +131,7 @@ export default class ListGov extends Vue {
   headers: { text: string; value: string }[] = [
     { text: "ID", value: "proposalId" },
     { text: "Title", value: "content.title" },
+    { text: "Type", value: "type" },
     { text: "Status", value: "status" },
     { text: "Votes", value: "finalTallyResult" },
     { text: "Submitted", value: "submitTime" },
@@ -151,7 +156,10 @@ export default class ListGov extends Vue {
     let proposals = this.proposals || [];
     for (const proposal of proposals) {
       if (proposal.status == "PROPOSAL_STATUS_VOTING_PERIOD") {
-        let currentTally = await tally(this.$store.state.config.cosmos_rest, proposal.proposalId || "");
+        let currentTally = await tally(
+          this.$store.state.config.cosmos_rest,
+          proposal.proposalId || ""
+        );
         proposal.finalTallyResult = currentTally.tally;
       }
     }
@@ -164,28 +172,33 @@ export default class ListGov extends Vue {
       .then((res) => {
         this.tally = res.tallyParams!;
         this.deposit = res.depositParams!;
-        console.log(this.deposit.minDeposit)
+        console.log(this.deposit.minDeposit);
         this.deposit.minDeposit[0].amount = formatUnits(
           this.deposit.minDeposit[0].amount,
           this.$store.state.config.tft_decimals
-          )
+        );
         this.voting = res.votingParams!;
       })
       .catch((err) => {
         console.log("Error", err);
       });
 
-      listProposals(this.$store.state.config.cosmos_rest)
-        .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
-          this.proposals = res.proposals;
-          this.fillPendingProposalsVotes()
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    listProposals(this.$store.state.config.cosmos_rest)
+      .then((res: CosmosGovV1Beta1QueryProposalsResponse) => {
+        this.proposals = res.proposals;
+        this.fillPendingProposalsVotes();
+      })
+      .catch((err) => {
+        console.log("Error", err);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  getType(type: string): string {
+    const parts = type.split(".");
+    return parts[parts.length - 1].replace("Proposal", "");
   }
 }
 </script>
