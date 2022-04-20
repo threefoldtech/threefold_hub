@@ -9,6 +9,7 @@ relayer_enabled = true
 # tx fees
 [relayer]
 batch_request_mode = "EveryBatch"
+relayer_loop_speed = 20
 
 [relayer.valset_relaying_mode]
 mode = "Altruistic"
@@ -21,8 +22,8 @@ mode = "Altruistic"
 mode = "ProfitableWithWhitelist"
 margin = 1.1
 [[relayer.batch_relaying_mode.whitelist]]
-token = "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7"
-amount = "100000000000000"
+token = "0xDC5a9199e2604A6BF4A99A583034506AE53F4B34"
+amount = "30000000"
 # Use whitelist mode to relay tokens which may not be listed
 # in Uniswap, or if you want to relay a specific type for free
 # you can set the amount to "0"

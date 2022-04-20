@@ -28,18 +28,18 @@ threefold_hubd --home ~/.threefold_hub_devnet collect-gentxs
 A placeholder account is created because keplr doesn't work with account id 0.
 
 The [genesis](./config/genesis.json) file contains the default generated genesis with the following changes:
-- crisis constant fee to `600000000000000000TFT`
-- gov `min_deposit` to `1000000000000000TFT`
+- crisis constant fee to `10000000TFT`
+- gov `min_deposit` to `10000000TFT`
 - gov `voting_period` to 2 hours
 - `gravity_id` to `threefold-hub-testnet`
-- `bridge_ethereum_address` to `0x3cA7E73486aCe8f18662AeA0B6BC23A580B9d04e`. This corresponds to the gravity smart contract address. It's currently not used by the module (i.e. it's for doc-purposes only for now).
+- `bridge_ethereum_address` to `0xA18f6d4929eABb0C6073E916830Bb2FF1A419f12`. This corresponds to the gravity smart contract address. It's currently not used by the module (i.e. it's for doc-purposes only for now).
 - `bridge_chain_id` is 97. The BSC testnet chain id.
 - Gravity's `average_ethereum_block_time` to 3000. This value is used to estimate blocks timeout.
 - The following `erc20` token is added to gravity:
 ```json
        "eth_erc20_to_denoms": [
           {
-            "erc20": "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
+            "erc20": "0xDC5a9199e2604A6BF4A99A583034506AE53F4B34",
             "denom": "TFT"
          }
        ]
@@ -53,7 +53,7 @@ The `cors_allowed_origins` property in the tenderming [config](./config/config.t
 
 ### App configuration
 The min gas price is set in the [app](./config/app.toml) config flie as the approximate value of .025uatom in USDs. A couple of zeroes are removed because of precision issues in the frontend. This is done instead of a proper fix because the decimals of TFT is 7 so it won't be a problem.
-- The `minimum-gas-prices` is specified as `6000000000TFT`.
+- The `minimum-gas-prices` is specified as `80TFT`.
 - The REST endpoint and swagger is enabled
 - The listening address is changed for reverse-proxying puropses
 - `enabled-unsafe-cors` is changed to `true`
@@ -74,4 +74,4 @@ The contract is created with the following parameters:
 - validator set: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
 - validator powers: `[4294967296]`
 
-Its address is `0x3cA7E73486aCe8f18662AeA0B6BC23A580B9d04e`
+Its address is `0xA18f6d4929eABb0C6073E916830Bb2FF1A419f12`
