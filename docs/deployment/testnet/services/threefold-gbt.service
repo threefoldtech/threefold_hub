@@ -4,7 +4,7 @@ Description=Threefold gbt
 [Service]
 User=root
 WorkingDirectory=/root
-ExecStart=/usr/local/bin/gbt -a tf orchestrator --cosmos-phrase "<redacted-words>" -e "<redacted-eth-priv-key>" --gravity-contract-address "0x3cA7E73486aCe8f18662AeA0B6BC23A580B9d04e" -f 9784160TFT --ethereum-rpc "https://data-seed-prebsc-2-s1.binance.org:8545/"
+ExecStart=/usr/local/bin/gbt -a tf orchestrator --cosmos-phrase "<redacted-words>" -e "<redacted-eth-priv-key>" --gravity-contract-address "0x3cA7E73486aCe8f18662AeA0B6BC23A580B9d04e" -f 20000000TFT --ethereum-rpc "https://data-seed-prebsc-2-s1.binance.org:8545/"
 Restart=always
 [Install]
 WantedBy=multi-user.target
