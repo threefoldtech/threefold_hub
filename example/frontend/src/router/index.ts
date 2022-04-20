@@ -54,10 +54,12 @@ const routes: Array<RouteConfig> = [
       {
         path: "/",
         component: TextProposal,
+        beforeEnter: requireKeplr,
       },
       {
         path: "/add-proposal/software",
         component: SoftwareProposal,
+        beforeEnter: requireKeplr,
       },
     ],
     beforeEnter: requireKeplr,
