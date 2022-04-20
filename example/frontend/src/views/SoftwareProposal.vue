@@ -9,7 +9,6 @@
       <v-text-field
         label="Initial Deposit"
         placeholder="Initial Deposit"
-        type="number"
         v-model="initialDeposit"
       />
       <v-text-field label="Height" type="number" v-model="height" />
@@ -40,6 +39,8 @@
         </v-btn>
       </v-row>
     </form>
+
+    <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
 </template>
 
@@ -47,7 +48,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import OsInput from "@/components/OsInput.vue";
 import { submitSoftwareUpgradeProposal } from "@/utils/gov";
-import { BigNumber } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
 import { SoftwareUpgradeProposal } from "@/types/cosmos/upgrade/v1beta1/upgrade";
 import Long from "long";
 
@@ -58,13 +59,16 @@ import Long from "long";
   },
 })
 export default class SoftwareProposal extends Vue {
+  loading = false;
+  result: any = null;
+  error: string | null = null;
+
   title = "";
   description = "";
   name = "";
   height = 0;
-  initialDeposit = 0;
+  initialDeposit = "0";
   systems = [{ os: null, arch: null, url: null }];
-  loading = false;
 
   onAddSystem() {
     this.systems.push({ os: null, arch: null, url: null });
@@ -93,15 +97,21 @@ export default class SoftwareProposal extends Vue {
     };
 
     this.loading = true;
+    console.log(this.$store.state.config.chain_id)
     submitSoftwareUpgradeProposal(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.gas_price,
+      this.$store.state.config.chain_id,
       proposal,
-      BigNumber.from(initialDeposit),
+      parseUnits(initialDeposit, this.$store.state.config.tft_decimals),
       this.$store.state.config.tft_denom
     )
-      .then((res) => console.log(res))
+      .then((res) => {
+          this.result = "Proposal added succefully!";
+      })
       .catch((err) => {
         console.log("Error", err);
+        this.error = err.message;
       })
       .finally(() => {
         this.loading = false;

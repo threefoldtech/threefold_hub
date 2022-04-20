@@ -166,6 +166,8 @@ async function submitProposal(
 
 async function submitSoftwareUpgradeProposal(
     tendermint_rpc: string,
+    gas_price: string,
+    chain_id: string,
     content: SoftwareUpgradeProposal,
     initialDeposit: BigNumber,
     denom: string
@@ -174,16 +176,17 @@ async function submitSoftwareUpgradeProposal(
         throw new Error("keplr is not installed");
     }
     // TODO: should this be done globally one time?
-    const offlineSigner = window.keplr.getOfflineSigner("threefold-hub");
+    const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
+    console.log(await offlineSigner.getAccounts())
     let client: SigningStargateClient;
     return SigningStargateClient.connectWithSigner(
         tendermint_rpc, // Replace with your own RPC endpoint
         offlineSigner,
-        { registry: myRegistry }
+        { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
     )
         .then((_client) => (client = _client))
-        .then(() => window.keplr.getKey("threefold-hub"))
+        .then(() => window.keplr.getKey(chain_id))
         .then((account) => {
             const message = {
                 typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal", // Same as above
@@ -199,16 +202,7 @@ async function submitSoftwareUpgradeProposal(
                     proposer: sender.address
                 }),
             };
-            const fee = {
-                amount: [
-                    {
-                        denom: FEE_DENOM, // Use the appropriate fee denom for your chain
-                        amount: FEE,
-                    },
-                ],
-                gas: GAS,
-            };
-            return submitWithCheck(client, account.bech32Address, [message], fee);
+            return submitWithCheck(client, account.bech32Address, [message], "auto");
         });
 
     // TODO: how to check transaction errors
