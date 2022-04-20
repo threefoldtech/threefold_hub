@@ -1,8 +1,8 @@
 # Threefoldhub testnet
 
-The threefoldhub testnet is created against the BUSD token in BSC testnet. Its contract address is 0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7.
+The threefoldhub testnet is created against the TFT token in BSC testnet. Its contract address is 0xDC5a9199e2604A6BF4A99A583034506AE53F4B34.
 
-The chain is bootstraped with `threefold` account having 2TFTs, 1 staked and 1 unbonded. If ensuring all money in the chain is transferable to BSC, the 2TFTs can be sent to the graivty smart contract address (this doesn't ensure transferability of minted/slashed tokens).
+The chain is bootstraped with `threefold` account having 200TFTs, 100 staked and 100 unbonded. If ensuring all money in the chain is transferable to BSC, the 200TFTs can be sent to the graivty smart contract address (this doesn't ensure transferability of minted/slashed tokens).
 
 ## URLs
 
@@ -20,8 +20,8 @@ threefold_hubd --home ~/.threefold_hub_devnet init threefold --chain-id threefol
 threefold_hubd --home ~/.threefold_hub_devnet keys add placeholder --keyring-backend test --recover 
 threefold_hubd --home ~/.threefold_hub_devnet keys add threefold --keyring-backend test --recover
 threefold_hubd --home ~/.threefold_hub_devnet add-genesis-account placeholder 0TFT --keyring-backend test
-threefold_hubd --home ~/.threefold_hub_devnet add-genesis-account threefold 2000000000000000000TFT --keyring-backend test
-threefold_hubd --home ~/.threefold_hub_devnet gentx --moniker threefold threefold 1000000000000000000TFT 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc tf12m75luwtqthas2kkc53p4kwsakatptfgn6sunz --chain-id=threefold-hub-testnet --keyring-backend=test
+threefold_hubd --home ~/.threefold_hub_devnet add-genesis-account threefold 2000000000TFT --keyring-backend test
+threefold_hubd --home ~/.threefold_hub_devnet gentx --moniker threefold threefold 1000000000TFT 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc tf12m75luwtqthas2kkc53p4kwsakatptfgn6sunz --chain-id=threefold-hub-testnet --keyring-backend=test
 threefold_hubd --home ~/.threefold_hub_devnet collect-gentxs
 ```
 
@@ -52,7 +52,7 @@ The [genesis](./config/genesis.json) file contains the default generated genesis
 The `cors_allowed_origins` property in the tenderming [config](./config/config.toml) file is changed to `["*"]` to allow connecting from any website. The listening address is changed for reverse-proxying puropses. Everything else is the default.
 
 ### App configuration
-The min gas price is set in the [app](./config/app.toml) config flie as the approximate value of .025uatom in USDs. A couple of zeroes are removed because of precision issues in the frontend. This is done instead of a proper fix because the decimals of TFT is 7 so it won't be a problem.
+The min gas price is set in the [app](./config/app.toml) config flie as the approximate value of .025uatom in TFTs.
 - The `minimum-gas-prices` is specified as `80TFT`.
 - The REST endpoint and swagger is enabled
 - The listening address is changed for reverse-proxying puropses
@@ -60,7 +60,7 @@ The min gas price is set in the [app](./config/app.toml) config flie as the appr
 
 ## Orchestrator configuration
 
-The orchestrator is [configured](./config/gbt.yaml) to request batch for every send-to-eth tx. The relayer is enabled and it relays only batches with fees larger than .0001 BUSD. The orchestrator must be run by every validator in the cosmos chain. But they don't have to necessarily run the relayer, only one is sufficient. 
+The orchestrator is [configured](./config/gbt.yaml) to request batch for every send-to-eth tx. The relayer is enabled and it relays only batches with fees larger than 3 TFT. The orchestrator must be run by every validator in the cosmos chain. But they don't have to necessarily run the relayer, only one is sufficient. 
 
 The service file used to run it can be found [here](./services/threefold-gbt.service).
 ## Chain node service
