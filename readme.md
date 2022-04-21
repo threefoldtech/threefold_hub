@@ -15,24 +15,29 @@ starport chain build
 To configure the chain:
 
 ```bash
-threefold_hubd keys add alice --keyring-backend test --recover # enter the mnemonics here
+threefold_hubd keys add placeholder --keyring-backend test # because keplr doesn't work with account id 0
+threefold_hubd keys add alice --keyring-backend test # add --recover if a known mnemonics is to be used
 threefold_hubd keys list alice --keyring-backend test # to view alice address
 threefold_hubd init test-node --chain-id threefold-hub
-threefold_hubd add-genesis-account alice 2000000000000000000TFT --keyring-backend=test
-threefold_hubd gentx --moniker test-node alice 1000000000000000000TFT 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc <alice-address> --chain-id=threefold-hub --keyring-backend=test
+threefold_hubd add-genesis-account placeholder 0TFT --keyring-backend=test
+threefold_hubd add-genesis-account alice 2000000000TFT --keyring-backend=test
+threefold_hubd gentx --moniker test-node alice 1000000000TFT <BSC-delegator-address> <alice-cosmos-address> --chain-id=threefold-hub --keyring-backend=test
 threefold_hubd collect-gentxs
 ```
 
 The genesis file contains the following default parameters:
 - `max_validators` are set to 100
 
-The starport's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc`. This address will be used later in the gravity contract and the orchestrator setup.
+The starport's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `<BSC-delegator-address>`. This address will be used later in the gravity contract and the orchestrator setup.
+
+An example of the addresses are:
+- alice-cosmos-address: tf12m75luwtqthas2kkc53p4kwsakatptfgn6sunz
+- BSC-delegator-address: 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc
 
 The gravity params in the genesis file should be modified:
-
 - the gravity_id must match the `gravity_id` in the `Gravity.sol` contract. In other words, (hex(genesis.gravity_id) + "0" * 64).substr(0, 64) must equal to the gravity id in the contract.
-- crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. `600000000000000000TFT`)
-- gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. `1000000000000000TFT`)
+- crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. `10000000TFT`)
+- gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. `10000000TFT`)
 - `gravity_id` should be unique to chain (in case of hard forks?) (e.g. `threefold-hub`)
 - `bridge_ethereum_address` to `<bridge-contract-address>`. This corresponds to the gravity smart contract address. It's currently not used by the module (i.e. it's for doc-purposes only for now).
 - `bridge_chain_id` is 97. The BSC testnet chain id.
@@ -47,6 +52,7 @@ The gravity params in the genesis file should be modified:
        ]
 ```
 - `mint_denom` to TFT
+- Setting `inflation`, `inflation_rate_change`, `inflation_max`, and `inflation_min` to zero.
 - `bond_denom` to TFT
 
 The chain is started then by executing `threefold_hubd start`.
@@ -65,7 +71,7 @@ See [here](./research/bridges/BSC/readme.md). Takes about ~3 hours to complete o
 
 ### Orchestrator setup
 
-Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.4.2/gbt) binary. Then execute `gbt init` to initalize the gbt config. Modify the config to contain the following:
+Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.5.0/gbt) binary. Then execute `gbt init` to initalize the gbt config. Modify the config to contain the following:
 
 ```toml
 [orchestrator]
@@ -73,44 +79,47 @@ relayer_enabled = true
 
 [relayer]
 batch_request_mode = "EveryBatch"
+relayer_loop_speed = 20
 
 [relayer.valset_relaying_mode]
 mode = "Altruistic"
 
 [relayer.batch_relaying_mode]
-mode = "EveryBatch"
+mode = "ProfitableWithWhitelist"
+margin = 1.1
+[[relayer.batch_relaying_mode.whitelist]]
+token = "<TFT-BSC-contract-address>"
+amount = "30000000" # min fee amount for a batch to be relayed
 ```
-
-This is somewhat dangerous to relay every batch, in case of low-fee transfers spams. By default, it's `ProfitableOnly` with a specified margin, to make sure the fees the validator pays to relay the batch is less than the fee it pays. The current binary works with uniswap, it should be modified (or configured of possible) to work with Binance instead, then the config can be `ProfitableOnly`.
 
 To start the orchestrator:
 
 ```bash
-gbt orchestrator --cosmos-phrase "<cosmos-phrase-of-validator-alice-in-our-example>" -e "<ethereum-private-key-of-the-validator-delegate>" --gravity-contract-address "<get-after-deploying-Gravity.sol>" -f 1TFT --ethereum-rpc "<endpoint-of-the-node>"
+gbt -a tf orchestrator --cosmos-phrase "<cosmos-phrase-of-validator-alice-in-our-example>" -e "<ethereum-private-key-of-the-validator-delegate>" --gravity-contract-address "<get-after-deploying-Gravity.sol>" -f 0TFT --ethereum-rpc "<endpoint-of-the-node>"
 ```
-
-TODO: how to specify cosmos fee in the previous command
+The fee (here 0TFT) should generally be `250000 x min-gas-price`. The min-gas-price can be specified in `~/.threefold_hub/config/app.toml`, it's 0 by default.
 
 ### Usage
 
 To transfer money from binance to threefold_hub chain:
 
 ```bash
-./gbt client eth-to-cosmos --ethereum-key '<private-key-of-the-sender>' --gravity-contract-address '<gravity-contract-address>' --token-contract-address '0xd66c6B4F0be8CE5b39D52E0Fd1344c389929B378' --amount .000000001 --destination <cosmos-destination-address> --ethereum-rpc <binance-node-endpoint>
+./gbt -a tf client eth-to-cosmos --ethereum-key '<private-key-of-the-sender>' --gravity-contract-address '<gravity-contract-address>' --token-contract-address '<TFT-BSC-contract-address>' --amount 5 --destination '<cosmos-destination-address>' --ethereum-rpc '<binance-node-endpoint>'
 ```
 
-Note that transferring the money back requires that the tokens was originated from Binance (TODO: check if some tokens can be configured in genesis):
+To transfer the money back to binance:
 
 ```bash
-./gbt client cosmos-to-eth --amount <amount-to-transfer> -b <bridge-fee> -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 1TFT
+./gbt -a tf client cosmos-to-eth --amount '<amount-to-transfer>' -b 30000000TFT -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 0TFT
 ```
-
-Bridge fees must be in the same tokens being transfered.
-TODO: how to specify an appropriate transaction fees
 
 ### Slashing specs
 
-TODO: fill when the validators get slashed to explain the risks of downtime.
+Validators get slashed for not relaying claims for events that happened on ethereum. In addition to the slashing that happens because of double-signing and downtime.
+
+More info:
+- gravity slashing: https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/spec/slashing-spec.md
+- cosmos slashing: https://docs.cosmos.network/v0.44/modules/slashing/
 
 ### Web Frontend
 
