@@ -45,6 +45,7 @@ The [genesis](./config/genesis.json) file contains the default generated genesis
        ]
 ```
 - `mint_denom` to TFT
+- Setting `inflation`, `inflation_rate_change`, `inflation_max`, and `inflation_min` to zero.
 - `bond_denom` to TFT
 
 ### Tendermint configuration
