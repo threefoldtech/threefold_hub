@@ -27,7 +27,7 @@ threefold_hubd keys add ashraf
 6- create a validator 
 ```
 threefold_hubd tx staking create-validator \
-  --amount=5000000stake \
+  --amount=5000000TFT \
   --pubkey="$( threefold_hubd tendermint show-validator)" \
   --moniker="validator2" \
   --chain-id="threefold-hub" \
@@ -36,7 +36,7 @@ threefold_hubd tx staking create-validator \
   --commission-max-change-rate="0.01" \
   --min-self-delegation="1000" \   
   --gas="auto" \
-  --gas-prices="0.00stake" \
+  --gas-prices="0.00TFT" \
   --from=ashraf \
   --keyring-backend="test" # make sure to user the keyring backend you created the key in
 ```
