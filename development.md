@@ -14,9 +14,9 @@
 - testutil/
 
     Helper functions for testing.
-- vue/
+- frontend/
 
-    A starport generated Vue 3 web app template
+    A custom Vue 3 web application to interact with threefold hub
 - config.yml
 
     A configuration file for customizing a chain in development.
