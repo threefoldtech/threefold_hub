@@ -1,0 +1,20 @@
+[orchestrator]
+relayer_enabled = true 
+
+[relayer]
+batch_request_mode = "EveryBatch"
+relayer_loop_speed = 20
+
+[relayer.valset_relaying_mode]
+mode = "Altruistic"
+
+[relayer.batch_relaying_mode]
+mode = "ProfitableWithWhitelist"
+margin = 1.1
+[[relayer.batch_relaying_mode.whitelist]]
+token = "0xDC5a9199e2604A6BF4A99A583034506AE53F4B34"
+amount = "100"
+
+[metrics]
+metrics_enabled = false
+metrics_bind = "127.0.0.1:6631"
