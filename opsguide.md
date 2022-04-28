@@ -3,7 +3,7 @@
 
 ## Running the first node using automated configs generation
 
-Please consult [first node](./docker/genesis/)
+Please consult [first node](./docker/genesis/) if you want to used the automated configurations, and for manual setup and the configurations please check the [README](./readme.md)
 
 ## Running a validator
 
