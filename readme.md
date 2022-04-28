@@ -2,6 +2,13 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
+
+## requirements
+
+1- [Go toolchain](https://go.dev)
+2- gcc package and build-essential `apt install gcc build-essential`
+3- [startport binary](https://ignite.com/cli)
+
 ## Get started
 
 To build the binary:
@@ -15,11 +22,11 @@ The default keyring-backend appears to be os not test even though it's printed t
 To configure the chain:
 
 ```bash
-threefold_hubd keys add placeholder --keyring-backend test # because keplr doesn't work with account id 0
+threefold_hubd keys add dummy --keyring-backend test # because keplr doesn't work with account id 0
 threefold_hubd keys add alice --keyring-backend test # add --recover if a known mnemonics is to be used
 threefold_hubd keys list alice --keyring-backend test # to view alice address
 threefold_hubd init test-node --chain-id threefold-hub
-threefold_hubd add-genesis-account placeholder 0TFT --keyring-backend=test
+threefold_hubd add-genesis-account dummy 0TFT --keyring-backend=test
 threefold_hubd add-genesis-account alice 2000000000TFT --keyring-backend=test
 threefold_hubd gentx --moniker test-node alice 1000000000TFT <BSC-delegator-address> <alice-cosmos-address> --chain-id=threefold-hub --keyring-backend=test
 threefold_hubd collect-gentxs
@@ -168,3 +175,9 @@ curl https://get.starport.com/threefoldtech/threefold_hub@latest! | sudo bash
 - [Starport docs](https://docs.starport.com)
 - [Cosmos SDK docs](https://docs.cosmos.network)
 - [Developer Chat](https://discord.gg/H6wGTY8sxw)
+
+
+
+## Operations
+
+Please check [ops guide](./opsguide.md) for how to operate the node(s)

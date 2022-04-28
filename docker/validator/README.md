@@ -1,4 +1,13 @@
 This document covers how to add a validator to the threefold hub
+
+## building the image
+
+`docker build -t tfhub-validator -f ./Dockerfile .`
+
+
+### running the container
+- copy `env.list.example` to `env.list` 
+- `docker run --env-file ./env.list --name tfhub-validator -ti tfhub-validator`
 ## how to add new validators
 - At first you should have at least 1 running node in order to do this follow these [doc](https://github.com/threefoldtech/threefold_hub/blob/development/readme.md)
 - you can use this [terraform example](https://github.com/threefoldtech/terraform-provider-grid/blob/development/examples/resources/cosmosvalidator/main.tf)
