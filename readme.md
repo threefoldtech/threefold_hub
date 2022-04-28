@@ -2,6 +2,13 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
+
+## requirements
+
+1- [Go toolchain](https://go.dev)
+2- gcc package and build-essential `apt install gcc build-essential`
+3- [startport binary](https://ignite.com/cli)
+
 ## Get started
 
 To build the binary:
@@ -168,3 +175,9 @@ curl https://get.starport.com/threefoldtech/threefold_hub@latest! | sudo bash
 - [Starport docs](https://docs.starport.com)
 - [Cosmos SDK docs](https://docs.cosmos.network)
 - [Developer Chat](https://discord.gg/H6wGTY8sxw)
+
+
+
+## Operations
+
+Please check [ops guide](./opsguide.md) for how to operate the node(s)
