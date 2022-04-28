@@ -20,6 +20,7 @@ Please note the parameters needed to run the chain per enviornment should be doc
 
 
 ## Notes:
-- `BSC-delegator-address` is the address of the owner of the validator node -can be retrieved from metamask-
-- gov min_deposit: ?
-- crisis constant fee: ?
+The values here must be multiplied by 1e7 before adding them in the env vars or the genesis (because the TFT token decimals are 7):
+- `BSC-delegator-address` is the address of the owner of the validator node -can be retrieved from metamask-.
+- gov min_deposit: The minimum amount deposietd for a proposal to be put to a vote (1 TFT for testnet) 
+- crisis constant fee: fixed cost to run invariant check [transaction](https://docs.cosmos.network/v0.44/modules/crisis/01_state.html) (1 TFT for testnet)
