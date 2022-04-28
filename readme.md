@@ -8,9 +8,9 @@ To build the binary:
 
 ```bash
 starport chain build
-# default keyring-backend appears to be os not test even though it's printed test
-# so keep that in mind while executing the rest of the commands 
 ```
+
+The default keyring-backend appears to be os not test even though it's printed test so keep that in mind while executing the rest of the commands.
 
 To configure the chain:
 
@@ -26,15 +26,18 @@ threefold_hubd collect-gentxs
 ```
 
 The genesis file contains the following default parameters:
+
 - `max_validators` are set to 100
 
 The starport's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `<BSC-delegator-address>`. This address will be used later in the gravity contract and the orchestrator setup.
 
 An example of the addresses are:
+
 - alice-cosmos-address: tf12m75luwtqthas2kkc53p4kwsakatptfgn6sunz
 - BSC-delegator-address: 0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc
 
 The gravity params in the genesis file should be modified:
+
 - the gravity_id must match the `gravity_id` in the `Gravity.sol` contract. In other words, (hex(genesis.gravity_id) + "0" * 64).substr(0, 64) must equal to the gravity id in the contract.
 - crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. `10000000TFT`)
 - gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. `10000000TFT`)
@@ -43,6 +46,7 @@ The gravity params in the genesis file should be modified:
 - `bridge_chain_id` is 97. The BSC testnet chain id.
 - Gravity's `average_ethereum_block_time` to 3000. This value is used to estimate blocks timeout.
 - The following `erc20` token is added to gravity:
+
 ```json
        "eth_erc20_to_denoms": [
           {
@@ -51,6 +55,7 @@ The gravity params in the genesis file should be modified:
          }
        ]
 ```
+
 - `mint_denom` to TFT
 - Setting `inflation`, `inflation_rate_change`, `inflation_max`, and `inflation_min` to zero.
 - `bond_denom` to TFT
@@ -97,6 +102,7 @@ To start the orchestrator:
 ```bash
 gbt -a tf orchestrator --cosmos-phrase "<cosmos-phrase-of-validator-alice-in-our-example>" -e "<ethereum-private-key-of-the-validator-delegate>" --gravity-contract-address "<get-after-deploying-Gravity.sol>" -f 0TFT --ethereum-rpc "<endpoint-of-the-node>"
 ```
+
 The fee (here 0TFT) should generally be `250000 x min-gas-price`. The min-gas-price can be specified in `~/.threefold_hub/config/app.toml`, it's 0 by default.
 
 ### Usage
@@ -118,8 +124,9 @@ To transfer the money back to binance:
 Validators get slashed for not relaying claims for events that happened on ethereum. In addition to the slashing that happens because of double-signing and downtime.
 
 More info:
-- gravity slashing: https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/spec/slashing-spec.md
-- cosmos slashing: https://docs.cosmos.network/v0.44/modules/slashing/
+
+- gravity slashing: <https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/spec/slashing-spec.md>
+- cosmos slashing: <https://docs.cosmos.network/v0.44/modules/slashing/>
 
 ### Web Frontend
 
