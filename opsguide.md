@@ -17,3 +17,9 @@ Please consult [validator document](./docker/validator/)
 
 
 Please note the parameters needed to run the chain per enviornment should be documented in the [gitea](https://docs.grid.tf)
+
+
+## Notes:
+- `BSC-delegator-address` is the address of the owner of the validator node -can be retrieved from metamask-
+- gov min_deposit: ?
+- crisis constant fee: ?
