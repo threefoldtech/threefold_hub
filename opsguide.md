@@ -14,3 +14,6 @@ Please consult [validator document](./docker/validator/)
 - You need to [update the config](./frontend/public/config.js)
 - Follow the [README](./frontend/README.md)
 
+
+
+Please note the parameters needed to run the chain per enviornment should be documented in the [gitea](https://docs.grid.tf)
