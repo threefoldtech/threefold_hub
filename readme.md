@@ -24,11 +24,13 @@ The threefold chain contains a bridge module to move money from/to Binance Smart
 
 ### Gravity Smart Contract
 
-The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use [remix](https://remix.ethereum.org/) to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix, compiled, and then deployed on the Binance chain with the following params:
+The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use [remix](https://remix.ethereum.org/) to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix contracts directory. The `Gravity.sol` contract then is compiled (with optimization enabled), and then deployed on the Binance chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs. There's a BNB [faucet](https://testnet.binance.org/faucet-smart) to get money from. The Environment in the deployment tab in remix should be set to "Injected Web3". The conrtact is deployed with the following params:
 
 - `gravity_id` must match the id entered in the `genesis.json` file, By converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`.
 - `validators` is a list of Binance account addresses that corresponds to the validators.
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`.
+
+
 
 ### The threefold hub chain
 
