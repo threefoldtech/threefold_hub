@@ -1,4 +1,4 @@
-# Threefoldhub testnet
+# Threefoldhub testnet demo
 
 The threefoldhub testnet is created against the TFT token in BSC testnet. Its contract address is 0xDC5a9199e2604A6BF4A99A583034506AE53F4B34.
 
