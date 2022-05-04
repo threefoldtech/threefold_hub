@@ -3,7 +3,7 @@
 Run `./build.sh` after modifying the env with appropiate values.
 
 The output contains:
-- `genesis.json`, `app.toml`, `config.toml`, `node_key.json`. These files should be moved to `~/.threefold_hub/config` on which the node will run after doing `threefold_hubd init test-node --chain-id $CHAIN_ID`.
+- `genesis.json`, `app.toml`, `config.toml`, `node_key.json`, `priv_validator_key.json`. These files should be moved to `~/.threefold_hub/config` on which the node will run after doing `threefold_hubd init test-node --chain-id $CHAIN_ID`.
 - `gbt-config.toml` should be moved to `~/.gbt/config.toml` after doing `gbt init`.
 - `threefold_hubd` binary
 

@@ -30,7 +30,7 @@ assign app_state.gov.deposit_params.min_deposit[0].denom \"TFT\"
 assign app_state.gov.voting_params.voting_period \"$VOTING_PERIOD\"
 assign app_state.gravity.params.bridge_ethereum_address \"$BRIDGE_ETHEREUM_ADDRESS\"
 assign app_state.gravity.params.bridge_chain_id \"$BSC_CHAIN_ID\"
-assign app_state.gravity.params.eth_erc20_to_denoms '[{"erc20": "'$TFT_BSC_CONTRACT_ADDRESS'","denom": "TFT"}]'
+assign app_state.gravity.eth_erc20_to_denoms '[{"erc20": "'$TFT_BSC_CONTRACT_ADDRESS'","denom": "TFT"}]'
 assign app_state.gravity.params.average_ethereum_block_time \"3000\"
 assign app_state.mint.params.mint_denom \"TFT\"
 assign app_state.mint.minter.inflation \"0.000000000000000000\"
@@ -43,7 +43,7 @@ assign app_state.staking.params.bond_denom \"TFT\"
 sed -i 's/0xDC5a9199e2604A6BF4A99A583034506AE53F4B34/'$TFT_BSC_CONTRACT_ADDRESS'/' $GBT_CONFIG
 sed -i 's/amount = "100"/amount = "'$BRIDGE_FEES'"/' $GBT_CONFIG
 
-sed -i 's/minimum-gas-prices = "0stake"/amount = "'$MIN_GAS_PRICE'"/' $TENDERMIN_APP_CONFIG
+sed -i 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "'$MIN_GAS_PRICE'TFT"/' $TENDERMIN_APP_CONFIG
 sed -i 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/' $TENDERMIN_APP_CONFIG
 sed -i 's/swagger = false/swagger = true/' $TENDERMIN_APP_CONFIG
 sed -i 's/enable = false/enable = true/' $TENDERMIN_APP_CONFIG
