@@ -30,7 +30,7 @@ A placeholder account is created because keplr doesn't work with account id 0.
 
 The [genesis](./config/genesis.json) file contains the default generated genesis with the following changes:
 
-- crisis constant fee to `10000000TFT`
+- [crisis constant fee](../../crisis.md) to `10000000TFT`
 - gov `min_deposit` to `10000000TFT`
 - gov `voting_period` to 2 hours
 - `gravity_id` to `threefold-hub-testnet`
