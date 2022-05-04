@@ -5,12 +5,13 @@
 
 ## Requirements
 
-1- [Go toolchain](https://go.dev)
-2- gcc package and build-essential `apt install gcc build-essential`
-3- [ignite binary v0.20.0](https://ignite.com/cli)
+1. [Go toolchain](https://go.dev)
+2. gcc package and build-essential `apt install gcc build-essential`
+3. [ignite binary v0.20.0](https://ignite.com/cli)
 4. Cosmovisor v1.0.0 (`go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0`)
 5. BSC geth v1.1.9, can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9). 
 6. gbt 1.5.0, can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0). 
+
 ## Overview
 
 The threefold chain contains a bridge module to move money from/to Binance Smart Chain (BSC). It contains the following components:
