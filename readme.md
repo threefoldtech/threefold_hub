@@ -7,7 +7,10 @@
 
 1- [Go toolchain](https://go.dev)
 2- gcc package and build-essential `apt install gcc build-essential`
-3- [startport binary](https://ignite.com/cli)
+3- [ignite binary v0.20.0](https://ignite.com/cli)
+4. Cosmovisor v1.0.0 (`go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0`)
+5. BSC geth v1.1.9, can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9). 
+6. gbt 1.5.0, can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0). 
 ## Overview
 
 The threefold chain contains a bridge module to move money from/to Binance Smart Chain (BSC). It contains the following components:
@@ -16,25 +19,6 @@ The threefold chain contains a bridge module to move money from/to Binance Smart
 - The orchestrator (gbt) process. This process takes as an input the cosmos words of the validator, the BSC private key of the BSC account to which the validator delegates his signing power to, the Gravity Contract address, and a BSC node JSON-RPC endpoint. It monitors both the cosmos chain and the BSC chain and performs ~signing of events on both sides and relaying those events so that both chains are aware of them. Every validator must run its own orchestrator. However, only one relayer (an option of gbt that can be switched) must run so that the signatures are relayed between the two chains.
 - The BSC node (whose endpoint are passed to gbt). It can be a light node, full node, or a third party node.
 - The frontend (probably relevant only for developer/devops) are located in [./frontend](./frontend) and can be used to interact with the threefold hub chain as an alternative to the cmdline client provided by gbt.
-## Setup preparation
-
-### Installing threefold_hubd binary
-
-For now the binary is built from source after installing gcc, and go using the command `ignite chain build`. It creates the binary in `$HOME/go/bin/threefold_hubd`.
-
-### Cosmovisor
-
-It's used for upgrade auto-restart and possibly new binaries download before starting. Can be downloaded [here](https://github.com/cosmos/cosmos-sdk/releases/tag/cosmovisor%2Fv1.1.0).
-
-### orchestrator
-
-The binary required for signing and relaying are all included in a single binary that can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0).
-
-### Geth
-
-A binary required for running a BSC light/full node. Can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9)
-
-
 ## Components setup
 
 ### Gravity Smart Contract
@@ -46,6 +30,8 @@ The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravi
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`.
 
 ### The threefold hub chain
+
+The command `ignite chain build` install the `threefold_hubd` binary.
 
 Generating the genesis can be done manually or automated (along other things) using the docker automated [script](https://github.com/threefoldtech/threefold_hub/tree/development/docker/genesis). The manual flow and parameters descriptions are outlined here.
 
@@ -99,7 +85,7 @@ The gravity params in the genesis file should be modified:
 - Setting `inflation`, `inflation_rate_change`, `inflation_max`, and `inflation_min` to zero.
 - `bond_denom` to TFT
 
-The chain is started then by executing `threefold_hubd start`.
+The chain is started then by executing `threefold_hubd start`. Or using `cosmosvisor` by running `DAEMON_HOME=/root/.threefold_hub DAEMON_NAME=threefold_hubd DAEMON_ALLOW_DOWNLOAD_BINARIES=true cosmovisor start`. After storing the binary in `~/.threefold_hub/cosmovisor/genesis/bin/threefold_hubd`.
 
 ### Orchestrator setup
 Similarly, the gbt config file in `~/.gbt/config.toml` and the command to run it can be auto-generated using the same docker script in the above step. The manual configuration is described here.
