@@ -5,6 +5,9 @@
 yarn install
 ```
 
+### Config updates
+The configuration in [./public/config.js](./public/config.js) must be modified to reflect the correct configuration.
+
 ### Compiles and hot-reloads for development
 ```
 yarn serve

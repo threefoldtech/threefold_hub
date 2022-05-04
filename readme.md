@@ -3,19 +3,51 @@
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
 
-## requirements
+## Requirements
 
 1- [Go toolchain](https://go.dev)
 2- gcc package and build-essential `apt install gcc build-essential`
 3- [startport binary](https://ignite.com/cli)
+## Overview
 
-## Get started
+The threefold chain contains a bridge module to move money from/to Binance Smart Chain (BSC). It contains the following components:
+- A Gravity Smart Contract on BSC. This contract is per chain and it contains the BSC-side logic of bridging.
+- The threefold hub chain. A cosmos-based chain which can be run using `threefold_hubd start` after creating/copying the proper genesis file and modifying the proper config files depending on whether it's the first node on the chain or a joining validator. It can also be run using `cosmovisor` to allow automated updates.
+- The orchestrator (gbt) process. This process takes as an input the cosmos words of the validator, the BSC private key of the BSC account to which the validator delegates his signing power to, the Gravity Contract address, and a BSC node JSON-RPC endpoint. It monitors both the cosmos chain and the BSC chain and performs ~signing of events on both sides and relaying those events so that both chains are aware of them. Every validator must run its own orchestrator. However, only one relayer (an option of gbt that can be switched) must run so that the signatures are relayed between the two chains.
+- The BSC node (whose endpoint are passed to gbt). It can be a light node, full node, or a third party node.
+- The frontend (probably relevant only for developer/devops) are located in [./frontend](./frontend) and can be used to interact with the threefold hub chain as an alternative to the cmdline client provided by gbt.
+## Setup preparation
 
-To build the binary:
+### Installing threefold_hubd binary
 
-```bash
-starport chain build
-```
+For now the binary is built from source after installing gcc, and go using the command `ignite chain build`. It creates the binary in `$HOME/go/bin/threefold_hubd`.
+
+### Cosmovisor
+
+It's used for upgrade auto-restart and possibly new binaries download before starting. Can be downloaded [here](https://github.com/cosmos/cosmos-sdk/releases/tag/cosmovisor%2Fv1.1.0).
+
+### orchestrator
+
+The binary required for signing and relaying are all included in a single binary that can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0).
+
+### Geth
+
+A binary required for running a BSC light/full node. Can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9)
+
+
+## Components setup
+
+### Gravity Smart Contract
+
+The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use remix to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix, compiled, and then deployed on the Binance chain with the following params:
+
+- `gravity_id` must match the id entered in the `genesis.json` file, By converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`.
+- `validators` is a list of Binance account addresses that corresponds to the validators.
+- `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`.
+
+### The threefold hub chain
+
+Generating the genesis can be done manually or automated (along other things) using the docker automated [script](https://github.com/threefoldtech/threefold_hub/tree/development/docker/genesis). The manual flow and parameters descriptions are outlined here.
 
 The default keyring-backend appears to be os not test even though it's printed test so keep that in mind while executing the rest of the commands.
 
@@ -36,7 +68,7 @@ The genesis file contains the following default parameters:
 
 - `max_validators` are set to 100
 
-The starport's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `<BSC-delegator-address>`. This address will be used later in the gravity contract and the orchestrator setup.
+The ignite's `serve` subcommand doesn't work as the gentx format is changed. The above snippet creates a new user in the local test keyring, Initializes the genesis file with this account as a validator. The validator delegates its signing power to the Binance account with address `<BSC-delegator-address>`. This address will be used later in the gravity contract and the orchestrator setup.
 
 An example of the addresses are:
 
@@ -69,19 +101,8 @@ The gravity params in the genesis file should be modified:
 
 The chain is started then by executing `threefold_hubd start`.
 
-### Binance gravity contract
-
-The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use remix to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix, compiled, and then deployed on the Binance chain with the following params:
-
-- `gravity_id` must match the id entered in the `genesis.json` file, By converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`.
-- `validators` is a list of Binance account addresses that corresponds to the validators.
-- `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`.
-
-### BSC node setup
-
-See [here](./research/bridges/BSC/readme.md). Takes about ~3 hours to complete on testnet. The docs says that the node must be a Full Ethereum Node, but a light node works fine. Light clients peer with a full node that's configured to serve them. Serving light clients is disabled by default in `full nodes`, so this may be a problem in the mainnet setup. More [info](https://github.com/Gravity-Bridge/Gravity-Docs/blob/67e78b3242e8de653a3fdee0285030fac1a0522e/docs/setting-up-your-genesis-validator.md) from the gravity doc repo. What's recommended is to create a full node and then start another light client that peers with it. This should be researched along with the slashing specs to check if light clients being unreliable can cause slashing.
-
 ### Orchestrator setup
+Similarly, the gbt config file in `~/.gbt/config.toml` and the command to run it can be auto-generated using the same docker script in the above step. The manual configuration is described here.
 
 Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.5.0/gbt) binary. Then execute `gbt init` to initalize the gbt config. Modify the config to contain the following:
 
@@ -112,9 +133,19 @@ gbt -a tf orchestrator --cosmos-phrase "<cosmos-phrase-of-validator-alice-in-our
 
 The fee (here 0TFT) should generally be `250000 x min-gas-price`. The min-gas-price can be specified in `~/.threefold_hub/config/app.toml`, it's 0 by default.
 
-### Usage
+### BSC node setup
 
-To transfer money from binance to threefold_hub chain:
+See [here](./research/bridges/BSC/readme.md). Takes about ~3 hours to complete on testnet. The docs says that the node must be a Full Ethereum Node, but a light node works fine. Light clients peer with a full node that's configured to serve them. Serving light clients is disabled by default in `full nodes`, so this may be a problem in the mainnet setup. More [info](https://github.com/Gravity-Bridge/Gravity-Docs/blob/67e78b3242e8de653a3fdee0285030fac1a0522e/docs/setting-up-your-genesis-validator.md) from the gravity doc repo. What's recommended is to create a full node and then start another light client that peers with it. This should be researched along with the slashing specs to check if light clients being unreliable can cause slashing.
+
+As suggested [here](https://github.com/threefoldtech/threefold_hub/issues/42), we'll be running a light node until indicated otherwise.
+
+### Web Frontend
+
+The frontend development and production setup is described [here](./frontend/README.md). The frontend must be configured to match the proper threefold hub chain endpoints, and BSC configs as described in its README.
+
+## Threefold hub usage
+
+After the threefold hub chain is up and running, money can be transfered both ways using it. From binance to threefold_hub chain:
 
 ```bash
 ./gbt -a tf client eth-to-cosmos --ethereum-key '<private-key-of-the-sender>' --gravity-contract-address '<gravity-contract-address>' --token-contract-address '<TFT-BSC-contract-address>' --amount 5 --destination '<cosmos-destination-address>' --ethereum-rpc '<binance-node-endpoint>'
@@ -125,59 +156,52 @@ To transfer the money back to binance:
 ```bash
 ./gbt -a tf client cosmos-to-eth --amount '<amount-to-transfer>' -b 30000000TFT -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 0TFT
 ```
+## Common flows
 
-### Slashing specs
+### Developer (chain from scratch)
 
-Validators get slashed for not relaying claims for events that happened on ethereum. In addition to the slashing that happens because of double-signing and downtime.
+1. Create a gravity contract.
+2. Generate the genesis file.
+3. Start a BSC light node (or use something like https://data-seed-prebsc-2-s1.binance.org:8545/ for bsc testnet for a quick setup)
+3. Run the chain and the orchestor.
 
-More info:
+### Developer (modifying an already deployed chain)
 
-- gravity slashing: <https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/spec/slashing-spec.md>
-- cosmos slashing: <https://docs.cosmos.network/v0.44/modules/slashing/>
+Needs to be researched. The running chain can be hardforked by exporting the genesis `threefold_hubd export`. But how to fork (create another one?) the gravity contract is still not researched.
 
-### Web Frontend
+### Devops (deploying the first node to start a new chain)
 
-Starport has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
+1. Create a gravity contract.
+2. Generate the genesis file.
+3. Start a BSC light node (or use something like https://data-seed-prebsc-2-s1.binance.org:8545/ for bsc testnet for a quick setup)
+3. Run the chain and the orchestor.
 
-```sh
-cd vue
-npm install
-npm run serve
-```
+The genesis file must be shared to be used by other validator joining the chain.
+### Devops (adding a new validator)
 
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Starport front-end development](https://github.com/tendermint/vue).
+The validator is dockerized [here](./docker/validator/README.md) and descibed manually [here](./docs/AddingValidators.md).
+### Devops (running the frontend)
 
-## Release
+The config must be updated and then run as described [here](./frontend/README.md).
 
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
+## Running chains
 
-```sh
-git tag v0.1
-git push origin v0.1
-```
+### Demo
+The process of how it's deployed and how to access it is documented [here](./docs/deployment/demo/).
+### Testnet
+After deploying, its related config and set parameter should be documented [here](./docs/deployment/testnet/).
+## Glossary
 
-After a draft release is created, make your final changes from the release page and publish it.
+[Smart Contract](https://en.wikipedia.org/wiki/Smart_contract): A transaction protocol which is intended to automatically execute events and actions according to the terms of a contract. Here, the smart contracts are deployed on BSC.
 
-### Install
+Token contract address; Token contracts are a sepcial type of smart contracts. Every token has a smart contract which has an addres. For example, TFT on testnet are deployed as a smart contract with address 0xDC5a9199e2604A6BF4A99A583034506AE53F4B34.
 
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
+Gravity contract address: As described above on how to deploy a gravity contract. Its address are then used in many places including the genesis, the orchestrator, and the frontend config.
 
-```sh
-curl https://get.starport.com/threefoldtech/threefold_hub@latest! | sudo bash
-```
+BSC delegator address: Each cosmos validator delegates its signing power to a BSC account. This account is named a degator. If created using metamask, its address can be copied from there.
 
-`threefoldtech/threefold_hub` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
+BSC private key: The private key of the above account, can be retrieved using metamask.
 
-## Learn more
+Min Gas Price: Specified by each validator, but usually set to a value reached using a social consensus. The validator rejects transactions for which the price is less than the min gas price. Min gas price is used in the frontend configuration and genesis generation or app config.
 
-- [Starport](https://starport.com)
-- [Tutorials](https://docs.starport.com/guide)
-- [Starport docs](https://docs.starport.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/H6wGTY8sxw)
-
-
-
-## Operations
-
-Please check [ops guide](./opsguide.md) for how to operate the node(s)
+Bridge fees: In the frontend and the orchestrator config, the bridge fees are (for threefold hub) a fixed amount for which the validator (orchestrator) agrees to process the Cosmos-to-BSC transaction.
