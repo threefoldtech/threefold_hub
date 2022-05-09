@@ -3,16 +3,13 @@
     <h1>Send to Cosmos</h1>
 
     <form @submit.prevent="onSendToCosmos()">
-      <v-text-field
-        label="Amount"
-        placeholder="Amount"
-        v-model="amount"
-      />
+      <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
 
       <v-text-field
         label="Destination"
         placeholder="Destination"
         v-model="destination"
+        :rules="[bech32Address]"
       />
 
       <v-row justify="center">
@@ -38,6 +35,7 @@ import { sendToCosmos } from "@/utils";
 import { Config } from "@/utils/config";
 import { parseUnits } from "ethers/lib/utils";
 import CustomAlert from "@/components/CustomAlert.vue";
+import { bech32 } from "bech32";
 
 @Component({
   name: "CosmosView",
@@ -54,7 +52,16 @@ export default class Cosmos extends Vue {
   destination = "";
 
   get inValid() {
-    return this.amount === "" || this.destination === "";
+    return this.amount === "" || this.bech32Address(this.destination) !== true;
+  }
+
+  bech32Address(address: string) {
+    try {
+      const { prefix } = bech32.decode(address);
+      return prefix === "tf" ? true : "Address is not valid";
+    } catch {
+      return "Address is not valid";
+    }
   }
 
   onSendToCosmos() {
