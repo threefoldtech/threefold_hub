@@ -61,7 +61,7 @@ export default class App extends Vue {
   error = false;
 
   routes = [
-    { label: "Threefold Hub", path: "/", keplr: false },
+    { label: "Send to Threefold Hub", path: "/", keplr: false },
     { label: "Send to BSC", path: "/bsc", keplr: true },
     { label: "Pending BSC transactions", path: "/list-bsc", keplr: true },
     { label: "Add proposal", path: "/add-proposal", keplr: true },
