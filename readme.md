@@ -67,8 +67,8 @@ An example of the addresses are:
 The gravity params in the genesis file should be modified:
 
 - the gravity_id must match the `gravity_id` in the `Gravity.sol` contract. In other words, (hex(genesis.gravity_id) + "0" * 64).substr(0, 64) must equal to the gravity id in the contract.
-- crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. `10000000TFT`)
-- gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. `10000000TFT`)
+- crisis constant fee is the amount to perform an invariant check, which is usually expensive, and can halt the chain if it doens't hold (e.g. 1 TFT, `10000000TFT` in genesis)
+- gov `min_deposit` is the minimum amount for a proposal to be put to a vote (e.g. 1 TFT, `10000000TFT` in genesis)
 - `gravity_id` should be unique to chain (in case of hard forks?) (e.g. `threefold-hub`)
 - `bridge_ethereum_address` to `<bridge-contract-address>`. This corresponds to the gravity smart contract address. It's currently not used by the module (i.e. it's for doc-purposes only for now).
 - `bridge_chain_id` is 97. The BSC testnet chain id.
