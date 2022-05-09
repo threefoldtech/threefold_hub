@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Send to Cosmos</h1>
+    <h1>Threefold Hub</h1>
 
     <form @submit.prevent="onSendToCosmos()">
       <v-text-field
