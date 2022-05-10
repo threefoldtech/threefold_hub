@@ -19,8 +19,8 @@ jobs:
         - uses: docker/build-push-action@v2
           with:
             context: docker/validator
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/tf-hub:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/tf-validator:latest
             push: true
         - name: Convert Docker image to flist
           run: |
-            curl -f -X POST  -H "Authorization: bearer ${{secrets.ZEROHUB_TOKEN}}" ${{ secrets.ZEROHUB_URL }}/api/flist/me/docker -F 'image=${{ secrets.DOCKERHUB_USERNAME }}/tf-hub:latest'                                                                                                                                                                       
+            curl -f -X POST  -H "Authorization: bearer ${{secrets.ZEROHUB_TOKEN}}" ${{ secrets.ZEROHUB_URL }}/api/flist/me/docker -F 'image=${{ secrets.DOCKERHUB_USERNAME }}/tf-validator:latest'      
