@@ -52,14 +52,14 @@ func (k msgServer) SignMemberTransaction(goCtx context.Context, msg *types.MsgSi
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Can not get min signs of the wallet")
 	}
+	walletMembers := strings.Split(wallet.Members, ",")
 	if len(signersList) < minSigns {
 		transaction.State = "Pending"
 	} else {
-		if transaction.Action == "Add" && !contains(signersList, strings.TrimSpace(transaction.Member)) {
+		if transaction.Action == "Add" && !contains(walletMembers, strings.TrimSpace(transaction.Member)) {
 			wallet.Members = fmt.Sprintf("%s,%s", wallet.Members, strings.TrimSpace(transaction.Member))
-		} else if transaction.Action == "Remove" {
+		} else if transaction.Action == "Remove" && contains(walletMembers, strings.TrimSpace(transaction.Member)) {
 			updatedMembers := ""
-			walletMembers := strings.Split(wallet.Members, ",")
 			for _, member := range walletMembers {
 				if strings.TrimSpace(transaction.Member) == member {
 					continue

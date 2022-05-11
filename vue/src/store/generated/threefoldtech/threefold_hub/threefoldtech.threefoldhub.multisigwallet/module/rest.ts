@@ -20,8 +20,6 @@ export interface MultisigwalletMemberTransaction {
 
 export type MultisigwalletMsgAddMemberResponse = object;
 
-export type MultisigwalletMsgAddSignersResponse = object;
-
 export type MultisigwalletMsgCreateTransactionResponse = object;
 
 export interface MultisigwalletMsgCreateWalletResponse {
@@ -31,8 +29,6 @@ export interface MultisigwalletMsgCreateWalletResponse {
 export type MultisigwalletMsgExecuteTransactionResponse = object;
 
 export type MultisigwalletMsgRemoveMemberResponse = object;
-
-export type MultisigwalletMsgRemoveSignersResponse = object;
 
 export type MultisigwalletMsgSignMemberTransactionResponse = object;
 

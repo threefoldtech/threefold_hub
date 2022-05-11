@@ -11,6 +11,16 @@ import (
 	"github.com/threefoldtech/threefold_hub/x/multisigwallet/types"
 )
 
+func contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (k msgServer) RemoveMember(goCtx context.Context, msg *types.MsgRemoveMember) (*types.MsgRemoveMemberResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 

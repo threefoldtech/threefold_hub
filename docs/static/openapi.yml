@@ -20588,8 +20588,6 @@ definitions:
         type: string
   threefoldtech.threefoldhub.multisigwallet.MsgAddMemberResponse:
     type: object
-  threefoldtech.threefoldhub.multisigwallet.MsgAddSignersResponse:
-    type: object
   threefoldtech.threefoldhub.multisigwallet.MsgCreateTransactionResponse:
     type: object
   threefoldtech.threefoldhub.multisigwallet.MsgCreateWalletResponse:
@@ -20600,8 +20598,6 @@ definitions:
   threefoldtech.threefoldhub.multisigwallet.MsgExecuteTransactionResponse:
     type: object
   threefoldtech.threefoldhub.multisigwallet.MsgRemoveMemberResponse:
-    type: object
-  threefoldtech.threefoldhub.multisigwallet.MsgRemoveSignersResponse:
     type: object
   threefoldtech.threefoldhub.multisigwallet.MsgSignMemberTransactionResponse:
     type: object

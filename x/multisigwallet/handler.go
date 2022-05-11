@@ -29,12 +29,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgExecuteTransaction:
 			res, err := msgServer.ExecuteTransaction(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgAddSigners:
-			res, err := msgServer.AddSigners(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRemoveSigners:
-			res, err := msgServer.RemoveSigners(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateMinSigns:
 			res, err := msgServer.UpdateMinSigns(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

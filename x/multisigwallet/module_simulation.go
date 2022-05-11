@@ -40,10 +40,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgExecuteTransaction int = 100
 
-	opWeightMsgAddSigners = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgAddSigners int = 100
-
 	opWeightMsgRemoveSigners = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRemoveSigners int = 100
@@ -139,28 +135,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgExecuteTransaction,
 		multisigwalletsimulation.SimulateMsgExecuteTransaction(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgAddSigners int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddSigners, &weightMsgAddSigners, nil,
-		func(_ *rand.Rand) {
-			weightMsgAddSigners = defaultWeightMsgAddSigners
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgAddSigners,
-		multisigwalletsimulation.SimulateMsgAddSigners(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgRemoveSigners int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveSigners, &weightMsgRemoveSigners, nil,
-		func(_ *rand.Rand) {
-			weightMsgRemoveSigners = defaultWeightMsgRemoveSigners
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgRemoveSigners,
-		multisigwalletsimulation.SimulateMsgRemoveSigners(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgUpdateMinSigns int

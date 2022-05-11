@@ -7,14 +7,12 @@ export interface MultisigwalletMemberTransaction {
     signers?: string;
 }
 export declare type MultisigwalletMsgAddMemberResponse = object;
-export declare type MultisigwalletMsgAddSignersResponse = object;
 export declare type MultisigwalletMsgCreateTransactionResponse = object;
 export interface MultisigwalletMsgCreateWalletResponse {
     address?: string;
 }
 export declare type MultisigwalletMsgExecuteTransactionResponse = object;
 export declare type MultisigwalletMsgRemoveMemberResponse = object;
-export declare type MultisigwalletMsgRemoveSignersResponse = object;
 export declare type MultisigwalletMsgSignMemberTransactionResponse = object;
 export declare type MultisigwalletMsgSignTransactionResponse = object;
 export declare type MultisigwalletMsgUpdateMinSignsResponse = object;

@@ -11,8 +11,6 @@ service Msg {
   rpc CreateTransaction(MsgCreateTransaction) returns (MsgCreateTransactionResponse);
   rpc SignTransaction(MsgSignTransaction) returns (MsgSignTransactionResponse);
   rpc ExecuteTransaction(MsgExecuteTransaction) returns (MsgExecuteTransactionResponse);
-  rpc AddSigners(MsgAddSigners) returns (MsgAddSignersResponse);
-  rpc RemoveSigners(MsgRemoveSigners) returns (MsgRemoveSignersResponse);
   rpc UpdateMinSigns(MsgUpdateMinSigns) returns (MsgUpdateMinSignsResponse);
   rpc AddMember(MsgAddMember) returns (MsgAddMemberResponse);
   rpc SignMemberTransaction(MsgSignMemberTransaction) returns (MsgSignMemberTransactionResponse);
@@ -56,25 +54,6 @@ message MsgExecuteTransaction {
 
 message MsgExecuteTransactionResponse {
 }
-
-message MsgAddSigners {
-  string creator = 1;
-  string walletName = 2;
-  string members = 3;
-}
-
-message MsgAddSignersResponse {
-}
-
-message MsgRemoveSigners {
-  string creator = 1;
-  string walletName = 2;
-  string members = 3;
-}
-
-message MsgRemoveSignersResponse {
-}
-
 message MsgUpdateMinSigns {
   string creator = 1;
   string walletName = 2;

@@ -12,8 +12,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateTransaction{}, "multisigwallet/CreateTransaction", nil)
 	cdc.RegisterConcrete(&MsgSignTransaction{}, "multisigwallet/SignTransaction", nil)
 	cdc.RegisterConcrete(&MsgExecuteTransaction{}, "multisigwallet/ExecuteTransaction", nil)
-	cdc.RegisterConcrete(&MsgAddSigners{}, "multisigwallet/AddSigners", nil)
-	cdc.RegisterConcrete(&MsgRemoveSigners{}, "multisigwallet/RemoveSigners", nil)
 	cdc.RegisterConcrete(&MsgUpdateMinSigns{}, "multisigwallet/UpdateMinSigns", nil)
 	cdc.RegisterConcrete(&MsgAddMember{}, "multisigwallet/AddMember", nil)
 	cdc.RegisterConcrete(&MsgSignMemberTransaction{}, "multisigwallet/SignMemberTransaction", nil)
@@ -33,12 +31,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgExecuteTransaction{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddSigners{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRemoveSigners{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateMinSigns{},

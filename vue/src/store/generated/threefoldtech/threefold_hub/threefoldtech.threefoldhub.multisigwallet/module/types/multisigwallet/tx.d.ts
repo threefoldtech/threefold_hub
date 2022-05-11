@@ -29,20 +29,6 @@ export interface MsgExecuteTransaction {
 }
 export interface MsgExecuteTransactionResponse {
 }
-export interface MsgAddSigners {
-    creator: string;
-    walletName: string;
-    members: string;
-}
-export interface MsgAddSignersResponse {
-}
-export interface MsgRemoveSigners {
-    creator: string;
-    walletName: string;
-    members: string;
-}
-export interface MsgRemoveSignersResponse {
-}
 export interface MsgUpdateMinSigns {
     creator: string;
     walletName: string;
@@ -126,34 +112,6 @@ export declare const MsgExecuteTransactionResponse: {
     toJSON(_: MsgExecuteTransactionResponse): unknown;
     fromPartial(_: DeepPartial<MsgExecuteTransactionResponse>): MsgExecuteTransactionResponse;
 };
-export declare const MsgAddSigners: {
-    encode(message: MsgAddSigners, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgAddSigners;
-    fromJSON(object: any): MsgAddSigners;
-    toJSON(message: MsgAddSigners): unknown;
-    fromPartial(object: DeepPartial<MsgAddSigners>): MsgAddSigners;
-};
-export declare const MsgAddSignersResponse: {
-    encode(_: MsgAddSignersResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgAddSignersResponse;
-    fromJSON(_: any): MsgAddSignersResponse;
-    toJSON(_: MsgAddSignersResponse): unknown;
-    fromPartial(_: DeepPartial<MsgAddSignersResponse>): MsgAddSignersResponse;
-};
-export declare const MsgRemoveSigners: {
-    encode(message: MsgRemoveSigners, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgRemoveSigners;
-    fromJSON(object: any): MsgRemoveSigners;
-    toJSON(message: MsgRemoveSigners): unknown;
-    fromPartial(object: DeepPartial<MsgRemoveSigners>): MsgRemoveSigners;
-};
-export declare const MsgRemoveSignersResponse: {
-    encode(_: MsgRemoveSignersResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): MsgRemoveSignersResponse;
-    fromJSON(_: any): MsgRemoveSignersResponse;
-    toJSON(_: MsgRemoveSignersResponse): unknown;
-    fromPartial(_: DeepPartial<MsgRemoveSignersResponse>): MsgRemoveSignersResponse;
-};
 export declare const MsgUpdateMinSigns: {
     encode(message: MsgUpdateMinSigns, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgUpdateMinSigns;
@@ -216,8 +174,6 @@ export interface Msg {
     CreateTransaction(request: MsgCreateTransaction): Promise<MsgCreateTransactionResponse>;
     SignTransaction(request: MsgSignTransaction): Promise<MsgSignTransactionResponse>;
     ExecuteTransaction(request: MsgExecuteTransaction): Promise<MsgExecuteTransactionResponse>;
-    AddSigners(request: MsgAddSigners): Promise<MsgAddSignersResponse>;
-    RemoveSigners(request: MsgRemoveSigners): Promise<MsgRemoveSignersResponse>;
     UpdateMinSigns(request: MsgUpdateMinSigns): Promise<MsgUpdateMinSignsResponse>;
     AddMember(request: MsgAddMember): Promise<MsgAddMemberResponse>;
     SignMemberTransaction(request: MsgSignMemberTransaction): Promise<MsgSignMemberTransactionResponse>;
@@ -231,8 +187,6 @@ export declare class MsgClientImpl implements Msg {
     CreateTransaction(request: MsgCreateTransaction): Promise<MsgCreateTransactionResponse>;
     SignTransaction(request: MsgSignTransaction): Promise<MsgSignTransactionResponse>;
     ExecuteTransaction(request: MsgExecuteTransaction): Promise<MsgExecuteTransactionResponse>;
-    AddSigners(request: MsgAddSigners): Promise<MsgAddSignersResponse>;
-    RemoveSigners(request: MsgRemoveSigners): Promise<MsgRemoveSignersResponse>;
     UpdateMinSigns(request: MsgUpdateMinSigns): Promise<MsgUpdateMinSignsResponse>;
     AddMember(request: MsgAddMember): Promise<MsgAddMemberResponse>;
     SignMemberTransaction(request: MsgSignMemberTransaction): Promise<MsgSignMemberTransactionResponse>;

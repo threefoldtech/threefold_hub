@@ -34,8 +34,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCreateTransaction())
 	cmd.AddCommand(CmdSignTransaction())
 	cmd.AddCommand(CmdExecuteTransaction())
-	cmd.AddCommand(CmdAddSigners())
-	cmd.AddCommand(CmdRemoveSigners())
 	cmd.AddCommand(CmdUpdateMinSigns())
 	cmd.AddCommand(CmdAddMember())
 	cmd.AddCommand(CmdSignMemberTransaction())
