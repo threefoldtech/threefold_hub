@@ -41,6 +41,17 @@ func TestGenesisState_Validate(t *testing.T) {
 				NextTransaction: &types.NextTransaction{
 					IdValue: 59,
 				},
+				MemberTransactionList: []types.MemberTransaction{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				NextMemberTransaction: &types.NextMemberTransaction{
+					IdValue: 50,
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -63,6 +74,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated transaction",
 			genState: &types.GenesisState{
 				TransactionList: []types.Transaction{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated memberTransaction",
+			genState: &types.GenesisState{
+				MemberTransactionList: []types.MemberTransaction{
 					{
 						Index: "0",
 					},

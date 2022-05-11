@@ -140,6 +140,49 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryMemberTransactionAll
+         * @summary Queries a list of MemberTransaction items.
+         * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction
+         */
+        this.queryMemberTransactionAll = (query, params = {}) => this.request({
+            path: `/threefoldtech/threefoldhub/multisigwallet/member_transaction`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryMemberTransaction
+         * @summary Queries a MemberTransaction by index.
+         * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction/{index}
+         */
+        this.queryMemberTransaction = (index, params = {}) => this.request({
+            path: `/threefoldtech/threefoldhub/multisigwallet/member_transaction/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryNextMemberTransaction
+         * @summary Queries a NextMemberTransaction by index.
+         * @request GET:/threefoldtech/threefoldhub/multisigwallet/next_member_transaction
+         */
+        this.queryNextMemberTransaction = (params = {}) => this.request({
+            path: `/threefoldtech/threefoldhub/multisigwallet/next_member_transaction`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryNextTransaction
          * @summary Queries a NextTransaction by index.
          * @request GET:/threefoldtech/threefoldhub/multisigwallet/next_transaction

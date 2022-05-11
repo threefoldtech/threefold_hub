@@ -52,6 +52,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateMinSigns int = 100
 
+	opWeightMsgAddMember = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddMember int = 100
+
+	opWeightMsgSignMemberTransaction = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSignMemberTransaction int = 100
+
+	opWeightMsgRemoveMember = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRemoveMember int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -160,6 +172,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUpdateMinSigns,
 		multisigwalletsimulation.SimulateMsgUpdateMinSigns(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddMember int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddMember, &weightMsgAddMember, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddMember = defaultWeightMsgAddMember
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddMember,
+		multisigwalletsimulation.SimulateMsgAddMember(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSignMemberTransaction int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSignMemberTransaction, &weightMsgSignMemberTransaction, nil,
+		func(_ *rand.Rand) {
+			weightMsgSignMemberTransaction = defaultWeightMsgSignMemberTransaction
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSignMemberTransaction,
+		multisigwalletsimulation.SimulateMsgSignMemberTransaction(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRemoveMember int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveMember, &weightMsgRemoveMember, nil,
+		func(_ *rand.Rand) {
+			weightMsgRemoveMember = defaultWeightMsgRemoveMember
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRemoveMember,
+		multisigwalletsimulation.SimulateMsgRemoveMember(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

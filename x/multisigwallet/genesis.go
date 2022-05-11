@@ -21,6 +21,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.NextTransaction != nil {
 		k.SetNextTransaction(ctx, *genState.NextTransaction)
 	}
+	// Set all the memberTransaction
+	for _, elem := range genState.MemberTransactionList {
+		k.SetMemberTransaction(ctx, elem)
+	}
+	// Set if defined
+	if genState.NextMemberTransaction != nil {
+		k.SetNextMemberTransaction(ctx, *genState.NextMemberTransaction)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -36,6 +44,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	nextTransaction, found := k.GetNextTransaction(ctx)
 	if found {
 		genesis.NextTransaction = &nextTransaction
+	}
+	genesis.MemberTransactionList = k.GetAllMemberTransaction(ctx)
+	// Get all nextMemberTransaction
+	nextMemberTransaction, found := k.GetNextMemberTransaction(ctx)
+	if found {
+		genesis.NextMemberTransaction = &nextMemberTransaction
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

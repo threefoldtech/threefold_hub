@@ -2,6 +2,8 @@ import { Params } from "../multisigwallet/params";
 import { Wallet } from "../multisigwallet/wallet";
 import { Transaction } from "../multisigwallet/transaction";
 import { NextTransaction } from "../multisigwallet/next_transaction";
+import { MemberTransaction } from "../multisigwallet/member_transaction";
+import { NextMemberTransaction } from "../multisigwallet/next_member_transaction";
 import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "threefoldtech.threefoldhub.multisigwallet";
 /** GenesisState defines the multisigwallet module's genesis state. */
@@ -9,8 +11,10 @@ export interface GenesisState {
     params: Params | undefined;
     walletList: Wallet[];
     transactionList: Transaction[];
-    /** this line is used by starport scaffolding # genesis/proto/state */
     nextTransaction: NextTransaction | undefined;
+    memberTransactionList: MemberTransaction[];
+    /** this line is used by starport scaffolding # genesis/proto/state */
+    nextMemberTransaction: NextMemberTransaction | undefined;
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

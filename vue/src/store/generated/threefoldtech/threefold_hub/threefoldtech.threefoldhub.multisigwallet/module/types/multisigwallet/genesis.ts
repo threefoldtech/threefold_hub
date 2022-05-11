@@ -3,6 +3,8 @@ import { Params } from "../multisigwallet/params";
 import { Wallet } from "../multisigwallet/wallet";
 import { Transaction } from "../multisigwallet/transaction";
 import { NextTransaction } from "../multisigwallet/next_transaction";
+import { MemberTransaction } from "../multisigwallet/member_transaction";
+import { NextMemberTransaction } from "../multisigwallet/next_member_transaction";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "threefoldtech.threefoldhub.multisigwallet";
@@ -12,8 +14,10 @@ export interface GenesisState {
   params: Params | undefined;
   walletList: Wallet[];
   transactionList: Transaction[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   nextTransaction: NextTransaction | undefined;
+  memberTransactionList: MemberTransaction[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  nextMemberTransaction: NextMemberTransaction | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -35,6 +39,15 @@ export const GenesisState = {
         writer.uint32(34).fork()
       ).ldelim();
     }
+    for (const v of message.memberTransactionList) {
+      MemberTransaction.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.nextMemberTransaction !== undefined) {
+      NextMemberTransaction.encode(
+        message.nextMemberTransaction,
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -44,6 +57,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.walletList = [];
     message.transactionList = [];
+    message.memberTransactionList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -64,6 +78,17 @@ export const GenesisState = {
             reader.uint32()
           );
           break;
+        case 5:
+          message.memberTransactionList.push(
+            MemberTransaction.decode(reader, reader.uint32())
+          );
+          break;
+        case 6:
+          message.nextMemberTransaction = NextMemberTransaction.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -76,6 +101,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.walletList = [];
     message.transactionList = [];
+    message.memberTransactionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -104,6 +130,24 @@ export const GenesisState = {
     } else {
       message.nextTransaction = undefined;
     }
+    if (
+      object.memberTransactionList !== undefined &&
+      object.memberTransactionList !== null
+    ) {
+      for (const e of object.memberTransactionList) {
+        message.memberTransactionList.push(MemberTransaction.fromJSON(e));
+      }
+    }
+    if (
+      object.nextMemberTransaction !== undefined &&
+      object.nextMemberTransaction !== null
+    ) {
+      message.nextMemberTransaction = NextMemberTransaction.fromJSON(
+        object.nextMemberTransaction
+      );
+    } else {
+      message.nextMemberTransaction = undefined;
+    }
     return message;
   },
 
@@ -129,6 +173,17 @@ export const GenesisState = {
       (obj.nextTransaction = message.nextTransaction
         ? NextTransaction.toJSON(message.nextTransaction)
         : undefined);
+    if (message.memberTransactionList) {
+      obj.memberTransactionList = message.memberTransactionList.map((e) =>
+        e ? MemberTransaction.toJSON(e) : undefined
+      );
+    } else {
+      obj.memberTransactionList = [];
+    }
+    message.nextMemberTransaction !== undefined &&
+      (obj.nextMemberTransaction = message.nextMemberTransaction
+        ? NextMemberTransaction.toJSON(message.nextMemberTransaction)
+        : undefined);
     return obj;
   },
 
@@ -136,6 +191,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.walletList = [];
     message.transactionList = [];
+    message.memberTransactionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -163,6 +219,24 @@ export const GenesisState = {
       );
     } else {
       message.nextTransaction = undefined;
+    }
+    if (
+      object.memberTransactionList !== undefined &&
+      object.memberTransactionList !== null
+    ) {
+      for (const e of object.memberTransactionList) {
+        message.memberTransactionList.push(MemberTransaction.fromPartial(e));
+      }
+    }
+    if (
+      object.nextMemberTransaction !== undefined &&
+      object.nextMemberTransaction !== null
+    ) {
+      message.nextMemberTransaction = NextMemberTransaction.fromPartial(
+        object.nextMemberTransaction
+      );
+    } else {
+      message.nextMemberTransaction = undefined;
     }
     return message;
   },

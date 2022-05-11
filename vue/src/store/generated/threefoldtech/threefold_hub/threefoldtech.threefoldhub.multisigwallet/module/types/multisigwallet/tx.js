@@ -923,6 +923,369 @@ export const MsgUpdateMinSignsResponse = {
         return message;
     },
 };
+const baseMsgAddMember = { creator: "", walltName: "", member: "" };
+export const MsgAddMember = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== "") {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.walltName !== "") {
+            writer.uint32(18).string(message.walltName);
+        }
+        if (message.member !== "") {
+            writer.uint32(26).string(message.member);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgAddMember };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.walltName = reader.string();
+                    break;
+                case 3:
+                    message.member = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgAddMember };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.walltName !== undefined && object.walltName !== null) {
+            message.walltName = String(object.walltName);
+        }
+        else {
+            message.walltName = "";
+        }
+        if (object.member !== undefined && object.member !== null) {
+            message.member = String(object.member);
+        }
+        else {
+            message.member = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.walltName !== undefined && (obj.walltName = message.walltName);
+        message.member !== undefined && (obj.member = message.member);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgAddMember };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.walltName !== undefined && object.walltName !== null) {
+            message.walltName = object.walltName;
+        }
+        else {
+            message.walltName = "";
+        }
+        if (object.member !== undefined && object.member !== null) {
+            message.member = object.member;
+        }
+        else {
+            message.member = "";
+        }
+        return message;
+    },
+};
+const baseMsgAddMemberResponse = {};
+export const MsgAddMemberResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgAddMemberResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = { ...baseMsgAddMemberResponse };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = { ...baseMsgAddMemberResponse };
+        return message;
+    },
+};
+const baseMsgSignMemberTransaction = { creator: "", transactionID: "" };
+export const MsgSignMemberTransaction = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== "") {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.transactionID !== "") {
+            writer.uint32(18).string(message.transactionID);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMsgSignMemberTransaction,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.transactionID = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseMsgSignMemberTransaction,
+        };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.transactionID !== undefined && object.transactionID !== null) {
+            message.transactionID = String(object.transactionID);
+        }
+        else {
+            message.transactionID = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.transactionID !== undefined &&
+            (obj.transactionID = message.transactionID);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseMsgSignMemberTransaction,
+        };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.transactionID !== undefined && object.transactionID !== null) {
+            message.transactionID = object.transactionID;
+        }
+        else {
+            message.transactionID = "";
+        }
+        return message;
+    },
+};
+const baseMsgSignMemberTransactionResponse = {};
+export const MsgSignMemberTransactionResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMsgSignMemberTransactionResponse,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = {
+            ...baseMsgSignMemberTransactionResponse,
+        };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = {
+            ...baseMsgSignMemberTransactionResponse,
+        };
+        return message;
+    },
+};
+const baseMsgRemoveMember = { creator: "", walltName: "", member: "" };
+export const MsgRemoveMember = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== "") {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.walltName !== "") {
+            writer.uint32(18).string(message.walltName);
+        }
+        if (message.member !== "") {
+            writer.uint32(26).string(message.member);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgRemoveMember };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.walltName = reader.string();
+                    break;
+                case 3:
+                    message.member = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgRemoveMember };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.walltName !== undefined && object.walltName !== null) {
+            message.walltName = String(object.walltName);
+        }
+        else {
+            message.walltName = "";
+        }
+        if (object.member !== undefined && object.member !== null) {
+            message.member = String(object.member);
+        }
+        else {
+            message.member = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.walltName !== undefined && (obj.walltName = message.walltName);
+        message.member !== undefined && (obj.member = message.member);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgRemoveMember };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.walltName !== undefined && object.walltName !== null) {
+            message.walltName = object.walltName;
+        }
+        else {
+            message.walltName = "";
+        }
+        if (object.member !== undefined && object.member !== null) {
+            message.member = object.member;
+        }
+        else {
+            message.member = "";
+        }
+        return message;
+    },
+};
+const baseMsgRemoveMemberResponse = {};
+export const MsgRemoveMemberResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMsgRemoveMemberResponse,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = {
+            ...baseMsgRemoveMemberResponse,
+        };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = {
+            ...baseMsgRemoveMemberResponse,
+        };
+        return message;
+    },
+};
 export class MsgClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
@@ -961,5 +1324,20 @@ export class MsgClientImpl {
         const data = MsgUpdateMinSigns.encode(request).finish();
         const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Msg", "UpdateMinSigns", data);
         return promise.then((data) => MsgUpdateMinSignsResponse.decode(new Reader(data)));
+    }
+    AddMember(request) {
+        const data = MsgAddMember.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Msg", "AddMember", data);
+        return promise.then((data) => MsgAddMemberResponse.decode(new Reader(data)));
+    }
+    SignMemberTransaction(request) {
+        const data = MsgSignMemberTransaction.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Msg", "SignMemberTransaction", data);
+        return promise.then((data) => MsgSignMemberTransactionResponse.decode(new Reader(data)));
+    }
+    RemoveMember(request) {
+        const data = MsgRemoveMember.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Msg", "RemoveMember", data);
+        return promise.then((data) => MsgRemoveMemberResponse.decode(new Reader(data)));
     }
 }

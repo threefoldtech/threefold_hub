@@ -33,6 +33,17 @@ func TestGenesis(t *testing.T) {
 		NextTransaction: &types.NextTransaction{
 			IdValue: 11,
 		},
+		MemberTransactionList: []types.MemberTransaction{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		NextMemberTransaction: &types.NextMemberTransaction{
+			IdValue: 57,
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -47,5 +58,7 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.WalletList, got.WalletList)
 	require.ElementsMatch(t, genesisState.TransactionList, got.TransactionList)
 	require.Equal(t, genesisState.NextTransaction, got.NextTransaction)
+	require.ElementsMatch(t, genesisState.MemberTransactionList, got.MemberTransactionList)
+	require.Equal(t, genesisState.NextMemberTransaction, got.NextMemberTransaction)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

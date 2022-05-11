@@ -8,6 +8,8 @@ import "multisigwallet/params.proto";
 import "multisigwallet/wallet.proto";
 import "multisigwallet/transaction.proto";
 import "multisigwallet/next_transaction.proto";
+import "multisigwallet/member_transaction.proto";
+import "multisigwallet/next_member_transaction.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/threefoldtech/threefold_hub/x/multisigwallet/types";
@@ -41,6 +43,20 @@ service Query {
 // Queries a NextTransaction by index.
 	rpc NextTransaction(QueryGetNextTransactionRequest) returns (QueryGetNextTransactionResponse) {
 		option (google.api.http).get = "/threefoldtech/threefoldhub/multisigwallet/next_transaction";
+	}
+// Queries a MemberTransaction by index.
+	rpc MemberTransaction(QueryGetMemberTransactionRequest) returns (QueryGetMemberTransactionResponse) {
+		option (google.api.http).get = "/threefoldtech/threefoldhub/multisigwallet/member_transaction/{index}";
+	}
+
+	// Queries a list of MemberTransaction items.
+	rpc MemberTransactionAll(QueryAllMemberTransactionRequest) returns (QueryAllMemberTransactionResponse) {
+		option (google.api.http).get = "/threefoldtech/threefoldhub/multisigwallet/member_transaction";
+	}
+
+// Queries a NextMemberTransaction by index.
+	rpc NextMemberTransaction(QueryGetNextMemberTransactionRequest) returns (QueryGetNextMemberTransactionResponse) {
+		option (google.api.http).get = "/threefoldtech/threefoldhub/multisigwallet/next_member_transaction";
 	}
 // this line is used by starport scaffolding # 2
 }
@@ -94,5 +110,28 @@ message QueryGetNextTransactionRequest {}
 
 message QueryGetNextTransactionResponse {
 	NextTransaction NextTransaction = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetMemberTransactionRequest {
+	  string index = 1;
+
+}
+
+message QueryGetMemberTransactionResponse {
+	MemberTransaction memberTransaction = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMemberTransactionRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMemberTransactionResponse {
+	repeated MemberTransaction memberTransaction = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetNextMemberTransactionRequest {}
+
+message QueryGetNextMemberTransactionResponse {
+	NextMemberTransaction NextMemberTransaction = 1 [(gogoproto.nullable) = false];
 }
 // this line is used by starport scaffolding # 3

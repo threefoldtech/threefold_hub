@@ -561,6 +561,270 @@ func (m *QueryGetNextTransactionResponse) GetNextTransaction() NextTransaction {
 	return NextTransaction{}
 }
 
+type QueryGetMemberTransactionRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetMemberTransactionRequest) Reset()         { *m = QueryGetMemberTransactionRequest{} }
+func (m *QueryGetMemberTransactionRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetMemberTransactionRequest) ProtoMessage()    {}
+func (*QueryGetMemberTransactionRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{12}
+}
+func (m *QueryGetMemberTransactionRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetMemberTransactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetMemberTransactionRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetMemberTransactionRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetMemberTransactionRequest.Merge(m, src)
+}
+func (m *QueryGetMemberTransactionRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetMemberTransactionRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetMemberTransactionRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetMemberTransactionRequest proto.InternalMessageInfo
+
+func (m *QueryGetMemberTransactionRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetMemberTransactionResponse struct {
+	MemberTransaction MemberTransaction `protobuf:"bytes,1,opt,name=memberTransaction,proto3" json:"memberTransaction"`
+}
+
+func (m *QueryGetMemberTransactionResponse) Reset()         { *m = QueryGetMemberTransactionResponse{} }
+func (m *QueryGetMemberTransactionResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetMemberTransactionResponse) ProtoMessage()    {}
+func (*QueryGetMemberTransactionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{13}
+}
+func (m *QueryGetMemberTransactionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetMemberTransactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetMemberTransactionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetMemberTransactionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetMemberTransactionResponse.Merge(m, src)
+}
+func (m *QueryGetMemberTransactionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetMemberTransactionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetMemberTransactionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetMemberTransactionResponse proto.InternalMessageInfo
+
+func (m *QueryGetMemberTransactionResponse) GetMemberTransaction() MemberTransaction {
+	if m != nil {
+		return m.MemberTransaction
+	}
+	return MemberTransaction{}
+}
+
+type QueryAllMemberTransactionRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllMemberTransactionRequest) Reset()         { *m = QueryAllMemberTransactionRequest{} }
+func (m *QueryAllMemberTransactionRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllMemberTransactionRequest) ProtoMessage()    {}
+func (*QueryAllMemberTransactionRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{14}
+}
+func (m *QueryAllMemberTransactionRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllMemberTransactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllMemberTransactionRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllMemberTransactionRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllMemberTransactionRequest.Merge(m, src)
+}
+func (m *QueryAllMemberTransactionRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllMemberTransactionRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllMemberTransactionRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllMemberTransactionRequest proto.InternalMessageInfo
+
+func (m *QueryAllMemberTransactionRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllMemberTransactionResponse struct {
+	MemberTransaction []MemberTransaction `protobuf:"bytes,1,rep,name=memberTransaction,proto3" json:"memberTransaction"`
+	Pagination        *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllMemberTransactionResponse) Reset()         { *m = QueryAllMemberTransactionResponse{} }
+func (m *QueryAllMemberTransactionResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllMemberTransactionResponse) ProtoMessage()    {}
+func (*QueryAllMemberTransactionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{15}
+}
+func (m *QueryAllMemberTransactionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllMemberTransactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllMemberTransactionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllMemberTransactionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllMemberTransactionResponse.Merge(m, src)
+}
+func (m *QueryAllMemberTransactionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllMemberTransactionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllMemberTransactionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllMemberTransactionResponse proto.InternalMessageInfo
+
+func (m *QueryAllMemberTransactionResponse) GetMemberTransaction() []MemberTransaction {
+	if m != nil {
+		return m.MemberTransaction
+	}
+	return nil
+}
+
+func (m *QueryAllMemberTransactionResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryGetNextMemberTransactionRequest struct {
+}
+
+func (m *QueryGetNextMemberTransactionRequest) Reset()         { *m = QueryGetNextMemberTransactionRequest{} }
+func (m *QueryGetNextMemberTransactionRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNextMemberTransactionRequest) ProtoMessage()    {}
+func (*QueryGetNextMemberTransactionRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{16}
+}
+func (m *QueryGetNextMemberTransactionRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetNextMemberTransactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetNextMemberTransactionRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetNextMemberTransactionRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNextMemberTransactionRequest.Merge(m, src)
+}
+func (m *QueryGetNextMemberTransactionRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetNextMemberTransactionRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNextMemberTransactionRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetNextMemberTransactionRequest proto.InternalMessageInfo
+
+type QueryGetNextMemberTransactionResponse struct {
+	NextMemberTransaction NextMemberTransaction `protobuf:"bytes,1,opt,name=NextMemberTransaction,proto3" json:"NextMemberTransaction"`
+}
+
+func (m *QueryGetNextMemberTransactionResponse) Reset()         { *m = QueryGetNextMemberTransactionResponse{} }
+func (m *QueryGetNextMemberTransactionResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNextMemberTransactionResponse) ProtoMessage()    {}
+func (*QueryGetNextMemberTransactionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_46e149b2a2c43a7e, []int{17}
+}
+func (m *QueryGetNextMemberTransactionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetNextMemberTransactionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetNextMemberTransactionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetNextMemberTransactionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNextMemberTransactionResponse.Merge(m, src)
+}
+func (m *QueryGetNextMemberTransactionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetNextMemberTransactionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNextMemberTransactionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetNextMemberTransactionResponse proto.InternalMessageInfo
+
+func (m *QueryGetNextMemberTransactionResponse) GetNextMemberTransaction() NextMemberTransaction {
+	if m != nil {
+		return m.NextMemberTransaction
+	}
+	return NextMemberTransaction{}
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryParamsResponse")
@@ -574,57 +838,76 @@ func init() {
 	proto.RegisterType((*QueryAllTransactionResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryAllTransactionResponse")
 	proto.RegisterType((*QueryGetNextTransactionRequest)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetNextTransactionRequest")
 	proto.RegisterType((*QueryGetNextTransactionResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetNextTransactionResponse")
+	proto.RegisterType((*QueryGetMemberTransactionRequest)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetMemberTransactionRequest")
+	proto.RegisterType((*QueryGetMemberTransactionResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetMemberTransactionResponse")
+	proto.RegisterType((*QueryAllMemberTransactionRequest)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryAllMemberTransactionRequest")
+	proto.RegisterType((*QueryAllMemberTransactionResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryAllMemberTransactionResponse")
+	proto.RegisterType((*QueryGetNextMemberTransactionRequest)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetNextMemberTransactionRequest")
+	proto.RegisterType((*QueryGetNextMemberTransactionResponse)(nil), "threefoldtech.threefoldhub.multisigwallet.QueryGetNextMemberTransactionResponse")
 }
 
 func init() { proto.RegisterFile("multisigwallet/query.proto", fileDescriptor_46e149b2a2c43a7e) }
 
 var fileDescriptor_46e149b2a2c43a7e = []byte{
-	// 708 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0x4d, 0x6b, 0x13, 0x4f,
-	0x1c, 0xc7, 0x33, 0xed, 0xbf, 0x81, 0x4e, 0xe1, 0x2f, 0x8c, 0x55, 0x64, 0x2b, 0xdb, 0xb2, 0xe0,
-	0x23, 0xb8, 0x4b, 0x5a, 0x28, 0xd6, 0xd2, 0xd2, 0x54, 0x9a, 0xa2, 0x07, 0xad, 0x41, 0x28, 0x78,
-	0x30, 0x4c, 0x92, 0xe9, 0x66, 0x65, 0xb3, 0xb3, 0xcd, 0x4e, 0x34, 0x45, 0x7a, 0xf1, 0x2e, 0x08,
-	0xbe, 0x07, 0x5f, 0x80, 0x2f, 0xc1, 0x83, 0x14, 0xbc, 0x04, 0xbc, 0x78, 0x52, 0x49, 0x7a, 0xf5,
-	0x3d, 0xc8, 0xce, 0x4c, 0x9a, 0x7d, 0x8a, 0xba, 0xdb, 0x3d, 0xe5, 0x61, 0x7e, 0xf3, 0xfd, 0x7d,
-	0x3f, 0xf3, 0x9d, 0xfd, 0xb1, 0x50, 0x69, 0x77, 0x6d, 0x66, 0x79, 0x96, 0xf9, 0x0a, 0xdb, 0x36,
-	0x61, 0xc6, 0x61, 0x97, 0x74, 0x8e, 0x74, 0xb7, 0x43, 0x19, 0x45, 0xb7, 0x58, 0xab, 0x43, 0xc8,
-	0x01, 0xb5, 0x9b, 0x8c, 0x34, 0x5a, 0xfa, 0xd9, 0xaf, 0x56, 0xb7, 0xae, 0x87, 0xb7, 0x29, 0xf3,
-	0x26, 0x35, 0x29, 0xdf, 0x65, 0xf8, 0xdf, 0x84, 0x80, 0x72, 0xd5, 0xa4, 0xd4, 0xb4, 0x89, 0x81,
-	0x5d, 0xcb, 0xc0, 0x8e, 0x43, 0x19, 0x66, 0x16, 0x75, 0x3c, 0xb9, 0x7a, 0xbb, 0x41, 0xbd, 0x36,
-	0xf5, 0x8c, 0x3a, 0xf6, 0x88, 0xe8, 0x6b, 0xbc, 0x2c, 0xd5, 0x09, 0xc3, 0x25, 0xc3, 0xc5, 0xa6,
-	0xe5, 0xf0, 0x62, 0x59, 0xbb, 0x10, 0xb1, 0xe9, 0xe2, 0x0e, 0x6e, 0x7b, 0x13, 0x16, 0xc5, 0x87,
-	0x5c, 0x5c, 0x8a, 0x2c, 0xb2, 0x0e, 0x76, 0x3c, 0xdc, 0x08, 0x68, 0x5f, 0x8b, 0x54, 0x38, 0xa4,
-	0xc7, 0x6a, 0xb1, 0x32, 0x6d, 0x1e, 0xa2, 0x27, 0xbe, 0xc9, 0x3d, 0xde, 0xba, 0x4a, 0x0e, 0xbb,
-	0xc4, 0x63, 0xda, 0x01, 0xbc, 0x18, 0xfa, 0xd7, 0x73, 0xa9, 0xe3, 0x11, 0xf4, 0x18, 0x16, 0x85,
-	0xc5, 0x2b, 0x60, 0x09, 0xdc, 0x9c, 0x5b, 0x2e, 0xe9, 0xff, 0x7c, 0x96, 0xba, 0x90, 0xda, 0xfe,
-	0xef, 0xe4, 0xfb, 0x62, 0xa1, 0x2a, 0x65, 0xb4, 0x3b, 0xf0, 0x12, 0xef, 0xb3, 0x4b, 0xd8, 0x3e,
-	0x2f, 0x93, 0x06, 0xd0, 0x3c, 0x9c, 0xb1, 0x9c, 0x26, 0xe9, 0xf1, 0x46, 0xb3, 0x55, 0xf1, 0x43,
-	0xb3, 0xe0, 0xe5, 0x68, 0xf9, 0xd8, 0x99, 0xe8, 0x93, 0xc1, 0x99, 0x90, 0x1a, 0x39, 0x13, 0x7f,
-	0x6a, 0x35, 0xe9, 0xac, 0x6c, 0xdb, 0x61, 0x67, 0x15, 0x08, 0xc7, 0x39, 0xca, 0x6e, 0xd7, 0x75,
-	0x11, 0xba, 0xee, 0x87, 0xae, 0x8b, 0xcb, 0x26, 0x43, 0xd7, 0xf7, 0xb0, 0x49, 0xe4, 0xde, 0x6a,
-	0x60, 0xa7, 0xf6, 0x11, 0x48, 0x98, 0x40, 0x87, 0x04, 0x98, 0xe9, 0x1c, 0x60, 0xd0, 0x6e, 0xc8,
-	0xf3, 0x14, 0xf7, 0x7c, 0xe3, 0xaf, 0x9e, 0x85, 0x9b, 0x90, 0xe9, 0x65, 0xa8, 0x8c, 0x02, 0x78,
-	0x3a, 0xbe, 0x4a, 0x7f, 0x0e, 0xed, 0x18, 0x2e, 0x24, 0xee, 0x91, 0xb0, 0xcf, 0xe1, 0x5c, 0xe0,
-	0x56, 0xca, 0x03, 0x5d, 0x4d, 0x41, 0x1c, 0x10, 0x95, 0xd8, 0x41, 0x41, 0xad, 0x29, 0x2d, 0x97,
-	0x6d, 0x3b, 0xc1, 0x72, 0x5e, 0x69, 0x7e, 0x06, 0x92, 0x32, 0xda, 0x66, 0x12, 0xe5, 0x74, 0xae,
-	0x94, 0xf9, 0x25, 0xbc, 0x04, 0xd5, 0x51, 0x5a, 0x8f, 0x48, 0x2f, 0x21, 0x65, 0xed, 0x2d, 0x80,
-	0x8b, 0x13, 0x4b, 0x24, 0xee, 0x0b, 0x78, 0x21, 0xb2, 0x24, 0xcf, 0xf6, 0x5e, 0x0a, 0xe4, 0x88,
-	0x82, 0xc4, 0x8e, 0x0a, 0x2f, 0x7f, 0x80, 0x70, 0x86, 0xfb, 0x41, 0x9f, 0x00, 0x2c, 0x8a, 0x31,
-	0x83, 0x36, 0x52, 0xf4, 0x89, 0xcf, 0x3f, 0x65, 0x33, 0xeb, 0x76, 0xc1, 0xaf, 0xad, 0xbd, 0xf9,
-	0x7a, 0xfa, 0x7e, 0x6a, 0x05, 0x95, 0x8c, 0x90, 0x8e, 0x11, 0xd4, 0x31, 0x12, 0x87, 0x3f, 0xea,
-	0x03, 0x58, 0x14, 0x0f, 0x31, 0xda, 0x4a, 0xeb, 0x22, 0x3a, 0x46, 0x95, 0xf2, 0x39, 0x14, 0x24,
-	0x4a, 0x99, 0xa3, 0xac, 0xa3, 0xb5, 0x14, 0x28, 0xf2, 0xe3, 0x35, 0x1f, 0x00, 0xc7, 0xe8, 0x0b,
-	0x80, 0xb3, 0x42, 0xb5, 0x6c, 0xdb, 0xe9, 0xa9, 0xa2, 0x23, 0x38, 0x3d, 0x55, 0x6c, 0xc4, 0x66,
-	0x0a, 0x48, 0x0e, 0xd3, 0x53, 0x00, 0xe7, 0x02, 0xf7, 0x0f, 0xed, 0x64, 0x38, 0xe3, 0xf8, 0x63,
-	0xa5, 0x54, 0xce, 0x2b, 0x23, 0xc9, 0x2a, 0x9c, 0x6c, 0x0b, 0x6d, 0xa6, 0x20, 0x0b, 0x4c, 0x92,
-	0xb3, 0xd0, 0x7e, 0x00, 0xf8, 0x7f, 0x40, 0xdf, 0x4f, 0x6e, 0x27, 0xc3, 0xb9, 0xe7, 0x41, 0x9a,
-	0x3c, 0x53, 0xb5, 0x4d, 0x4e, 0x7a, 0x17, 0xad, 0x66, 0x23, 0x45, 0xbf, 0x40, 0x6c, 0x4a, 0xa1,
-	0x07, 0x19, 0x52, 0x48, 0x9e, 0x93, 0xca, 0xc3, 0x3c, 0xa4, 0x24, 0xea, 0x7d, 0x8e, 0xba, 0x81,
-	0xd6, 0x53, 0xa0, 0x46, 0x5f, 0xf8, 0xb6, 0xf7, 0x4f, 0x06, 0x2a, 0xe8, 0x0f, 0x54, 0xf0, 0x73,
-	0xa0, 0x82, 0x77, 0x43, 0xb5, 0xd0, 0x1f, 0xaa, 0x85, 0x6f, 0x43, 0xb5, 0xf0, 0x6c, 0xc3, 0xb4,
-	0x98, 0xef, 0xaa, 0x41, 0xdb, 0x93, 0x1a, 0xd4, 0xfc, 0x0e, 0xbd, 0xd8, 0x71, 0x1e, 0xb9, 0xc4,
-	0xab, 0x17, 0xf9, 0xab, 0xe4, 0xca, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0x10, 0x0c, 0xbe, 0x99,
-	0x76, 0x0b, 0x00, 0x00,
+	// 918 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x98, 0xcf, 0x4f, 0xdb, 0x48,
+	0x14, 0xc7, 0x33, 0xb0, 0x44, 0x62, 0x90, 0x76, 0x97, 0xd9, 0xb0, 0x5a, 0x99, 0x55, 0xc8, 0x5a,
+	0x0b, 0xec, 0xae, 0x76, 0x6d, 0x05, 0x24, 0x04, 0x4b, 0x43, 0x09, 0x6d, 0x40, 0x85, 0x52, 0x68,
+	0x54, 0x09, 0xa9, 0x87, 0x22, 0x27, 0x0c, 0xc6, 0xc8, 0xb1, 0x43, 0xec, 0xb4, 0x41, 0x2d, 0x97,
+	0x1e, 0x7a, 0xab, 0x54, 0xa9, 0xea, 0x9f, 0xd0, 0x4b, 0x8f, 0xfd, 0x13, 0x7a, 0xa8, 0x90, 0x7a,
+	0x41, 0xea, 0xa5, 0x27, 0x5a, 0x01, 0xd7, 0xde, 0x7b, 0xa9, 0x54, 0x65, 0xe6, 0x05, 0x1c, 0xff,
+	0x08, 0xd8, 0xb8, 0xa7, 0x90, 0xcc, 0x9b, 0xef, 0xfb, 0x7e, 0xde, 0x7b, 0xf1, 0x4c, 0xc0, 0x42,
+	0xa5, 0xae, 0xdb, 0x9a, 0xa5, 0xa9, 0x0f, 0x14, 0x5d, 0xa7, 0xb6, 0xbc, 0x53, 0xa7, 0xb5, 0x5d,
+	0xa9, 0x5a, 0x33, 0x6d, 0x93, 0xfc, 0x6d, 0x6f, 0xd5, 0x28, 0xdd, 0x34, 0xf5, 0x0d, 0x9b, 0x96,
+	0xb7, 0xa4, 0xd3, 0x77, 0x5b, 0xf5, 0x92, 0xd4, 0xbe, 0x4d, 0x48, 0xa9, 0xa6, 0x6a, 0xb2, 0x5d,
+	0x72, 0xf3, 0x2f, 0x2e, 0x20, 0xfc, 0xae, 0x9a, 0xa6, 0xaa, 0x53, 0x59, 0xa9, 0x6a, 0xb2, 0x62,
+	0x18, 0xa6, 0xad, 0xd8, 0x9a, 0x69, 0x58, 0xb0, 0xfa, 0x4f, 0xd9, 0xb4, 0x2a, 0xa6, 0x25, 0x97,
+	0x14, 0x8b, 0xf2, 0xbc, 0xf2, 0xfd, 0x6c, 0x89, 0xda, 0x4a, 0x56, 0xae, 0x2a, 0xaa, 0x66, 0xb0,
+	0x60, 0x88, 0x1d, 0x74, 0xd9, 0xac, 0x2a, 0x35, 0xa5, 0x62, 0x05, 0x2c, 0xf2, 0x17, 0x58, 0xcc,
+	0xb8, 0x16, 0xed, 0x9a, 0x62, 0x58, 0x4a, 0xd9, 0xa1, 0x3d, 0xec, 0x8a, 0x30, 0x68, 0xc3, 0x5e,
+	0xf7, 0x86, 0x8d, 0xba, 0xc2, 0x2a, 0xb4, 0x52, 0xa2, 0x35, 0x9f, 0xc0, 0x7f, 0xfd, 0xf4, 0x82,
+	0xa2, 0xc5, 0x14, 0x26, 0xb7, 0x9b, 0xec, 0xab, 0x8c, 0xa8, 0x48, 0x77, 0xea, 0xd4, 0xb2, 0xc5,
+	0x4d, 0xfc, 0x4b, 0xdb, 0xa7, 0x56, 0xd5, 0x34, 0x2c, 0x4a, 0x56, 0x70, 0x92, 0x93, 0xff, 0x86,
+	0x32, 0xe8, 0xaf, 0xbe, 0xb1, 0xac, 0x74, 0xe1, 0x16, 0x49, 0x5c, 0x6a, 0xee, 0x87, 0xfd, 0xc3,
+	0xa1, 0x44, 0x11, 0x64, 0xc4, 0xff, 0xf0, 0x00, 0xcb, 0xb3, 0x40, 0xed, 0x35, 0x16, 0x06, 0x06,
+	0x48, 0x0a, 0xf7, 0x68, 0xc6, 0x06, 0x6d, 0xb0, 0x44, 0xbd, 0x45, 0xfe, 0x46, 0xd4, 0xf0, 0xaf,
+	0xee, 0xf0, 0x33, 0x67, 0x3c, 0x4f, 0x04, 0x67, 0x5c, 0xaa, 0xe5, 0x8c, 0x7f, 0x28, 0xae, 0x83,
+	0xb3, 0xbc, 0xae, 0xb7, 0x3b, 0x9b, 0xc7, 0xf8, 0x6c, 0x3c, 0x20, 0xdb, 0x88, 0xc4, 0x67, 0x49,
+	0x6a, 0xce, 0x92, 0xc4, 0x67, 0x18, 0x66, 0x49, 0x5a, 0x55, 0x54, 0x0a, 0x7b, 0x8b, 0x8e, 0x9d,
+	0xe2, 0x6b, 0x04, 0x30, 0x8e, 0x0c, 0x3e, 0x30, 0xdd, 0x31, 0xc0, 0x90, 0x85, 0x36, 0xcf, 0x5d,
+	0xcc, 0xf3, 0xe8, 0xb9, 0x9e, 0xb9, 0x9b, 0x36, 0xd3, 0x63, 0x58, 0x68, 0x35, 0xe0, 0xce, 0xd9,
+	0x28, 0x75, 0x6e, 0xda, 0x1e, 0x1e, 0xf4, 0xdd, 0x03, 0xb0, 0xf7, 0x70, 0x9f, 0x63, 0x2a, 0xa1,
+	0xa0, 0x13, 0x21, 0x88, 0x1d, 0xa2, 0x80, 0xed, 0x14, 0x14, 0x37, 0xc0, 0x72, 0x5e, 0xd7, 0x7d,
+	0x2c, 0xc7, 0xd5, 0xcd, 0xb7, 0x08, 0x28, 0xdd, 0x69, 0x82, 0x28, 0xbb, 0x63, 0xa5, 0x8c, 0xaf,
+	0xc3, 0x19, 0x9c, 0x6e, 0x75, 0xeb, 0x16, 0x6d, 0xf8, 0x74, 0x59, 0x7c, 0x8a, 0xf0, 0x50, 0x60,
+	0x08, 0xe0, 0x6e, 0xe3, 0x9f, 0x5c, 0x4b, 0x50, 0xdb, 0xff, 0x43, 0x20, 0xbb, 0x14, 0x00, 0xdb,
+	0x2d, 0x2c, 0x4e, 0xe2, 0x4c, 0xcb, 0xce, 0x32, 0x7b, 0xca, 0x5d, 0x78, 0x32, 0x5f, 0x20, 0xfc,
+	0x47, 0x87, 0xad, 0xc0, 0x52, 0xc5, 0xfd, 0x15, 0xf7, 0x22, 0xd0, 0x5c, 0x09, 0x41, 0xe3, 0x49,
+	0x00, 0x3c, 0x5e, 0x71, 0x71, 0x1b, 0x88, 0xf2, 0xba, 0x1e, 0x48, 0x14, 0xd7, 0xe0, 0x1e, 0xb6,
+	0x6a, 0xe0, 0x9f, 0xac, 0x73, 0x0d, 0xba, 0xbf, 0x5b, 0x0d, 0xe2, 0x1b, 0xe8, 0x11, 0xfc, 0xa7,
+	0x73, 0x5a, 0x83, 0x0a, 0x2a, 0xbe, 0x44, 0x78, 0xf8, 0x9c, 0x40, 0x28, 0xc6, 0x23, 0x3c, 0xe0,
+	0x1b, 0x00, 0x5d, 0x98, 0x0d, 0x39, 0xe2, 0x41, 0x45, 0xf1, 0x4f, 0x32, 0xf6, 0xea, 0x67, 0xdc,
+	0xc3, 0x7c, 0x92, 0x37, 0x08, 0x27, 0xf9, 0xa9, 0x4a, 0x72, 0x21, 0x72, 0x7a, 0x8f, 0x7b, 0x61,
+	0x26, 0xea, 0x76, 0x5e, 0x11, 0x71, 0xea, 0xf1, 0xfb, 0x93, 0xe7, 0x5d, 0xe3, 0x24, 0x2b, 0xb7,
+	0xe9, 0xc8, 0x4e, 0x1d, 0xd9, 0xf7, 0x0a, 0x45, 0x0e, 0x10, 0x4e, 0xf2, 0x33, 0x8b, 0xcc, 0x86,
+	0x75, 0xe1, 0xbe, 0x35, 0x08, 0xf9, 0x4b, 0x28, 0x00, 0x4a, 0x9e, 0xa1, 0x4c, 0x93, 0xa9, 0x10,
+	0x28, 0xf0, 0xf2, 0x90, 0x3d, 0x55, 0xf6, 0xc8, 0x3b, 0x84, 0x7b, 0xb9, 0x6a, 0x5e, 0xd7, 0xc3,
+	0x53, 0xb9, 0x6f, 0x1c, 0xe1, 0xa9, 0x3c, 0x37, 0x8a, 0x48, 0x0d, 0x82, 0xbb, 0xc3, 0x09, 0xc2,
+	0x7d, 0xce, 0x2f, 0x66, 0x21, 0x42, 0x8d, 0xbd, 0x5f, 0x37, 0x61, 0xfe, 0xb2, 0x32, 0x40, 0x36,
+	0xcf, 0xc8, 0x66, 0xc9, 0x4c, 0x08, 0x32, 0xc7, 0xc1, 0x79, 0xda, 0xb4, 0x8f, 0x08, 0xff, 0xe8,
+	0xd0, 0x6f, 0x76, 0xae, 0x10, 0xa1, 0xee, 0x71, 0x90, 0xfa, 0x5f, 0x21, 0xc4, 0x19, 0x46, 0x3a,
+	0x49, 0x26, 0xa2, 0x91, 0x92, 0xcf, 0xc8, 0x73, 0x28, 0x93, 0x1b, 0x11, 0xba, 0xe0, 0x7f, 0x2d,
+	0x10, 0x16, 0xe3, 0x90, 0x02, 0xd4, 0x6b, 0x0c, 0x35, 0x47, 0xa6, 0x43, 0xa0, 0xba, 0x7f, 0x36,
+	0x91, 0xaf, 0x08, 0xf7, 0x7b, 0x1e, 0x9f, 0x64, 0x29, 0x82, 0xcd, 0xa0, 0x33, 0x43, 0xb8, 0x19,
+	0x8f, 0x18, 0x50, 0x2f, 0x33, 0xea, 0x05, 0x52, 0x08, 0x41, 0xed, 0xfd, 0x5d, 0x77, 0x3a, 0xd1,
+	0x5f, 0x10, 0x4e, 0x79, 0x92, 0x35, 0xe7, 0x7a, 0x29, 0xc2, 0x40, 0xc6, 0x57, 0x82, 0x4e, 0xf7,
+	0x0c, 0xb1, 0xc0, 0x4a, 0x70, 0x95, 0xe4, 0x2e, 0x55, 0x02, 0xf2, 0xa4, 0x2b, 0xe0, 0x88, 0x26,
+	0x2b, 0x11, 0xa7, 0x34, 0x90, 0x7f, 0x35, 0x3e, 0x41, 0xa8, 0xc1, 0x22, 0xab, 0xc1, 0x75, 0x32,
+	0x17, 0x76, 0xf8, 0xbd, 0x85, 0x98, 0x5b, 0xdb, 0x3f, 0x4a, 0xa3, 0x83, 0xa3, 0x34, 0xfa, 0x74,
+	0x94, 0x46, 0xcf, 0x8e, 0xd3, 0x89, 0x83, 0xe3, 0x74, 0xe2, 0xc3, 0x71, 0x3a, 0x71, 0x37, 0xa7,
+	0x6a, 0x76, 0xd3, 0x62, 0xd9, 0xac, 0x04, 0xe5, 0x59, 0x6f, 0x26, 0x6a, 0x78, 0x1e, 0x29, 0xbb,
+	0x55, 0x6a, 0x95, 0x92, 0xec, 0xbf, 0x07, 0xe3, 0xdf, 0x02, 0x00, 0x00, 0xff, 0xff, 0x54, 0x10,
+	0x77, 0x47, 0xc0, 0x11, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -651,6 +934,12 @@ type QueryClient interface {
 	TransactionAll(ctx context.Context, in *QueryAllTransactionRequest, opts ...grpc.CallOption) (*QueryAllTransactionResponse, error)
 	// Queries a NextTransaction by index.
 	NextTransaction(ctx context.Context, in *QueryGetNextTransactionRequest, opts ...grpc.CallOption) (*QueryGetNextTransactionResponse, error)
+	// Queries a MemberTransaction by index.
+	MemberTransaction(ctx context.Context, in *QueryGetMemberTransactionRequest, opts ...grpc.CallOption) (*QueryGetMemberTransactionResponse, error)
+	// Queries a list of MemberTransaction items.
+	MemberTransactionAll(ctx context.Context, in *QueryAllMemberTransactionRequest, opts ...grpc.CallOption) (*QueryAllMemberTransactionResponse, error)
+	// Queries a NextMemberTransaction by index.
+	NextMemberTransaction(ctx context.Context, in *QueryGetNextMemberTransactionRequest, opts ...grpc.CallOption) (*QueryGetNextMemberTransactionResponse, error)
 }
 
 type queryClient struct {
@@ -715,6 +1004,33 @@ func (c *queryClient) NextTransaction(ctx context.Context, in *QueryGetNextTrans
 	return out, nil
 }
 
+func (c *queryClient) MemberTransaction(ctx context.Context, in *QueryGetMemberTransactionRequest, opts ...grpc.CallOption) (*QueryGetMemberTransactionResponse, error) {
+	out := new(QueryGetMemberTransactionResponse)
+	err := c.cc.Invoke(ctx, "/threefoldtech.threefoldhub.multisigwallet.Query/MemberTransaction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) MemberTransactionAll(ctx context.Context, in *QueryAllMemberTransactionRequest, opts ...grpc.CallOption) (*QueryAllMemberTransactionResponse, error) {
+	out := new(QueryAllMemberTransactionResponse)
+	err := c.cc.Invoke(ctx, "/threefoldtech.threefoldhub.multisigwallet.Query/MemberTransactionAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) NextMemberTransaction(ctx context.Context, in *QueryGetNextMemberTransactionRequest, opts ...grpc.CallOption) (*QueryGetNextMemberTransactionResponse, error) {
+	out := new(QueryGetNextMemberTransactionResponse)
+	err := c.cc.Invoke(ctx, "/threefoldtech.threefoldhub.multisigwallet.Query/NextMemberTransaction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -729,6 +1045,12 @@ type QueryServer interface {
 	TransactionAll(context.Context, *QueryAllTransactionRequest) (*QueryAllTransactionResponse, error)
 	// Queries a NextTransaction by index.
 	NextTransaction(context.Context, *QueryGetNextTransactionRequest) (*QueryGetNextTransactionResponse, error)
+	// Queries a MemberTransaction by index.
+	MemberTransaction(context.Context, *QueryGetMemberTransactionRequest) (*QueryGetMemberTransactionResponse, error)
+	// Queries a list of MemberTransaction items.
+	MemberTransactionAll(context.Context, *QueryAllMemberTransactionRequest) (*QueryAllMemberTransactionResponse, error)
+	// Queries a NextMemberTransaction by index.
+	NextMemberTransaction(context.Context, *QueryGetNextMemberTransactionRequest) (*QueryGetNextMemberTransactionResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -752,6 +1074,15 @@ func (*UnimplementedQueryServer) TransactionAll(ctx context.Context, req *QueryA
 }
 func (*UnimplementedQueryServer) NextTransaction(ctx context.Context, req *QueryGetNextTransactionRequest) (*QueryGetNextTransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NextTransaction not implemented")
+}
+func (*UnimplementedQueryServer) MemberTransaction(ctx context.Context, req *QueryGetMemberTransactionRequest) (*QueryGetMemberTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MemberTransaction not implemented")
+}
+func (*UnimplementedQueryServer) MemberTransactionAll(ctx context.Context, req *QueryAllMemberTransactionRequest) (*QueryAllMemberTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MemberTransactionAll not implemented")
+}
+func (*UnimplementedQueryServer) NextMemberTransaction(ctx context.Context, req *QueryGetNextMemberTransactionRequest) (*QueryGetNextMemberTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NextMemberTransaction not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -866,6 +1197,60 @@ func _Query_NextTransaction_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_MemberTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetMemberTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).MemberTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/threefoldtech.threefoldhub.multisigwallet.Query/MemberTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).MemberTransaction(ctx, req.(*QueryGetMemberTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_MemberTransactionAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllMemberTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).MemberTransactionAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/threefoldtech.threefoldhub.multisigwallet.Query/MemberTransactionAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).MemberTransactionAll(ctx, req.(*QueryAllMemberTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_NextMemberTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetNextMemberTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).NextMemberTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/threefoldtech.threefoldhub.multisigwallet.Query/NextMemberTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).NextMemberTransaction(ctx, req.(*QueryGetNextMemberTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "threefoldtech.threefoldhub.multisigwallet.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -893,6 +1278,18 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "NextTransaction",
 			Handler:    _Query_NextTransaction_Handler,
+		},
+		{
+			MethodName: "MemberTransaction",
+			Handler:    _Query_MemberTransaction_Handler,
+		},
+		{
+			MethodName: "MemberTransactionAll",
+			Handler:    _Query_MemberTransactionAll_Handler,
+		},
+		{
+			MethodName: "NextMemberTransaction",
+			Handler:    _Query_NextMemberTransaction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1305,6 +1702,209 @@ func (m *QueryGetNextTransactionResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetMemberTransactionRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetMemberTransactionRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetMemberTransactionRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetMemberTransactionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetMemberTransactionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetMemberTransactionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.MemberTransaction.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllMemberTransactionRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllMemberTransactionRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllMemberTransactionRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllMemberTransactionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllMemberTransactionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllMemberTransactionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.MemberTransaction) > 0 {
+		for iNdEx := len(m.MemberTransaction) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MemberTransaction[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetNextMemberTransactionRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetNextMemberTransactionRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetNextMemberTransactionRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetNextMemberTransactionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetNextMemberTransactionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetNextMemberTransactionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.NextMemberTransaction.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1464,6 +2064,82 @@ func (m *QueryGetNextTransactionResponse) Size() (n int) {
 	var l int
 	_ = l
 	l = m.NextTransaction.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetMemberTransactionRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetMemberTransactionResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.MemberTransaction.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllMemberTransactionRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllMemberTransactionResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.MemberTransaction) > 0 {
+		for _, e := range m.MemberTransaction {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetNextMemberTransactionRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryGetNextMemberTransactionResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.NextMemberTransaction.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
@@ -2458,6 +3134,510 @@ func (m *QueryGetNextTransactionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.NextTransaction.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetMemberTransactionRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetMemberTransactionRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetMemberTransactionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetMemberTransactionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetMemberTransactionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetMemberTransactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MemberTransaction", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MemberTransaction.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllMemberTransactionRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllMemberTransactionRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllMemberTransactionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllMemberTransactionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllMemberTransactionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllMemberTransactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MemberTransaction", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MemberTransaction = append(m.MemberTransaction, MemberTransaction{})
+			if err := m.MemberTransaction[len(m.MemberTransaction)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetNextMemberTransactionRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetNextMemberTransactionRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetNextMemberTransactionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetNextMemberTransactionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetNextMemberTransactionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetNextMemberTransactionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NextMemberTransaction", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.NextMemberTransaction.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

@@ -9,6 +9,17 @@
  * ---------------------------------------------------------------
  */
 
+export interface MultisigwalletMemberTransaction {
+  index?: string;
+  walletName?: string;
+  member?: string;
+  action?: string;
+  state?: string;
+  signers?: string;
+}
+
+export type MultisigwalletMsgAddMemberResponse = object;
+
 export type MultisigwalletMsgAddSignersResponse = object;
 
 export type MultisigwalletMsgCreateTransactionResponse = object;
@@ -19,11 +30,20 @@ export interface MultisigwalletMsgCreateWalletResponse {
 
 export type MultisigwalletMsgExecuteTransactionResponse = object;
 
+export type MultisigwalletMsgRemoveMemberResponse = object;
+
 export type MultisigwalletMsgRemoveSignersResponse = object;
+
+export type MultisigwalletMsgSignMemberTransactionResponse = object;
 
 export type MultisigwalletMsgSignTransactionResponse = object;
 
 export type MultisigwalletMsgUpdateMinSignsResponse = object;
+
+export interface MultisigwalletNextMemberTransaction {
+  /** @format uint64 */
+  idValue?: string;
+}
 
 export interface MultisigwalletNextTransaction {
   /** @format uint64 */
@@ -34,6 +54,21 @@ export interface MultisigwalletNextTransaction {
  * Params defines the parameters for the module.
  */
 export type MultisigwalletParams = object;
+
+export interface MultisigwalletQueryAllMemberTransactionResponse {
+  memberTransaction?: MultisigwalletMemberTransaction[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface MultisigwalletQueryAllTransactionResponse {
   transaction?: MultisigwalletTransaction[];
@@ -63,6 +98,14 @@ export interface MultisigwalletQueryAllWalletResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface MultisigwalletQueryGetMemberTransactionResponse {
+  memberTransaction?: MultisigwalletMemberTransaction;
+}
+
+export interface MultisigwalletQueryGetNextMemberTransactionResponse {
+  NextMemberTransaction?: MultisigwalletNextMemberTransaction;
 }
 
 export interface MultisigwalletQueryGetNextTransactionResponse {
@@ -372,6 +415,64 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMemberTransactionAll
+   * @summary Queries a list of MemberTransaction items.
+   * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction
+   */
+  queryMemberTransactionAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<MultisigwalletQueryAllMemberTransactionResponse, RpcStatus>({
+      path: `/threefoldtech/threefoldhub/multisigwallet/member_transaction`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMemberTransaction
+   * @summary Queries a MemberTransaction by index.
+   * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction/{index}
+   */
+  queryMemberTransaction = (index: string, params: RequestParams = {}) =>
+    this.request<MultisigwalletQueryGetMemberTransactionResponse, RpcStatus>({
+      path: `/threefoldtech/threefoldhub/multisigwallet/member_transaction/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryNextMemberTransaction
+   * @summary Queries a NextMemberTransaction by index.
+   * @request GET:/threefoldtech/threefoldhub/multisigwallet/next_member_transaction
+   */
+  queryNextMemberTransaction = (params: RequestParams = {}) =>
+    this.request<MultisigwalletQueryGetNextMemberTransactionResponse, RpcStatus>({
+      path: `/threefoldtech/threefoldhub/multisigwallet/next_member_transaction`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

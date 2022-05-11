@@ -50,6 +50,26 @@ export interface MsgUpdateMinSigns {
 }
 export interface MsgUpdateMinSignsResponse {
 }
+export interface MsgAddMember {
+    creator: string;
+    walltName: string;
+    member: string;
+}
+export interface MsgAddMemberResponse {
+}
+export interface MsgSignMemberTransaction {
+    creator: string;
+    transactionID: string;
+}
+export interface MsgSignMemberTransactionResponse {
+}
+export interface MsgRemoveMember {
+    creator: string;
+    walltName: string;
+    member: string;
+}
+export interface MsgRemoveMemberResponse {
+}
 export declare const MsgCreateWallet: {
     encode(message: MsgCreateWallet, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgCreateWallet;
@@ -148,6 +168,48 @@ export declare const MsgUpdateMinSignsResponse: {
     toJSON(_: MsgUpdateMinSignsResponse): unknown;
     fromPartial(_: DeepPartial<MsgUpdateMinSignsResponse>): MsgUpdateMinSignsResponse;
 };
+export declare const MsgAddMember: {
+    encode(message: MsgAddMember, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgAddMember;
+    fromJSON(object: any): MsgAddMember;
+    toJSON(message: MsgAddMember): unknown;
+    fromPartial(object: DeepPartial<MsgAddMember>): MsgAddMember;
+};
+export declare const MsgAddMemberResponse: {
+    encode(_: MsgAddMemberResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgAddMemberResponse;
+    fromJSON(_: any): MsgAddMemberResponse;
+    toJSON(_: MsgAddMemberResponse): unknown;
+    fromPartial(_: DeepPartial<MsgAddMemberResponse>): MsgAddMemberResponse;
+};
+export declare const MsgSignMemberTransaction: {
+    encode(message: MsgSignMemberTransaction, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSignMemberTransaction;
+    fromJSON(object: any): MsgSignMemberTransaction;
+    toJSON(message: MsgSignMemberTransaction): unknown;
+    fromPartial(object: DeepPartial<MsgSignMemberTransaction>): MsgSignMemberTransaction;
+};
+export declare const MsgSignMemberTransactionResponse: {
+    encode(_: MsgSignMemberTransactionResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSignMemberTransactionResponse;
+    fromJSON(_: any): MsgSignMemberTransactionResponse;
+    toJSON(_: MsgSignMemberTransactionResponse): unknown;
+    fromPartial(_: DeepPartial<MsgSignMemberTransactionResponse>): MsgSignMemberTransactionResponse;
+};
+export declare const MsgRemoveMember: {
+    encode(message: MsgRemoveMember, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRemoveMember;
+    fromJSON(object: any): MsgRemoveMember;
+    toJSON(message: MsgRemoveMember): unknown;
+    fromPartial(object: DeepPartial<MsgRemoveMember>): MsgRemoveMember;
+};
+export declare const MsgRemoveMemberResponse: {
+    encode(_: MsgRemoveMemberResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRemoveMemberResponse;
+    fromJSON(_: any): MsgRemoveMemberResponse;
+    toJSON(_: MsgRemoveMemberResponse): unknown;
+    fromPartial(_: DeepPartial<MsgRemoveMemberResponse>): MsgRemoveMemberResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     CreateWallet(request: MsgCreateWallet): Promise<MsgCreateWalletResponse>;
@@ -156,8 +218,11 @@ export interface Msg {
     ExecuteTransaction(request: MsgExecuteTransaction): Promise<MsgExecuteTransactionResponse>;
     AddSigners(request: MsgAddSigners): Promise<MsgAddSignersResponse>;
     RemoveSigners(request: MsgRemoveSigners): Promise<MsgRemoveSignersResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     UpdateMinSigns(request: MsgUpdateMinSigns): Promise<MsgUpdateMinSignsResponse>;
+    AddMember(request: MsgAddMember): Promise<MsgAddMemberResponse>;
+    SignMemberTransaction(request: MsgSignMemberTransaction): Promise<MsgSignMemberTransactionResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    RemoveMember(request: MsgRemoveMember): Promise<MsgRemoveMemberResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -169,6 +234,9 @@ export declare class MsgClientImpl implements Msg {
     AddSigners(request: MsgAddSigners): Promise<MsgAddSignersResponse>;
     RemoveSigners(request: MsgRemoveSigners): Promise<MsgRemoveSignersResponse>;
     UpdateMinSigns(request: MsgUpdateMinSigns): Promise<MsgUpdateMinSignsResponse>;
+    AddMember(request: MsgAddMember): Promise<MsgAddMemberResponse>;
+    SignMemberTransaction(request: MsgSignMemberTransaction): Promise<MsgSignMemberTransactionResponse>;
+    RemoveMember(request: MsgRemoveMember): Promise<MsgRemoveMemberResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -5,6 +5,8 @@ import { Wallet } from "../multisigwallet/wallet";
 import { PageRequest, PageResponse, } from "../cosmos/base/query/v1beta1/pagination";
 import { Transaction } from "../multisigwallet/transaction";
 import { NextTransaction } from "../multisigwallet/next_transaction";
+import { MemberTransaction } from "../multisigwallet/member_transaction";
+import { NextMemberTransaction } from "../multisigwallet/next_member_transaction";
 export const protobufPackage = "threefoldtech.threefoldhub.multisigwallet";
 const baseQueryParamsRequest = {};
 export const QueryParamsRequest = {
@@ -688,6 +690,372 @@ export const QueryGetNextTransactionResponse = {
         return message;
     },
 };
+const baseQueryGetMemberTransactionRequest = { index: "" };
+export const QueryGetMemberTransactionRequest = {
+    encode(message, writer = Writer.create()) {
+        if (message.index !== "") {
+            writer.uint32(10).string(message.index);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryGetMemberTransactionRequest,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.index = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseQueryGetMemberTransactionRequest,
+        };
+        if (object.index !== undefined && object.index !== null) {
+            message.index = String(object.index);
+        }
+        else {
+            message.index = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.index !== undefined && (obj.index = message.index);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseQueryGetMemberTransactionRequest,
+        };
+        if (object.index !== undefined && object.index !== null) {
+            message.index = object.index;
+        }
+        else {
+            message.index = "";
+        }
+        return message;
+    },
+};
+const baseQueryGetMemberTransactionResponse = {};
+export const QueryGetMemberTransactionResponse = {
+    encode(message, writer = Writer.create()) {
+        if (message.memberTransaction !== undefined) {
+            MemberTransaction.encode(message.memberTransaction, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryGetMemberTransactionResponse,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.memberTransaction = MemberTransaction.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseQueryGetMemberTransactionResponse,
+        };
+        if (object.memberTransaction !== undefined &&
+            object.memberTransaction !== null) {
+            message.memberTransaction = MemberTransaction.fromJSON(object.memberTransaction);
+        }
+        else {
+            message.memberTransaction = undefined;
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.memberTransaction !== undefined &&
+            (obj.memberTransaction = message.memberTransaction
+                ? MemberTransaction.toJSON(message.memberTransaction)
+                : undefined);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseQueryGetMemberTransactionResponse,
+        };
+        if (object.memberTransaction !== undefined &&
+            object.memberTransaction !== null) {
+            message.memberTransaction = MemberTransaction.fromPartial(object.memberTransaction);
+        }
+        else {
+            message.memberTransaction = undefined;
+        }
+        return message;
+    },
+};
+const baseQueryAllMemberTransactionRequest = {};
+export const QueryAllMemberTransactionRequest = {
+    encode(message, writer = Writer.create()) {
+        if (message.pagination !== undefined) {
+            PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryAllMemberTransactionRequest,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.pagination = PageRequest.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseQueryAllMemberTransactionRequest,
+        };
+        if (object.pagination !== undefined && object.pagination !== null) {
+            message.pagination = PageRequest.fromJSON(object.pagination);
+        }
+        else {
+            message.pagination = undefined;
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.pagination !== undefined &&
+            (obj.pagination = message.pagination
+                ? PageRequest.toJSON(message.pagination)
+                : undefined);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseQueryAllMemberTransactionRequest,
+        };
+        if (object.pagination !== undefined && object.pagination !== null) {
+            message.pagination = PageRequest.fromPartial(object.pagination);
+        }
+        else {
+            message.pagination = undefined;
+        }
+        return message;
+    },
+};
+const baseQueryAllMemberTransactionResponse = {};
+export const QueryAllMemberTransactionResponse = {
+    encode(message, writer = Writer.create()) {
+        for (const v of message.memberTransaction) {
+            MemberTransaction.encode(v, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.pagination !== undefined) {
+            PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryAllMemberTransactionResponse,
+        };
+        message.memberTransaction = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.memberTransaction.push(MemberTransaction.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.pagination = PageResponse.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseQueryAllMemberTransactionResponse,
+        };
+        message.memberTransaction = [];
+        if (object.memberTransaction !== undefined &&
+            object.memberTransaction !== null) {
+            for (const e of object.memberTransaction) {
+                message.memberTransaction.push(MemberTransaction.fromJSON(e));
+            }
+        }
+        if (object.pagination !== undefined && object.pagination !== null) {
+            message.pagination = PageResponse.fromJSON(object.pagination);
+        }
+        else {
+            message.pagination = undefined;
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.memberTransaction) {
+            obj.memberTransaction = message.memberTransaction.map((e) => e ? MemberTransaction.toJSON(e) : undefined);
+        }
+        else {
+            obj.memberTransaction = [];
+        }
+        message.pagination !== undefined &&
+            (obj.pagination = message.pagination
+                ? PageResponse.toJSON(message.pagination)
+                : undefined);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseQueryAllMemberTransactionResponse,
+        };
+        message.memberTransaction = [];
+        if (object.memberTransaction !== undefined &&
+            object.memberTransaction !== null) {
+            for (const e of object.memberTransaction) {
+                message.memberTransaction.push(MemberTransaction.fromPartial(e));
+            }
+        }
+        if (object.pagination !== undefined && object.pagination !== null) {
+            message.pagination = PageResponse.fromPartial(object.pagination);
+        }
+        else {
+            message.pagination = undefined;
+        }
+        return message;
+    },
+};
+const baseQueryGetNextMemberTransactionRequest = {};
+export const QueryGetNextMemberTransactionRequest = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryGetNextMemberTransactionRequest,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = {
+            ...baseQueryGetNextMemberTransactionRequest,
+        };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = {
+            ...baseQueryGetNextMemberTransactionRequest,
+        };
+        return message;
+    },
+};
+const baseQueryGetNextMemberTransactionResponse = {};
+export const QueryGetNextMemberTransactionResponse = {
+    encode(message, writer = Writer.create()) {
+        if (message.NextMemberTransaction !== undefined) {
+            NextMemberTransaction.encode(message.NextMemberTransaction, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseQueryGetNextMemberTransactionResponse,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.NextMemberTransaction = NextMemberTransaction.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = {
+            ...baseQueryGetNextMemberTransactionResponse,
+        };
+        if (object.NextMemberTransaction !== undefined &&
+            object.NextMemberTransaction !== null) {
+            message.NextMemberTransaction = NextMemberTransaction.fromJSON(object.NextMemberTransaction);
+        }
+        else {
+            message.NextMemberTransaction = undefined;
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.NextMemberTransaction !== undefined &&
+            (obj.NextMemberTransaction = message.NextMemberTransaction
+                ? NextMemberTransaction.toJSON(message.NextMemberTransaction)
+                : undefined);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = {
+            ...baseQueryGetNextMemberTransactionResponse,
+        };
+        if (object.NextMemberTransaction !== undefined &&
+            object.NextMemberTransaction !== null) {
+            message.NextMemberTransaction = NextMemberTransaction.fromPartial(object.NextMemberTransaction);
+        }
+        else {
+            message.NextMemberTransaction = undefined;
+        }
+        return message;
+    },
+};
 export class QueryClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
@@ -721,5 +1089,20 @@ export class QueryClientImpl {
         const data = QueryGetNextTransactionRequest.encode(request).finish();
         const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Query", "NextTransaction", data);
         return promise.then((data) => QueryGetNextTransactionResponse.decode(new Reader(data)));
+    }
+    MemberTransaction(request) {
+        const data = QueryGetMemberTransactionRequest.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Query", "MemberTransaction", data);
+        return promise.then((data) => QueryGetMemberTransactionResponse.decode(new Reader(data)));
+    }
+    MemberTransactionAll(request) {
+        const data = QueryAllMemberTransactionRequest.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Query", "MemberTransactionAll", data);
+        return promise.then((data) => QueryAllMemberTransactionResponse.decode(new Reader(data)));
+    }
+    NextMemberTransaction(request) {
+        const data = QueryGetNextMemberTransactionRequest.encode(request).finish();
+        const promise = this.rpc.request("threefoldtech.threefoldhub.multisigwallet.Query", "NextMemberTransaction", data);
+        return promise.then((data) => QueryGetNextMemberTransactionResponse.decode(new Reader(data)));
     }
 }

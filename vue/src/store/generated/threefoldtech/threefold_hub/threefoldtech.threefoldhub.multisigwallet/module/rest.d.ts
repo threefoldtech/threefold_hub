@@ -1,12 +1,27 @@
+export interface MultisigwalletMemberTransaction {
+    index?: string;
+    walletName?: string;
+    member?: string;
+    action?: string;
+    state?: string;
+    signers?: string;
+}
+export declare type MultisigwalletMsgAddMemberResponse = object;
 export declare type MultisigwalletMsgAddSignersResponse = object;
 export declare type MultisigwalletMsgCreateTransactionResponse = object;
 export interface MultisigwalletMsgCreateWalletResponse {
     address?: string;
 }
 export declare type MultisigwalletMsgExecuteTransactionResponse = object;
+export declare type MultisigwalletMsgRemoveMemberResponse = object;
 export declare type MultisigwalletMsgRemoveSignersResponse = object;
+export declare type MultisigwalletMsgSignMemberTransactionResponse = object;
 export declare type MultisigwalletMsgSignTransactionResponse = object;
 export declare type MultisigwalletMsgUpdateMinSignsResponse = object;
+export interface MultisigwalletNextMemberTransaction {
+    /** @format uint64 */
+    idValue?: string;
+}
 export interface MultisigwalletNextTransaction {
     /** @format uint64 */
     idValue?: string;
@@ -15,6 +30,19 @@ export interface MultisigwalletNextTransaction {
  * Params defines the parameters for the module.
  */
 export declare type MultisigwalletParams = object;
+export interface MultisigwalletQueryAllMemberTransactionResponse {
+    memberTransaction?: MultisigwalletMemberTransaction[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
 export interface MultisigwalletQueryAllTransactionResponse {
     transaction?: MultisigwalletTransaction[];
     /**
@@ -40,6 +68,12 @@ export interface MultisigwalletQueryAllWalletResponse {
      *  }
      */
     pagination?: V1Beta1PageResponse;
+}
+export interface MultisigwalletQueryGetMemberTransactionResponse {
+    memberTransaction?: MultisigwalletMemberTransaction;
+}
+export interface MultisigwalletQueryGetNextMemberTransactionResponse {
+    NextMemberTransaction?: MultisigwalletNextMemberTransaction;
 }
 export interface MultisigwalletQueryGetNextTransactionResponse {
     NextTransaction?: MultisigwalletNextTransaction;
@@ -195,6 +229,39 @@ export declare class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryMemberTransactionAll
+     * @summary Queries a list of MemberTransaction items.
+     * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction
+     */
+    queryMemberTransactionAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<MultisigwalletQueryAllMemberTransactionResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryMemberTransaction
+     * @summary Queries a MemberTransaction by index.
+     * @request GET:/threefoldtech/threefoldhub/multisigwallet/member_transaction/{index}
+     */
+    queryMemberTransaction: (index: string, params?: RequestParams) => Promise<HttpResponse<MultisigwalletQueryGetMemberTransactionResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryNextMemberTransaction
+     * @summary Queries a NextMemberTransaction by index.
+     * @request GET:/threefoldtech/threefoldhub/multisigwallet/next_member_transaction
+     */
+    queryNextMemberTransaction: (params?: RequestParams) => Promise<HttpResponse<MultisigwalletQueryGetNextMemberTransactionResponse, RpcStatus>>;
     /**
      * No description
      *

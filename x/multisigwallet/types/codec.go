@@ -15,6 +15,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAddSigners{}, "multisigwallet/AddSigners", nil)
 	cdc.RegisterConcrete(&MsgRemoveSigners{}, "multisigwallet/RemoveSigners", nil)
 	cdc.RegisterConcrete(&MsgUpdateMinSigns{}, "multisigwallet/UpdateMinSigns", nil)
+	cdc.RegisterConcrete(&MsgAddMember{}, "multisigwallet/AddMember", nil)
+	cdc.RegisterConcrete(&MsgSignMemberTransaction{}, "multisigwallet/SignMemberTransaction", nil)
+	cdc.RegisterConcrete(&MsgRemoveMember{}, "multisigwallet/RemoveMember", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +42,15 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateMinSigns{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddMember{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSignMemberTransaction{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRemoveMember{},
 	)
 	// this line is used by starport scaffolding # 3
 

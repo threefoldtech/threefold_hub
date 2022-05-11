@@ -6,6 +6,8 @@ import "multisigwallet/params.proto";
 import "multisigwallet/wallet.proto";
 import "multisigwallet/transaction.proto";
 import "multisigwallet/next_transaction.proto";
+import "multisigwallet/member_transaction.proto";
+import "multisigwallet/next_member_transaction.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/threefoldtech/threefold_hub/x/multisigwallet/types";
@@ -16,5 +18,7 @@ message GenesisState {
   repeated Wallet walletList = 2 [(gogoproto.nullable) = false];
   repeated Transaction transactionList = 3 [(gogoproto.nullable) = false];
   NextTransaction nextTransaction = 4;
+  repeated MemberTransaction memberTransactionList = 5 [(gogoproto.nullable) = false];
+  NextMemberTransaction nextMemberTransaction = 6;
   // this line is used by starport scaffolding # genesis/proto/state
 }

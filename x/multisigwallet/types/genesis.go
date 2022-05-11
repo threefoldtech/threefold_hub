@@ -10,9 +10,11 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		WalletList:      []Wallet{},
-		TransactionList: []Transaction{},
-		NextTransaction: &NextTransaction{uint64(1)},
+		WalletList:            []Wallet{},
+		TransactionList:       []Transaction{},
+		NextTransaction:       &NextTransaction{uint64(1)},
+		MemberTransactionList: []MemberTransaction{},
+		NextMemberTransaction: &NextMemberTransaction{uint64(1)},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -40,6 +42,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for transaction")
 		}
 		transactionIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in memberTransaction
+	memberTransactionIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.MemberTransactionList {
+		index := string(MemberTransactionKey(elem.Index))
+		if _, ok := memberTransactionIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for memberTransaction")
+		}
+		memberTransactionIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

@@ -24,3 +24,7 @@ func KeyPrefix(p string) []byte {
 const (
 	NextTransactionKey = "NextTransaction-value-"
 )
+
+const (
+	NextMemberTransactionKey = "NextMemberTransaction-value-"
+)
