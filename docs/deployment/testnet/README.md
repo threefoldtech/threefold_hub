@@ -5,3 +5,4 @@ Please note that the TFT token has 7 decimal places which means 1 TFT in the doc
 
 - gov min_deposit: The minimum amount deposietd for a proposal to be put to a vote (1 TFT for testnet) 
 - crisis constant fee: fixed cost to run invariant check [transaction](https://docs.cosmos.network/v0.44/modules/crisis/01_state.html) (1 TFT for testnet)
+- env file for threefold hub testnet instance is [here](https://docs.grid.tf/threefold/itenv_threefold_main/src/branch/master/Threefold_Software_Solutions/Threefold-Hub/Readme.md)
