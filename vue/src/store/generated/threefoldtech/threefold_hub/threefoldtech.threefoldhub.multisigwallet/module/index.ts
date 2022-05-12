@@ -5,24 +5,24 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgExecuteTransaction } from "./types/multisigwallet/tx";
+import { MsgCreateTransaction } from "./types/multisigwallet/tx";
 import { MsgAddMember } from "./types/multisigwallet/tx";
+import { MsgSignTransaction } from "./types/multisigwallet/tx";
+import { MsgCreateWallet } from "./types/multisigwallet/tx";
 import { MsgUpdateMinSigns } from "./types/multisigwallet/tx";
 import { MsgSignMemberTransaction } from "./types/multisigwallet/tx";
-import { MsgSignTransaction } from "./types/multisigwallet/tx";
 import { MsgRemoveMember } from "./types/multisigwallet/tx";
-import { MsgCreateWallet } from "./types/multisigwallet/tx";
-import { MsgCreateTransaction } from "./types/multisigwallet/tx";
 
 
 const types = [
   ["/threefoldtech.threefoldhub.multisigwallet.MsgExecuteTransaction", MsgExecuteTransaction],
+  ["/threefoldtech.threefoldhub.multisigwallet.MsgCreateTransaction", MsgCreateTransaction],
   ["/threefoldtech.threefoldhub.multisigwallet.MsgAddMember", MsgAddMember],
+  ["/threefoldtech.threefoldhub.multisigwallet.MsgSignTransaction", MsgSignTransaction],
+  ["/threefoldtech.threefoldhub.multisigwallet.MsgCreateWallet", MsgCreateWallet],
   ["/threefoldtech.threefoldhub.multisigwallet.MsgUpdateMinSigns", MsgUpdateMinSigns],
   ["/threefoldtech.threefoldhub.multisigwallet.MsgSignMemberTransaction", MsgSignMemberTransaction],
-  ["/threefoldtech.threefoldhub.multisigwallet.MsgSignTransaction", MsgSignTransaction],
   ["/threefoldtech.threefoldhub.multisigwallet.MsgRemoveMember", MsgRemoveMember],
-  ["/threefoldtech.threefoldhub.multisigwallet.MsgCreateWallet", MsgCreateWallet],
-  ["/threefoldtech.threefoldhub.multisigwallet.MsgCreateTransaction", MsgCreateTransaction],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -56,13 +56,13 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgExecuteTransaction: (data: MsgExecuteTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgExecuteTransaction", value: MsgExecuteTransaction.fromPartial( data ) }),
+    msgCreateTransaction: (data: MsgCreateTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgCreateTransaction", value: MsgCreateTransaction.fromPartial( data ) }),
     msgAddMember: (data: MsgAddMember): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgAddMember", value: MsgAddMember.fromPartial( data ) }),
+    msgSignTransaction: (data: MsgSignTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgSignTransaction", value: MsgSignTransaction.fromPartial( data ) }),
+    msgCreateWallet: (data: MsgCreateWallet): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgCreateWallet", value: MsgCreateWallet.fromPartial( data ) }),
     msgUpdateMinSigns: (data: MsgUpdateMinSigns): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgUpdateMinSigns", value: MsgUpdateMinSigns.fromPartial( data ) }),
     msgSignMemberTransaction: (data: MsgSignMemberTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgSignMemberTransaction", value: MsgSignMemberTransaction.fromPartial( data ) }),
-    msgSignTransaction: (data: MsgSignTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgSignTransaction", value: MsgSignTransaction.fromPartial( data ) }),
     msgRemoveMember: (data: MsgRemoveMember): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgRemoveMember", value: MsgRemoveMember.fromPartial( data ) }),
-    msgCreateWallet: (data: MsgCreateWallet): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgCreateWallet", value: MsgCreateWallet.fromPartial( data ) }),
-    msgCreateTransaction: (data: MsgCreateTransaction): EncodeObject => ({ typeUrl: "/threefoldtech.threefoldhub.multisigwallet.MsgCreateTransaction", value: MsgCreateTransaction.fromPartial( data ) }),
     
   };
 };

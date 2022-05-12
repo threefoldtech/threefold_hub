@@ -55,7 +55,17 @@ func (k msgServer) SignTransaction(goCtx context.Context, msg *types.MsgSignTran
 	if len(signersList) < minSigns {
 		transaction.State = "Pending"
 	} else {
-		transaction.State = "Ready"
+		transactionAmount, err := sdk.ParseCoinsNormalized(transaction.Amount)
+		if err != nil {
+			panic(err)
+		}
+		walletAddress, _ := sdk.AccAddressFromBech32(wallet.Address)
+		toAddress, _ := sdk.AccAddressFromBech32(transaction.ToAddress)
+		sdkError := k.bankKeeper.SendCoins(ctx, walletAddress, toAddress, transactionAmount)
+		if sdkError != nil {
+			return nil, sdkerrors.Wrap(sdkError, fmt.Sprintf("can not send money from wallet:%s to account: %s", wallet.Address, transaction.ToAddress))
+		}
+		transaction.State = "Executed"
 	}
 
 	k.SetTransaction(ctx, transaction)
