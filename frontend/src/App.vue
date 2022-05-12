@@ -61,7 +61,7 @@ export default class App extends Vue {
   error = false;
 
   routes = [
-    { label: "Send to Cosmos", path: "/", keplr: false },
+    { label: "Send to Threefold Hub", path: "/", keplr: false },
     { label: "Send to BSC", path: "/bsc", keplr: true },
     { label: "Pending BSC transactions", path: "/list-bsc", keplr: true },
     { label: "Add proposal", path: "/add-proposal", keplr: true },
@@ -75,18 +75,17 @@ export default class App extends Vue {
 
   created() {
     this.$store.dispatch(Actions.CHECK_KEPLR);
-    checkKeplr()
-      .then((_) => {
-        ensureChain(
-          this.$store.state.config.chain_id,
-          "tf",
-          this.$store.state.config.tendermint_rpc,
-          this.$store.state.config.cosmos_rest,
-        ).catch((e) => {
-          // TODO: how to show this error to the user
-          console.log(e)
-        })
-      })
+    checkKeplr().then((_) => {
+      ensureChain(
+        this.$store.state.config.chain_id,
+        "tf",
+        this.$store.state.config.tendermint_rpc,
+        this.$store.state.config.cosmos_rest
+      ).catch((e) => {
+        // TODO: how to show this error to the user
+        console.log(e);
+      });
+    });
   }
 }
 </script>
