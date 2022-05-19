@@ -3,12 +3,13 @@
     <h1>Add Text Proposal</h1>
 
     <form @submit.prevent="onSubmitProposal()">
-      <v-text-field label="Title" placeholder="Title" v-model="title" />
+      <v-text-field label="Title" placeholder="Title" v-model="title" :rules="[nonemptyTitle]" />
 
       <v-text-field
         label="Initial Deposit"
         placeholder="Initial Deposit"
         v-model="initialDeposit"
+        :rules="[money]"
       />
 
       <v-textarea
@@ -16,6 +17,7 @@
         placeholder="Description"
         v-model="description"
         hint="Markdown is supported"
+        :rules="[nonemptyDescription]"
       />
 
       <v-row justify="center">
@@ -54,7 +56,38 @@ export default class TextProposal extends Vue {
 
   title = "";
   description = "";
-  initialDeposit = "0";
+  initialDeposit = "1";
+
+  parseAmount(): BigNumber {
+    const decimals = this.$store.state.config.tft_decimals || 0;
+    const amountBN = parseUnits(this.initialDeposit || "0", decimals);
+    if (amountBN.lte(0)) {
+      throw new Error("amount must be positive")
+    }
+    return amountBN
+  }
+
+  money() {
+    try {
+      this.parseAmount()
+    } catch (err: any) {
+      return err.message
+    }
+  }
+
+  nonemptyTitle() {
+    if (this.title == "") {
+      return "title can't be blank"
+    }
+    return true
+  }
+
+  nonemptyDescription() {
+    if (this.description == "") {
+      return "description can't be blank"
+    }
+    return true
+  }
 
   onSubmitProposal() {
     this.loading = true;
@@ -65,6 +98,7 @@ export default class TextProposal extends Vue {
       const { title, description, initialDeposit } = this;
       submitProposal(
         this.$store.state.config.tendermint_rpc,
+        this.$store.state.config.cosmos_rest,
         this.$store.state.config.gas_price,
         this.$store.state.config.chain_id,
         { title, description },
@@ -75,7 +109,6 @@ export default class TextProposal extends Vue {
           this.result = "Proposal added succefully!";
         })
         .catch((err) => {
-          console.log("Error", err);
           this.error = err.message;
         })
         .finally(() => {

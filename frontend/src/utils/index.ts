@@ -11,7 +11,7 @@ import { Api, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import Long from "long";
 import { snakeToCamelCase } from "./camel";
 import { myRegistry } from "./registry"
-import { submitWithCheck } from "./txs";
+import { submitWithCheck, simulate } from "./txs";
 import { waitBscTransaction } from "./eth";
 const UINT256_MAX_INT = ethers.BigNumber.from(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
@@ -48,7 +48,6 @@ export async function sendToCosmos(
     const senderAddress = (
       await window.ethereum.request({ method: "eth_requestAccounts" })
     )[0];
-  // console.log(senderAddress)
   const allowance = ethers.BigNumber.from(
     await bepContract.allowance(senderAddress, gravity_contract_address)
   );
@@ -66,16 +65,6 @@ export async function sendToCosmos(
       throw new Error("Allowance tx with hash " + tx.hash + " took more than 15 seconds. Try sending again after it succeeds.")
     }
   }
-  console.log(
-    "sending " +
-      amount +
-      " of token " +
-      token_contract_address +
-      " from  " +
-      senderAddress +
-      " to " +
-      destination
-  );
 
   return gravityContract.sendToCosmos(
     token_contract_address,
@@ -85,6 +74,50 @@ export async function sendToCosmos(
 }
 
 export function sendToEth(
+  tendermint_rpc: string,
+  cosmos_rest: string,
+  gas_price: string,
+  chain_id: string,
+  destination: string,
+  amount: BigNumber,
+  bridge_fees: BigNumber,
+  denom: string
+) {
+  if (!window.keplr) {
+    throw new Error("keplr is not installed");
+  }
+  const offlineSigner = window.keplr.getOfflineSigner(chain_id);
+  let client: any;
+
+  return SigningStargateClient.connectWithSigner(
+    tendermint_rpc, // Replace with your own RPC endpoint
+    offlineSigner,
+    { registry: myRegistry, gasPrice: GasPrice.fromString(gas_price) }
+  )
+    .then((_client) => (client = _client))
+    .then(() => window.keplr.getKey(chain_id))
+    .then((account) => {
+      const message = {
+        typeUrl: "/gravity.v1.MsgSendToEth", // Same as above
+        value: MsgSendToEth.fromPartial({
+          sender: account.bech32Address,
+          amount: {
+            amount: amount.toString(),
+            denom: denom,
+          },
+          bridgeFee: {
+            amount: bridge_fees.toString(),
+            denom: denom,
+          },
+          ethDest: destination,
+        }),
+      };
+      return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", amount.add(bridge_fees));
+    });
+
+}
+
+export function sendToEthFees(
   tendermint_rpc: string,
   gas_price: string,
   chain_id: string,
@@ -122,13 +155,14 @@ export function sendToEth(
           ethDest: destination,
         }),
       };
-      return submitWithCheck(client, account.bech32Address, [message], "auto");
+      return simulate(client, account.bech32Address, [message]);
     });
 
 }
 
 export async function cancelSendToEth(
   tendermint_rpc: string,
+  cosmos_rest: string,
   gas_price: string,
   chain_id: string,
   transactionId: string
@@ -139,7 +173,6 @@ export async function cancelSendToEth(
   const offlineSigner = window.keplr.getOfflineSigner(chain_id);
   const sender = (await offlineSigner.getAccounts())[0];
   let client: any;
-  console.log(sender);
   return SigningStargateClient.connectWithSigner(
     tendermint_rpc, // Replace with your own RPC endpoint
     offlineSigner,
@@ -155,7 +188,7 @@ export async function cancelSendToEth(
           transactionId: Long.fromString(transactionId),
         }),
       };
-      return submitWithCheck(client, account.bech32Address, [message], "auto");
+      return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", BigNumber.from("0"));
     });
 }
 

@@ -1,6 +1,12 @@
 <template>
   <v-container>
     <h1>Validators</h1>
+    <v-alert
+      type="error"
+      v-if="error != null"
+    >
+    {{ error }}
+    </v-alert>
     <v-data-table :headers="headers" :items="validators" :loading="loading">
 
       <template v-slot:[`item.commission`]="{ item }">
@@ -44,29 +50,28 @@ export default class ListGov extends Vue {
 
   validators: CosmosStakingV1Beta1QueryValidatorsResponse["validators"] = [];
   loading = false;
-
+  error: string | null = null;
+  
   async normalizeStakedTokens() {
     let validators = this.validators || [];
     for (const validator of validators) {
       validator.tokens = formatUnits(validator.tokens || "0", this.$store.state.config.tft_decimals) + " " + this.$store.state.config.tft_denom
-      console.log(validator.commission)
     }
   }
 
   created() {
     this.loading = true;
-
-      listValidators(this.$store.state.config.cosmos_rest)
-        .then((res: CosmosStakingV1Beta1QueryValidatorsResponse) => {
-          this.validators = res.validators;
-          this.normalizeStakedTokens()
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    listValidators(this.$store.state.config.cosmos_rest)
+      .then((res: CosmosStakingV1Beta1QueryValidatorsResponse) => {
+        this.validators = res.validators;
+        this.normalizeStakedTokens()
+      })
+      .catch((err) => {
+        this.error = "Failed to list validators (refresh to try again): " + err.message
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }
 </script>

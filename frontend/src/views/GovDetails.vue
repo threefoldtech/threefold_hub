@@ -198,7 +198,7 @@ export default class GovDetails extends Vue {
         );
       })
       .catch((err) => {
-        console.log("Error", err);
+        this.error = "Couldn't get proposal info (refresh to try again): " + err.message
       })
       .finally(() => {
         this.loading = null;
@@ -206,14 +206,13 @@ export default class GovDetails extends Vue {
 
     pool(this.$store.state.config.cosmos_rest)
       .then((res: any) => {
-        console.log(res);
         this.bondedTokens = formatUnits(
           res.pool.bondedTokens!,
           this.$store.state.config.tft_decimals
         );
       })
       .catch((err) => {
-        console.log("Error", err);
+        this.error = "Couldn't get total vonded tokens (refresh to try again): " + err.message
       });
   }
 
@@ -230,17 +229,16 @@ export default class GovDetails extends Vue {
 
     submitVote(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       this.proposal.proposalId,
       action.value
     )
       .then((res) => {
-        console.log(res);
         this.result = `Successfully voted with '${action.label}'.`;
       })
       .catch((err) => {
-        console.log("Error", err);
         this.error = err.message;
       })
       .finally(() => {

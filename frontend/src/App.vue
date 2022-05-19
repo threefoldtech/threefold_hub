@@ -1,6 +1,26 @@
 <template>
   <v-app>
     <v-app-bar fixed dark>
+      <v-snackbar
+        :value="error != null"
+        color="red"
+        :timeout="-1"
+        absolute
+        left
+        top
+      >
+        {{ error }}
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="yellow"
+            text
+            v-bind="attrs"
+            @click="error = null"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
       <v-toolbar-title>
         <v-img src="./assets/logo.png" height="40" width="40" alt="logo" />
       </v-toolbar-title>
@@ -18,7 +38,7 @@
           <v-tooltip
             bottom
             :disabled="!(keplr !== 'loaded' && route.keplr)"
-            color="error"
+            type="error"
           >
             <template v-slot:activator="{ on, attrs }">
               <div v-bind="attrs" v-on="on">
@@ -57,8 +77,7 @@ import { ensureChain } from "@/utils/keplr";
   name: "App",
 })
 export default class App extends Vue {
-  loading = true;
-  error = false;
+  error: string | null = null;
 
   routes = [
     { label: "Send to Threefold Hub", path: "/", keplr: false },
@@ -82,8 +101,7 @@ export default class App extends Vue {
         this.$store.state.config.tendermint_rpc,
         this.$store.state.config.cosmos_rest
       ).catch((e) => {
-        // TODO: how to show this error to the user
-        console.log(e);
+        this.error = "Couldn't check whether keplr installed or not (refresh to try again): " + e.message
       });
     });
   }

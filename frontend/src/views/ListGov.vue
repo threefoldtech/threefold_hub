@@ -2,6 +2,12 @@
   <v-container>
     <v-row justify="space-between" class="mb-6">
       <h1>Proposals</h1>
+      <v-alert
+        type="error"
+        v-if="error != null"
+      >
+      {{ error }}
+      </v-alert>
 
       <div style="display: flex">
         <div v-if="tally">
@@ -145,6 +151,7 @@ export default class ListGov extends Vue {
   tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"] | null = null;
   deposit: any | null = null;
   voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"] | null = null;
+  error: string | null = null;
 
   normalize(v?: string): string {
     if (typeof v !== "string") return v as any;
@@ -172,15 +179,14 @@ export default class ListGov extends Vue {
       .then((res) => {
         this.tally = res.tallyParams!;
         this.deposit = res.depositParams!;
-        console.log(this.deposit.minDeposit);
         this.deposit.minDeposit[0].amount = formatUnits(
           this.deposit.minDeposit[0].amount,
           this.$store.state.config.tft_decimals
         );
         this.voting = res.votingParams!;
       })
-      .catch((err) => {
-        console.log("Error", err);
+      .catch((err: any) => {
+        this.error = "Couldn't get voting parameters (refresh to try again): " + err.message
       });
 
     listProposals(this.$store.state.config.cosmos_rest)
@@ -189,7 +195,7 @@ export default class ListGov extends Vue {
         this.fillPendingProposalsVotes();
       })
       .catch((err) => {
-        console.log("Error", err);
+        this.error = "Couldn't list proposals (refresh to try again): " + err.message
       })
       .finally(() => {
         this.loading = false;

@@ -9,13 +9,14 @@
         <v-text-field
           label="Amount"
           placeholder="Amount"
+          :rules="[money]"
           v-model="amount"
         />
 
         <v-btn
           color="primary"
           type="submit"
-          :disabled="loading"
+          :disabled="inValid || loading"
           :loading="loading"
         >
           Submit
@@ -45,7 +46,7 @@ import { parseUnits } from "ethers/lib/utils";
   },
 })
 export default class GovDeposit extends Vue {
-  amount = "0";
+  amount = "1";
   address = "";
   loading = false;
   result: any = null;
@@ -53,9 +54,29 @@ export default class GovDeposit extends Vue {
 
   created() {
     this.loading = false;
-    console.log(this.$route.params)
-    console.log(123)
     this.address = this.$route.params.address;
+  }
+
+  get inValid() {
+    return this.money() !== true;
+  }
+
+  parseAmount(): BigNumber {
+    const decimals = this.$store.state.config.tft_decimals || 0;
+    const amountBN = parseUnits(this.amount || "0", decimals);
+    if (amountBN.lte(0)) {
+      throw new Error("amount must be positive")
+    }
+    return amountBN
+  }
+
+  money() {
+    try {
+      this.parseAmount()
+      return true
+    } catch (err: any) {
+      return err.message
+    }
   }
 
   onDelegate() {
@@ -65,6 +86,7 @@ export default class GovDeposit extends Vue {
 
     delegate(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       this.address,
@@ -72,11 +94,9 @@ export default class GovDeposit extends Vue {
       this.$store.state.config.tft_denom
     )
       .then((res) => {
-        console.log(res);
         this.result = `Successfully delegated ${this.amount} to validator #${this.address}`;
       })
       .catch((err) => {
-        console.log("Error", err);
         this.error = err.message;
       })
       .finally(() => {

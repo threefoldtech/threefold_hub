@@ -61,7 +61,6 @@ export default class GovDeposit extends Vue {
         this.proposal = proposal.proposal;
       })
       .catch((err) => {
-        console.log("Error", err);
         this.error = err.message;
       })
       .finally(() => {
@@ -76,6 +75,7 @@ export default class GovDeposit extends Vue {
 
     deposit(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       this.proposal.proposalId,
@@ -83,11 +83,9 @@ export default class GovDeposit extends Vue {
       this.$store.state.config.proposal_denom
     )
       .then((res) => {
-        console.log(res);
         this.result = `Successfully deposited ${this.amount} to proposal #${this.proposal.proposalId}`;
       })
       .catch((err) => {
-        console.log("Error", err);
         this.error = err.message;
       })
       .finally(() => {
