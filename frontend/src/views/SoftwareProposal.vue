@@ -67,7 +67,7 @@ export default class SoftwareProposal extends Vue {
   description = "";
   name = "";
   height = 0;
-  initialDeposit = "0";
+  initialDeposit = "1";
   systems = [{ os: null, arch: null, url: null }];
 
   onAddSystem() {
@@ -97,9 +97,9 @@ export default class SoftwareProposal extends Vue {
     };
 
     this.loading = true;
-    console.log(this.$store.state.config.chain_id)
     submitSoftwareUpgradeProposal(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       proposal,
@@ -110,7 +110,6 @@ export default class SoftwareProposal extends Vue {
           this.result = "Proposal added succefully!";
       })
       .catch((err) => {
-        console.log("Error", err);
         this.error = err.message;
       })
       .finally(() => {

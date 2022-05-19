@@ -1,6 +1,12 @@
 <template>
   <v-container>
     <h1>BSC transactions</h1>
+    <v-alert
+      type="error"
+      v-if="permError != null"
+    >
+    {{ permError }}
+    </v-alert>
     <v-tabs v-model="tab">
       <v-tab v-for="t in tabs" :key="t.symbol">
         {{ t.label }}
@@ -35,6 +41,26 @@
         </v-data-table>
       </v-tab-item>
     </v-tabs-items>
+    <v-snackbar
+      :value="error != null"
+      color="red"
+      absolute
+      left
+      top
+    >
+      {{ error }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="yellow"
+          text
+          v-bind="attrs"
+          @click="error = null"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
   </v-container>
 </template>
 
@@ -44,6 +70,7 @@ import { BigNumber } from "ethers";
 import { Component, Vue } from "vue-property-decorator";
 import { formatUnits } from "ethers/lib/utils";
 import { pendingSendToEth, cancelSendToEth } from "../utils";
+import { runInThisContext } from "vm";
 
 @Component({
   name: "ListEth",
@@ -77,11 +104,12 @@ export default class ListEth extends Vue {
 
   list: GravityV1QueryPendingSendToEthResponse = {};
   tab: string | null = null;
+  error: string | null = null;
+  permError: string | null = null;
   created() {
     // sometimes created is executed before keplr gets injected
     this.updateWhenLoaded();
   }
-
   normalize(tokens: string): string {
     return formatUnits(BigNumber.from(tokens), this.$store.state.config.tft_decimals);
   }
@@ -94,12 +122,13 @@ export default class ListEth extends Vue {
     }
   }
   updateList() {
+    this.permError = null;
     pendingSendToEth(this.$store.state.config.cosmos_rest, this.$store.state.config.chain_id)
       .then((res: GravityV1QueryPendingSendToEthResponse) => {
         this.list = res;
       })
       .catch((err) => {
-        console.log("Error", err);
+        this.permError = "Couldn't list BSC transcations (refresh to try again): " + err.message
       });
   }
 
@@ -110,18 +139,19 @@ export default class ListEth extends Vue {
 
     if (!cancel) return;
 
+    this.error = null
     cancelSendToEth(
       this.$store.state.config.tendermint_rpc,
+      this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       txId
       )
-      .then((res) => {
-        console.log("Canceled", res);
+      .then((_) => {
         this.updateList();
       })
       .catch((err) => {
-        console.log("Error", err);
+        this.error = "Couldn't cancel the BSC transaction: " + err.message
       });
   }
 }

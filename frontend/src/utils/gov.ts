@@ -125,6 +125,7 @@ async function parameters(
 
 async function submitProposal(
     tendermint_rpc: string,
+    cosmos_rest: string,
     gas_price: string,
     chain_id: string,
     content: TextProposal,
@@ -159,13 +160,14 @@ async function submitProposal(
                     proposer: sender.address
                 }),
             };
-            return submitWithCheck(client, account.bech32Address, [message], "auto");
+            return submitWithCheck(client, cosmos_rest,account.bech32Address, [message], "auto", initialDeposit);
         });
 
 }
 
 async function submitSoftwareUpgradeProposal(
     tendermint_rpc: string,
+    cosmos_rest: string,
     gas_price: string,
     chain_id: string,
     content: SoftwareUpgradeProposal,
@@ -178,7 +180,6 @@ async function submitSoftwareUpgradeProposal(
     // TODO: should this be done globally one time?
     const offlineSigner = window.keplr.getOfflineSigner(chain_id);
     const sender = (await offlineSigner.getAccounts())[0];
-    console.log(await offlineSigner.getAccounts())
     let client: SigningStargateClient;
     return SigningStargateClient.connectWithSigner(
         tendermint_rpc, // Replace with your own RPC endpoint
@@ -202,7 +203,7 @@ async function submitSoftwareUpgradeProposal(
                     proposer: sender.address
                 }),
             };
-            return submitWithCheck(client, account.bech32Address, [message], "auto");
+            return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", initialDeposit);
         });
 
     // TODO: how to check transaction errors
@@ -210,6 +211,7 @@ async function submitSoftwareUpgradeProposal(
 
 async function deposit(
     tendermint_rpc: string,
+    cosmos_rest: string,
     gas_price: string,
     chain_id: string,
     proposalId: string,
@@ -241,13 +243,14 @@ async function deposit(
                     proposalId: proposalId
                 }),
             };
-            return submitWithCheck(client, account.bech32Address, [message], "auto");
+            return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", deposit);
         });
 
 }
 
 async function delegate(
     tendermint_rpc: string,
+    cosmos_rest: string,
     gas_price: string,
     chain_id: string,
     validatorAddress: string,
@@ -279,13 +282,14 @@ async function delegate(
                     validatorAddress: validatorAddress
                 }),
             };
-            return submitWithCheck(client, account.bech32Address, [message], "auto");
+            return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", amount);
         });
 
 }
 
 async function submitVote(
     tendermint_rpc: string,
+    cosmos_rest: string,
     gas_price: string,
     chain_id: string,
     proposalId: string,
@@ -313,7 +317,7 @@ async function submitVote(
                     option: vote
                 }),
             };
-            return submitWithCheck(client, account.bech32Address, [message], "auto");
+            return submitWithCheck(client, cosmos_rest, account.bech32Address, [message], "auto", BigNumber.from("0"));
         });
 
 }

@@ -3,7 +3,7 @@
     <h1>Send to Threefold Hub</h1>
 
     <form @submit.prevent="onSendToCosmos()">
-      <v-text-field label="Amount" placeholder="Amount" v-model="amount" />
+      <v-text-field label="Amount" placeholder="Amount" v-model="amount" :rules="[money]" />
 
       <v-text-field
         label="Destination"
@@ -36,6 +36,7 @@ import { Config } from "@/utils/config";
 import { parseUnits } from "ethers/lib/utils";
 import CustomAlert from "@/components/CustomAlert.vue";
 import { bech32 } from "bech32";
+import { BigNumber } from "ethers";
 
 @Component({
   name: "CosmosView",
@@ -52,15 +53,33 @@ export default class Cosmos extends Vue {
   destination = "";
 
   get inValid() {
-    return this.amount === "" || this.bech32Address(this.destination) !== true;
+    return this.money() !== true || this.bech32Address(this.destination) !== true;
   }
 
+  parseAmount(): BigNumber {
+    const decimals = this.$store.state.config.tft_decimals || 0;
+    const amountBN = parseUnits(this.amount || "0", decimals);
+    if (amountBN.lte(0)) {
+      throw new Error("amount must be positive")
+    }
+    return amountBN
+  }
+
+  money() {
+    try {
+      this.parseAmount()
+      return true
+    } catch (err: any) {
+      return err.message
+    }
+  }
+  
   bech32Address(address: string) {
     try {
       const { prefix } = bech32.decode(address);
-      return prefix === "tf" ? true : "Address is not valid";
+      return prefix === "tf" ? true : "Address must have tf prefix";
     } catch {
-      return "Address is not valid";
+      return "Not a valid Threefold Hub ";
     }
   }
 
@@ -70,21 +89,20 @@ export default class Cosmos extends Vue {
     this.error = null;
 
     try {
-      const { amount, destination } = this;
+      const { destination } = this;
       const config = this.$store.state.config as Config;
-      let amountBN = parseUnits(amount, config.tft_decimals);
+      let amount = this.parseAmount()
 
       sendToCosmos(
         config.tft_token_contract_address,
         config.gravity_contract_address,
         destination,
-        amountBN
+        amount
       )
         .then((res) => {
           this.result = "Transaction submitted succefully!";
         })
         .catch((err) => {
-          console.log("Error", err);
           this.error = err.message;
         })
         .finally(() => {
