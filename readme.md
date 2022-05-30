@@ -2,24 +2,25 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
-
 ## Requirements
 
 1. [Go toolchain](https://go.dev)
 2. gcc package and build-essential `apt install gcc build-essential`
 3. [ignite binary v0.20.0](https://ignite.com/cli)
 4. Cosmovisor v1.0.0 (`go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0`)
-5. BSC geth v1.1.9, can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9). 
-6. gbt 1.5.0, can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0). 
+5. BSC geth v1.1.9, can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9).
+6. gbt 1.5.0, can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0).
 
 ## Overview
 
 The threefold chain contains a bridge module to move money from/to Binance Smart Chain (BSC). It contains the following components:
+
 - A Gravity Smart Contract on BSC. This contract is per chain and it contains the BSC-side logic of bridging.
 - The threefold hub chain. A cosmos-based chain which can be run using `threefold_hubd start` after creating/copying the proper genesis file and modifying the proper config files depending on whether it's the first node on the chain or a joining validator. It can also be run using `cosmovisor` to allow automated updates.
 - The orchestrator (gbt) process. This process takes as an input the cosmos words of the validator, the BSC private key of the BSC account to which the validator delegates his signing power to, the Gravity Contract address, and a BSC node JSON-RPC endpoint. It monitors both the cosmos chain and the BSC chain and performs ~signing of events on both sides and relaying those events so that both chains are aware of them. Every validator must run its own orchestrator. However, only one relayer (an option of gbt that can be switched) must run so that the signatures are relayed between the two chains.
 - The BSC node (whose endpoint are passed to gbt). It can be a light node, full node, or a third party node.
 - The frontend (probably relevant only for developer/devops) are located in [./frontend](./frontend) and can be used to interact with the threefold hub chain as an alternative to the cmdline client provided by gbt.
+
 ## Components setup
 
 ### Gravity Smart Contract
@@ -29,8 +30,6 @@ The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravi
 - `gravity_id` must match the id entered in the `genesis.json` file, By converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
 - `validators` is a list of Binance account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`. Example: `[4294967296]`
-
-
 
 ### The threefold hub chain
 
@@ -91,6 +90,7 @@ The gravity params in the genesis file should be modified:
 The chain is started then by executing `threefold_hubd start`. Or using `cosmosvisor` by running `DAEMON_HOME=/root/.threefold_hub DAEMON_NAME=threefold_hubd DAEMON_ALLOW_DOWNLOAD_BINARIES=true cosmovisor start`. After storing the binary in `~/.threefold_hub/cosmovisor/genesis/bin/threefold_hubd`.
 
 ### Orchestrator setup
+
 Similarly, the gbt config file in `~/.gbt/config.toml` and the command to run it can be auto-generated using the same docker script in the above step. The manual configuration is described here.
 
 Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/download/v1.5.0/gbt) binary. Then execute `gbt init` to initalize the gbt config. Modify the config to contain the following:
@@ -145,14 +145,15 @@ To transfer the money back to binance:
 ```bash
 ./gbt -a tf client cosmos-to-eth --amount '<amount-to-transfer>' -b 30000000TFT -c '<cosmos-words-of-the-sender>' -e '<binance-address-of-the-receiver>' -f 0TFT
 ```
+
 ## Common flows
 
 ### Developer (chain from scratch)
 
 1. Create a gravity contract.
 2. Generate the genesis file.
-3. Start a BSC light node (or use something like https://data-seed-prebsc-2-s1.binance.org:8545/ for bsc testnet for a quick setup)
-3. Run the chain and the orchestor.
+3. Start a BSC light node (or use something like <https://data-seed-prebsc-2-s1.binance.org:8545/> for bsc testnet for a quick setup)
+4. Run the chain and the orchestor.
 
 ### Developer (modifying an already deployed chain)
 
@@ -162,13 +163,15 @@ Needs to be researched. The running chain can be hardforked by exporting the gen
 
 1. Create a gravity contract.
 2. Generate the genesis file.
-3. Start a BSC light node (or use something like https://data-seed-prebsc-2-s1.binance.org:8545/ for bsc testnet for a quick setup)
-3. Run the chain and the orchestor.
+3. Start a BSC light node (or use something like <https://data-seed-prebsc-2-s1.binance.org:8545/> for bsc testnet for a quick setup)
+4. Run the chain and the orchestor.
 
 The genesis file must be shared to be used by other validator joining the chain.
+
 ### Devops (adding a new validator)
 
 The validator is dockerized [here](./docker/validator/README.md) and descibed manually [here](./docs/AddingValidators.md).
+
 ### Devops (running the frontend)
 
 The config must be updated and then run as described [here](./frontend/README.md).
@@ -176,9 +179,13 @@ The config must be updated and then run as described [here](./frontend/README.md
 ## Running chains
 
 ### Demo
+
 The process of how it's deployed and how to access it is documented [here](./docs/deployment/demo/).
+
 ### Testnet
+
 After deploying, its related config and set parameter should be documented [here](./docs/deployment/testnet/).
+
 ## Glossary
 
 [Smart Contract](https://en.wikipedia.org/wiki/Smart_contract): A transaction protocol which is intended to automatically execute events and actions according to the terms of a contract. Here, the smart contracts are deployed on BSC.

@@ -1,31 +1,42 @@
 # Adding more validator nodes to cosmos
+
 ## Assuming that you already have a one node chain running and you need to add another one
-1-  Get the genesis file from your running node and move it to the new node 
+
+1-  Get the genesis file from your running node and move it to the new node
+
 ```
 $HOME/.threefold_hubd/config/genesis.json
 ```
+
 2- Add persistent peer to your config.toml
 
-``` 
+```
 #$HOME/.threefold_hubd/config/genesis.json
 persistent_peers = "48231a3a58636f1e27fccddbaa17c34ccf4eca24@161.35.85.34:26656"
 ```
+
 to get the node id above issue this command on the already running node
-```
+
+```sh
 threefold_hubd tendermint show-node-id
 ```
 
 3- start your node
-```
+
+```sh
 threefold_hubd start
 ```
-4- add a key 
-```
+
+4- add a key
+
+```sh
 threefold_hubd keys add ashraf
 ```
+
 5- try to get some money to your account address printed form the above command
-6- create a validator 
-```
+6- create a validator
+
+```sh
 threefold_hubd tx staking create-validator \
   --amount=5000000TFT \
   --pubkey="$( threefold_hubd tendermint show-validator)" \
@@ -40,18 +51,23 @@ threefold_hubd tx staking create-validator \
   --from=ashraf \
   --keyring-backend="test" # make sure to user the keyring backend you created the key in
 ```
-7- check that you are already a validator 
-```
+
+7- check that you are already a validator
+
+```sh
  threefold_hubd query staking validators
 ```
+
 you should see an entry with your key there
 8- add delegate keys
+
 ```
 #threefold_hubd tx gravity set-orchestrator-address [validator-address] [orchestrator-address] [ethereum-address] [flags]
 # validator-address: is the valoper address for the validator
 # orchestrator-address: is the address for user in cosmos i.e `ashraf`
 # ethereum-address: the address on the other chain i.e binance or eth
 ```
-```
+
+```sh
 threefold_hubd tx gravity set-orchestrator-address <tfvaloper1rmaj8nl03kzcrqajjnsnjh> tf1rmaj8nl03kzcrqajjnsnjh62hslaewf5t8xz4l 0xaE3A4c49268009A3160265b0bC9BD2edF1 --from ashraf --chain-id threefold-hub --keyring-backend test
 ```
