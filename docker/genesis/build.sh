@@ -23,7 +23,7 @@ mkdir -p output || true
 cp $tmp/root/.threefold_hub/config/genesis.json output/genesis.json
 cp $tmp/root/.threefold_hub/config/node_key.json output/node_key.json
 cp $tmp/root/.threefold_hub/config/priv_validator_key.json output/priv_validator_key.json
-cp $tmp/root/go/bin/threefold_hubd output/threefold_hubd
+cp $tmp/usr/local/bin/threefold_hubd output/threefold_hubd
 cp $tmp/root/.threefold_hub/config/app.toml output/app.toml
 cp $tmp/root/.threefold_hub/config/config.toml output/config.toml
 cp $tmp/root/.gbt/config.toml output/gbt-config.toml
