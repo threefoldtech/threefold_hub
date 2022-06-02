@@ -28,7 +28,7 @@ assign app_state.crisis.constant_fee.denom \"TFT\"
 assign app_state.gov.deposit_params.min_deposit[0].amount \"$GOV_MIN_DEPOSIT\"
 assign app_state.gov.deposit_params.min_deposit[0].denom \"TFT\"
 assign app_state.gov.voting_params.voting_period \"$VOTING_PERIOD\"
-assign app_state.gravity.params.bridge_ethereum_address \"$BRIDGE_ETHEREUM_ADDRESS\"
+assign app_state.gravity.params.bridge_ethereum_address \"$GRAVITY_CONTRACT_ADDRESS\"
 assign app_state.gravity.params.bridge_chain_id \"$BSC_CHAIN_ID\"
 assign app_state.gravity.eth_erc20_to_denoms '[{"erc20": "'$TFT_BSC_CONTRACT_ADDRESS'","denom": "TFT"}]'
 assign app_state.gravity.params.average_ethereum_block_time \"3000\"
@@ -48,6 +48,6 @@ sed -i 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/' $TENDERMIN_AP
 sed -i 's/swagger = false/swagger = true/' $TENDERMIN_APP_CONFIG
 sed -i 's/enable = false/enable = true/' $TENDERMIN_APP_CONFIG
 
-sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/' $TENDERMIN_APP_CONFIG
+sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/' $COSMOS_CONFIG
 
-echo 'gbt -a tf orchestrator --cosmos-phrase "'$THREEFOLD_ACCOUNT_MNEMONICS'" -e "'$DELEGATOR_ETH_PRIVATE_KEY'" --gravity-contract-address "'$BRIDGE_ETHEREUM_ADDRESS'" -f '$(( 250000 * $MIN_GAS_PRICE ))'TFT --ethereum-rpc "'$ETH_ENDPOINT'"' > ~/.gbt/gbt-cmd.sh
+echo 'gbt -a tf orchestrator --cosmos-phrase "'$THREEFOLD_ACCOUNT_MNEMONICS'" -e "'$DELEGATOR_ETH_PRIVATE_KEY'" --gravity-contract-address "'$GRAVITY_CONTRACT_ADDRESS'" -f '$(( 250000 * $MIN_GAS_PRICE ))'TFT --ethereum-rpc "'$ETH_ENDPOINT'"' > ~/.gbt/gbt-cmd.sh
