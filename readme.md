@@ -155,6 +155,13 @@ To transfer the money back to binance:
 3. Start a BSC light node (or use something like <https://data-seed-prebsc-2-s1.binance.org:8545/> for bsc testnet for a quick setup)
 4. Run the chain and the orchestor.
 
+### Developer (multivalidator chain from scratch)
+
+1. Setup the initial node as described above.
+2. Create two keys and fund them (by sending tokens from the initial account, or sending tokens from bsc).
+3. Use these two accounts to spawn two docker containers to run as validators as described [here](./docker/validator/README.md). The node endpoint can be 172.17.0.1 or whatever ip the host has on the docker interface.
+4. Revise the notes about [valset creation](https://github.com/cosmos/gravity-bridge/blob/main/spec/valset-creation-spec.md), and note that valset on the gravity contract doesn't have to be in sync all the time with the active valset on the hub depending on the relayer config.
+
 ### Developer (modifying an already deployed chain)
 
 Needs to be researched. The running chain can be hardforked by exporting the genesis `threefold_hubd export`. But how to fork (create another one?) the gravity contract is still not researched.

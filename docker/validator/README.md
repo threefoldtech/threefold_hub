@@ -9,7 +9,7 @@ This document covers how to add a validator to the threefold hub
 - copy `env.list.example` to `env.list` 
 - `docker run --env-file ./env.list --name tfhub-validator -ti tfhub-validator`
 ## how to add new validators
-- At first you should have at least 1 running node in order to do this follow these [doc](https://github.com/threefoldtech/threefold_hub/blob/development/readme.md)
+- There must be at least 1 running node, in order to do create one from scrach follow these [doc](https://github.com/threefoldtech/threefold_hub/blob/development/readme.md)
 - you can use this [terraform example](https://github.com/threefoldtech/terraform-provider-grid/blob/development/examples/resources/cosmosvalidator/main.tf)
 you need to set these environment variables
 ```
@@ -41,3 +41,5 @@ GENESIS_URL="URL TO genesis.json"
 Notes:
 - your node should have a public ip and you can not have to nodes on the same machine
 - the account matches MNEMONICS above should have enough tokens to stake before deployment
+- two validators can't share the same bsc account address
+- the command `threefold_hubd tendermint show-node-id` can be used to find the node id used in the persistent peers
