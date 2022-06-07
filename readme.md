@@ -13,7 +13,7 @@
 
 ## Overview
 
-The threefold chain contains a bridge module to move money from/to Binance Smart Chain (BSC). It contains the following components:
+The threefold chain contains a bridge module to move TFT from/to Binance Smart Chain (BSC). It contains the following components:
 
 - A Gravity Smart Contract on BSC. This contract is per chain and it contains the BSC-side logic of bridging.
 - The threefold hub chain. A cosmos-based chain which can be run using `threefold_hubd start` after creating/copying the proper genesis file and modifying the proper config files depending on whether it's the first node on the chain or a joining validator. It can also be run using `cosmovisor` to allow automated updates.
@@ -25,15 +25,15 @@ The threefold chain contains a bridge module to move money from/to Binance Smart
 
 ### Gravity Smart Contract
 
-The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use [remix](https://remix.ethereum.org/) to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix contracts directory. The `Gravity.sol` contract then is compiled (with optimization enabled), and then deployed on the Binance chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs. There's a BNB [faucet](https://testnet.binance.org/faucet-smart) to get money from. The Environment in the deployment tab in remix should be set to "Injected Web3". The conrtact is deployed with the following params:
+The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use [remix](https://remix.ethereum.org/) to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix contracts directory. The `Gravity.sol` contract then is compiled (with optimization enabled), and then deployed on the Binance chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs. There's a BNB [faucet](https://testnet.binance.org/faucet-smart) to get money from. The Environment in the deployment tab in remix should be set to "Injected Web3". The contract is deployed with the following parameterßs:
 
-- `gravity_id` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file, By converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
+- `gravity_id` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file, by converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
 - `validators` is a list of Binance account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`. Example: `[4294967296]`
 
 ### The threefold hub chain
 
-The command `ignite chain build` install the `threefold_hubd` binary.
+The command `ignite chain build` installs the `threefold_hubd` binary.
 
 Generating the genesis can be done manually or automated (along other things) using the docker automated [script](https://github.com/threefoldtech/threefold_hub/tree/development/docker/genesis). The manual flow and parameters descriptions are outlined here.
 
