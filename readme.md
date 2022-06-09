@@ -25,11 +25,19 @@ The threefold chain contains a bridge module to move TFT from/to Binance Smart C
 
 ### Gravity Smart Contract
 
-The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts). To use [remix](https://remix.ethereum.org/) to deploy it, the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix contracts directory. The `Gravity.sol` contract then is compiled (with optimization enabled), and then deployed on the Binance chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs. There is [a faucet available  for testnet BNB's](https://testnet.binance.org/faucet-smart). The Environment in the deployment tab in remix should be set to "Injected Web3". The contract is deployed with the following parameters:
+The gravity contracts are available [here](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts).
+
+Deploy the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract with the following parameters:
 
 - `gravity_id` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file, by converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
 - `validators` is a list of BSC account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`. Example: `[4294967296]`
+
+#### Using remix to deploy the contract
+
+You can use [remix](https://remix.ethereum.org/) to deploy the contract.
+
+The [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/Gravity.sol) contract and [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.4.2/solidity/contracts/CosmosToken.sol) must be copied into remix contracts directory. The `Gravity.sol` contract is then compiled (with optimization enabled) and deployed on the Binance Smart Chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs. There is [a faucet available  for testnet BNB's](https://testnet.binance.org/faucet-smart). The Environment in the deployment tab in remix should be set to "Injected Web3".
 
 ### The threefold hub chain
 
