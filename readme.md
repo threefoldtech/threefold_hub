@@ -5,11 +5,11 @@
 ## Requirements
 
 1. [Go toolchain](https://go.dev)
-2. gcc package and build-essential `apt install gcc build-essential`
+2. gcc and build-essential ( on apt based systems like Ubuntu: `apt install gcc build-essential`)
 3. [ignite binary v0.20.0](https://ignite.com/cli)
 4. Cosmovisor v1.0.0 (`go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0`)
-5. BSC geth v1.1.9, can be downloaded from [here](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9).
-6. gbt 1.5.0, can be downloaded from [here](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0).
+5. [BSC geth v1.1.9](https://github.com/bnb-chain/bsc/releases/tag/v1.1.9)
+6. [gbt 1.5.0](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/tag/v1.5.0)
 
 ## Overview
 
@@ -19,7 +19,7 @@ The threefold chain contains a bridge module to move TFT from/to Binance Smart C
 - The threefold hub chain. A cosmos-based chain which can be run using `threefold_hubd start` after creating/copying the proper genesis file and modifying the proper config files depending on whether it's the first node on the chain or a joining validator. It can also be run using `cosmovisor` to allow automated updates.
 - The orchestrator (gbt) process. This process takes as an input the cosmos words of the validator, the BSC private key of the BSC account to which the validator delegates his signing power to, the Gravity Contract address, and a BSC node JSON-RPC endpoint. It monitors both the cosmos chain and the BSC chain and performs ~signing of events on both sides and relaying those events so that both chains are aware of them. Every validator must run its own orchestrator. However, only one relayer (an option of gbt that can be switched) must run so that the signatures are relayed between the two chains.
 - The BSC node (whose endpoint are passed to gbt). It can be a light node, full node, or a third party node.
-- The frontend (probably relevant only for developer/devops) are located in [./frontend](./frontend) and can be used to interact with the threefold hub chain as an alternative to the cmdline client provided by gbt.
+- The [frontend](./frontend) (probably relevant only for developer/devops) can be used to interact with the threefold hub chain as an alternative to the cmdline client provided by gbt.
 
 ## Components setup
 
@@ -38,7 +38,7 @@ Deploy the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob
 You can use [remix](https://remix.ethereum.org/) to deploy the contract.
 
 The [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/Gravity.sol) contract and the imported [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/CosmosToken.sol) dependency must be copied into the remix contracts directory. The `Gravity.sol` contract is then compiled (with optimization enabled) and deployed on the Binance Smart Chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs.
-If deploying on BSC testnet,there is [a faucet available  for testnet BNB's](https://testnet.binance.org/faucet-smart).
+If deploying on BSC testnet,there is [a faucet available for testnet BNB's](https://testnet.binance.org/faucet-smart).
 The Environment in the deployment tab in remix should be set to "Injected Web3".
 
 ### The threefold hub chain
