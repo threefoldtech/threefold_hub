@@ -37,8 +37,8 @@ Deploy the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob
 
 You can use [remix](https://remix.ethereum.org/) to deploy the contract.
 
-The [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/Gravity.sol) contract and the imported [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/CosmosToken.sol) dependency must be copied into the remix contracts directory. The `Gravity.sol` contract is then compiled (with optimization enabled) and deployed on the Binance Smart Chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs.
-If deploying on BSC testnet,there is [a faucet available for testnet BNB's](https://testnet.binance.org/faucet-smart).
+The [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/Gravity.sol) contract and the imported [`CosmosToken.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/CosmosToken.sol) dependency must be copied into the remix contracts directory. The `Gravity.sol` contract is then compiled (with optimization enabled or you get a stack too deep error) and deployed on the Binance Smart Chain. The Binance Smart Chain must be added first to [metamask](https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain) and it must be selected with an account that contains BNBs.
+If deploying on BSC testnet, there is [a faucet available for testnet BNB's](https://testnet.binance.org/faucet-smart).
 The Environment in the deployment tab in remix should be set to "Injected Web3".
 
 ### The threefold hub chain
