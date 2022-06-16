@@ -29,9 +29,10 @@ The gravity contracts are available [here](https://github.com/Gravity-Bridge/Gra
 
 Deploy the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/Gravity.sol) contract with the following parameters:
 
-- `gravity_id` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file, by converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
-- `validators` is a list of BSC account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
-- `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`. Example: `[4294967296]`
+- `_gravityId` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file, by converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`. Example: `0x7468726565666f6c642d6875622d746573746e65740000000000000000000000`.
+Example to generate it on the commandline: `echo "0x$(openssl rand -hex 32)"`
+- `_validators` is a list of BSC account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
+- `_powers` is the signing power of each validator, they are normalized so their sum is `2 ** 32`. Example: `[4294967296]`
 
 #### Using remix to deploy the contract
 
