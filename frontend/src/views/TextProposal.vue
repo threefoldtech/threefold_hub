@@ -2,7 +2,7 @@
   <v-container>
     <h1>Add Text Proposal</h1>
 
-    <form @submit.prevent="onSubmitProposal()">
+    <v-form v-model="valid" @submit.prevent="onSubmitProposal()">
       <v-text-field label="Title" placeholder="Title" v-model="title" :rules="[nonemptyTitle]" />
 
       <v-text-field
@@ -24,13 +24,13 @@
         <v-btn
           color="primary"
           type="submit"
-          :disabled="loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Submit
         </v-btn>
       </v-row>
-    </form>
+    </v-form>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
@@ -41,7 +41,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { submitProposal } from "@/utils/gov";
 import { BigNumber } from "ethers";
 import CustomAlert from "@/components/CustomAlert.vue";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 
 @Component({
   name: "TextProposal",
@@ -53,6 +53,7 @@ export default class TextProposal extends Vue {
   loading = false;
   result: any = null;
   error: string | null = null;
+  valid = false;
 
   title = "";
   description = "";
@@ -70,20 +71,21 @@ export default class TextProposal extends Vue {
   money() {
     try {
       this.parseAmount()
+      return true;
     } catch (err: any) {
       return err.message
     }
   }
 
   nonemptyTitle() {
-    if (this.title == "") {
+    if (this.title === "") {
       return "title can't be blank"
     }
     return true
   }
 
   nonemptyDescription() {
-    if (this.description == "") {
+    if (this.description === "") {
       return "description can't be blank"
     }
     return true
@@ -102,7 +104,7 @@ export default class TextProposal extends Vue {
         this.$store.state.config.gas_price,
         this.$store.state.config.chain_id,
         { title, description },
-        parseUnits(initialDeposit, this.$store.state.config.tft_decimals),
+        this.parseAmount(),
         this.$store.state.config.proposal_denom
       )
         .then((res) => {

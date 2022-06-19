@@ -10,7 +10,7 @@
           label="Amount"
           placeholder="Amount"
           v-model="amount"
-          :hint="'Min deposit is ' + proposal.minDeposit"
+          :hint="'Min deposit is ' + proposal.min_deposit"
         />
 
         <v-btn
@@ -37,7 +37,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { BigNumber } from "ethers";
 import { getProposal, deposit } from "@/utils/gov";
 import CustomAlert from "@/components/CustomAlert.vue";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 
 @Component({
   name: "GovDeposit",
@@ -78,12 +78,12 @@ export default class GovDeposit extends Vue {
       this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
-      this.proposal.proposalId,
+      this.proposal.proposal_id,
       parseUnits(this.amount, this.$store.state.config.tft_decimals),
       this.$store.state.config.proposal_denom
     )
       .then((res) => {
-        this.result = `Successfully deposited ${this.amount} to proposal #${this.proposal.proposalId}`;
+        this.result = `Successfully deposited ${this.amount} to proposal #${this.proposal.proposal_id}`;
       })
       .catch((err) => {
         this.error = err.message;

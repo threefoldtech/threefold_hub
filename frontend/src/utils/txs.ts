@@ -2,6 +2,7 @@ import { Api, CosmosBankV1Beta1QueryBalanceResponse, CosmosStakingV1Beta1Pool } 
 import { EncodeObject } from "@cosmjs/proto-signing";
 import { DeliverTxResponse, GasPrice, SigningStargateClient, StdFee, calculateFee } from "@cosmjs/stargate";
 import { BigNumber } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
 import { snakeToCamelCase } from "./camel";
 
 async function accountBalance(
@@ -16,7 +17,6 @@ async function accountBalance(
     } catch (err: any) {
         throw err.error
     }
-    snakeToCamelCase(response.data)
     return response.data as CosmosBankV1Beta1QueryBalanceResponse;
 }
 
@@ -42,6 +42,11 @@ async function submitWithCheck(
     opPayment: BigNumber,
     memo?: string,
 ): Promise<DeliverTxResponse> {    
+    const balance = await accountBalance(cosmos_rest, signerAddress, "TFT");
+    const balanceNumber = BigNumber.from(balance.balance?.amount);
+    if (balanceNumber.lt(opPayment)) {
+        throw new Error("Transaction requires " + formatUnits(opPayment, 7) + ", account balance is " + formatUnits(balanceNumber, 7))
+    }
     let usedFee: StdFee;
     if (fee == "auto" || typeof fee === "number") {
         const gasPrice: GasPrice = (client as any).gasPrice;
@@ -52,11 +57,9 @@ async function submitWithCheck(
         usedFee = fee;
     }
     // We assume the fee denom is used for everything else (i.e TFT) 
-    const balance = await accountBalance(cosmos_rest, signerAddress, usedFee.amount[0].denom);
-    const balanceNumber = BigNumber.from(balance.balance?.amount);
     const paid = opPayment.add(usedFee.amount[0].amount);
     if (balanceNumber.lt(paid)) {
-        throw new Error("Transaction with fees requires " + paid.toString() + ", account balance is " + balanceNumber.toString())
+        throw new Error("Transaction with fees requires " + formatUnits(paid, 7) + ", account balance is " + formatUnits(balanceNumber, 7))
     }
     return client
         .signAndBroadcast(signerAddress, messages, usedFee)

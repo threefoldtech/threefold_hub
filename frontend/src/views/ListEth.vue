@@ -16,8 +16,8 @@
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="t in tabs" :key="t.symbol">
         <v-data-table :headers="t.headers" :items="list[t.symbol]">
-          <template v-slot:[`item.erc20Token.amount`]="{ item }">
-            {{ normalize(item.erc20Token.amount) }}
+          <template v-slot:[`item.erc20_token.amount`]="{ item }">
+            {{ normalize(item.erc20_token.amount) }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip top>
@@ -83,20 +83,20 @@ export default class ListEth extends Vue {
   }[] = [
     {
       label: "Batched",
-      symbol: "transfersInBatches",
+      symbol: "transfers_in_batches",
       headers: [
         { text: "ID", value: "id" },
-        { text: "Destination", value: "destAddress" },
-        { text: "Amount", value: "erc20Token.amount" },
+        { text: "Destination", value: "dest_address" },
+        { text: "Amount", value: "erc20_token.amount" },
       ],
     },
     {
       label: "Unbatched",
-      symbol: "unbatchedTransfers",
+      symbol: "unbatched_transfers",
       headers: [
         { text: "ID", value: "id" },
-        { text: "Destination", value: "destAddress" },
-        { text: "Amount", value: "erc20Token.amount" },
+        { text: "Destination", value: "dest_address" },
+        { text: "Amount", value: "erc20_token.amount" },
         { text: "Actions", value: "actions" },
       ],
     },

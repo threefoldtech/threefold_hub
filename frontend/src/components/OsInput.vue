@@ -3,7 +3,7 @@
     <div style="width: 100px">
       <v-select
         label="OS"
-        :items="['windows', 'darwin', 'linux']"
+        :items="['linux', 'windows', 'darwin']"
         v-model="os"
       />
     </div>
@@ -14,7 +14,7 @@
         v-model="arch"
       />
     </div>
-    <v-text-field label="Url" v-model="url" />
+    <v-text-field label="Url" v-model="url" :rules="[validUrl]"/>
     <v-btn
       fab
       small
@@ -38,9 +38,26 @@ export default class OsInput extends Vue {
   @Prop({ default: false }) removable!: boolean;
   @Prop({ required: false }) value!: any;
 
-  os = null;
-  arch = null;
+  os = "linux";
+  arch = "amd64";
   url = null;
+
+  validUrl() {
+    if (this.url === null || this.url === "") {
+      return "url must be non empty"
+    }
+    let url;    
+    try {
+      url = new URL(this.url);
+    } catch (err: any) {
+      return "invalid url: " + err;
+    }
+
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return "url must be http or https";
+    }
+    return true;
+  }
 
   get osInfo() {
     const { os, arch, url } = this;

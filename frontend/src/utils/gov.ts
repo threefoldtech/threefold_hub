@@ -26,13 +26,12 @@ async function listProposals(
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Proposals(
         {
-            proposalStatus: status,
+            proposal_status: status,
             "pagination.offset": offset?.toString(),
             "pagination.limit": limit?.toString(),
         },
         { format: "json" }
     );
-    snakeToCamelCase(response.data)
     return response.data as CosmosGovV1Beta1QueryProposalsResponse;
 }
 
@@ -49,7 +48,6 @@ async function listValidators(
         },
         { format: "json" }
     );
-    snakeToCamelCase(response.data)
     return response.data as CosmosStakingV1Beta1QueryValidatorsResponse;
 }
 
@@ -64,7 +62,6 @@ async function listVotes(
         "pagination.limit": limit?.toString(),
         "pagination.offset": offset?.toString(),
     }, { format: "json" });
-    snakeToCamelCase(response.data)
     return response.data as CosmosGovV1Beta1QueryVotesResponse;
 }
 
@@ -79,7 +76,6 @@ async function listDeposites(
         "pagination.limit": limit?.toString(),
         "pagination.offset": offset?.toString(),
     }, { format: "json" });
-    snakeToCamelCase(response.data)
     return response.data as CosmosGovV1Beta1QueryDepositsResponse;
 }
 
@@ -89,10 +85,9 @@ async function getProposal(
 ): Promise<CosmosGovV1Beta1QueryProposalResponse> {
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1Proposal(proposalId, { format: "json" });
-    snakeToCamelCase(response.data)
     if (response.data.proposal?.status == "PROPOSAL_STATUS_VOTING_PERIOD") {
         const currentTally = await tally(cosmos_rest, proposalId);
-        response.data.proposal.finalTallyResult = await currentTally.tally;
+        response.data.proposal.final_tally_result = await currentTally.tally;
     }
     return response.data as CosmosGovV1Beta1QueryProposalResponse;
 }
@@ -103,7 +98,6 @@ async function tally(
 ): Promise<CosmosGovV1Beta1QueryTallyResultResponse> {
     const queryClient = new Api({ baseUrl: cosmos_rest });
     const response = await queryClient.cosmos.cosmosGovV1Beta1TallyResult(proposalId, { format: "json" });
-    snakeToCamelCase(response.data)
     return response.data as CosmosGovV1Beta1QueryTallyResultResponse;
 }
 
@@ -115,11 +109,8 @@ async function parameters(
     const params = await queryClient.cosmos.cosmosGovV1Beta1Params("deposit", {format: "json"});
     const tallying_params = await queryClient.cosmos.cosmosGovV1Beta1Params("tallying", {format: "json"});
     const voting_params = await queryClient.cosmos.cosmosGovV1Beta1Params("voting", {format: "json"});
-    snakeToCamelCase(params.data)
-    snakeToCamelCase(tallying_params.data)
-    snakeToCamelCase(voting_params.data)
-    params.data.tallyParams = tallying_params.data.tallyParams
-    params.data.votingParams = voting_params.data.votingParams
+    params.data.tally_params = tallying_params.data.tally_params
+    params.data.voting_params = voting_params.data.voting_params
     return params.data as CosmosGovV1Beta1QueryParamsResponse;
 }
 
