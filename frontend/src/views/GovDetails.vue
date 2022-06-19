@@ -5,11 +5,11 @@
     </v-row>
     <div v-if="proposal">
       <v-row class="mb-2" justify="space-between" align="center">
-        <h1>{{ proposal.content.title }} #{{ proposal.proposalId }}</h1>
+        <h1>{{ proposal.content.title }} #{{ proposal.proposal_id }}</h1>
         <v-btn
           v-if="proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
           color="primary"
-          @click="$router.push('/proposal/deposit/' + proposal.proposalId)"
+          @click="$router.push('/proposal/deposit/' + proposal.proposal_id)"
         >
           Deposit
         </v-btn>
@@ -24,7 +24,7 @@
             { label: 'YES', symbol: 'yes', color: 'success' },
             { label: 'NO', symbol: 'no', color: 'red' },
             { label: 'ABSTAIN', symbol: 'abstain', color: 'grey' },
-            { label: 'NO (VETO)', symbol: 'noWithVeto', color: '#c40404' },
+            { label: 'NO (VETO)', symbol: 'no_with_veto', color: '#c40404' },
           ]"
           :key="item.symbol"
           :color="item.color"
@@ -38,13 +38,13 @@
               <v-list-item-title class="text-h5 mt-1 mb-1">
                 {{
                   totalVotes
-                    ? (proposal.finalTallyResult[item.symbol] * 100) /
+                    ? (proposal.final_tally_result[item.symbol] * 100) /
                       totalVotes
                     : 0
                 }}%
               </v-list-item-title>
               <v-list-item-subtitle>
-                {{ proposal.finalTallyResult[item.symbol] }}
+                {{ proposal.final_tally_result[item.symbol] }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -69,10 +69,10 @@
 
       <h3 class="mt-6">Total Deposit</h3>
       <p>
-        {{ proposal.totalDeposit.length ? proposal.totalDeposit[0].amount : 0 }}
+        {{ proposal.total_deposit.length ? proposal.total_deposit[0].amount : 0 }}
         <strong>
           {{
-            proposal.totalDeposit.length ? proposal.totalDeposit[0].denom : ""
+            proposal.total_deposit.length ? proposal.total_deposit[0].denom : ""
           }}</strong
         >
       </p>
@@ -148,8 +148,8 @@ export default class GovDetails extends Vue {
   }
 
   get totalVotes(): number {
-    const { yes, no, abstain, noWithVeto } = this.proposal.finalTallyResult;
-    return +yes + +no + +abstain + +noWithVeto;
+    const { yes, no, abstain, no_with_veto } = this.proposal.final_tally_result;
+    return +yes + +no + +abstain + +no_with_veto;
   }
 
   actions: IAction[] = [
@@ -176,24 +176,24 @@ export default class GovDetails extends Vue {
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
         this.proposal = proposal.proposal;
-        this.proposal.totalDeposit[0].amount = formatUnits(
-          this.proposal.totalDeposit[0].amount,
+        this.proposal.total_deposit[0].amount = formatUnits(
+          this.proposal.total_deposit[0].amount,
           this.$store.state.config.tft_decimals
         );
-        this.proposal.finalTallyResult.yes = formatUnits(
-          this.proposal.finalTallyResult.yes,
+        this.proposal.final_tally_result.yes = formatUnits(
+          this.proposal.final_tally_result.yes,
           this.$store.state.config.tft_decimals
         );
-        this.proposal.finalTallyResult.no = formatUnits(
-          this.proposal.finalTallyResult.no,
+        this.proposal.final_tally_result.no = formatUnits(
+          this.proposal.final_tally_result.no,
           this.$store.state.config.tft_decimals
         );
-        this.proposal.finalTallyResult.noWithVeto = formatUnits(
-          this.proposal.finalTallyResult.noWithVeto,
+        this.proposal.final_tally_result.no_with_veto = formatUnits(
+          this.proposal.final_tally_result.no_with_veto,
           this.$store.state.config.tft_decimals
         );
-        this.proposal.finalTallyResult.abstain = formatUnits(
-          this.proposal.finalTallyResult.abstain,
+        this.proposal.final_tally_result.abstain = formatUnits(
+          this.proposal.final_tally_result.abstain,
           this.$store.state.config.tft_decimals
         );
       })
@@ -207,18 +207,18 @@ export default class GovDetails extends Vue {
     pool(this.$store.state.config.cosmos_rest)
       .then((res: any) => {
         this.bondedTokens = formatUnits(
-          res.pool.bondedTokens!,
+          res.pool.bonded_tokens!,
           this.$store.state.config.tft_decimals
         );
       })
       .catch((err) => {
-        this.error = "Couldn't get total vonded tokens (refresh to try again): " + err.message
+        this.error = "Couldn't get total bonded tokens (refresh to try again): " + err.message
       });
   }
 
   onSubmitVote(action: IAction) {
     const vote = confirm(
-      `Are your sure you want to vote \`${action.label}\` for proposal(${this.proposal.proposalId})?`
+      `Are your sure you want to vote \`${action.label}\` for proposal(${this.proposal.proposal_id})?`
     );
 
     if (!vote) return;
@@ -232,7 +232,7 @@ export default class GovDetails extends Vue {
       this.$store.state.config.cosmos_rest,
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
-      this.proposal.proposalId,
+      this.proposal.proposal_id,
       action.value
     )
       .then((res) => {

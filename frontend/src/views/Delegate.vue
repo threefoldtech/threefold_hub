@@ -37,7 +37,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { BigNumber } from "ethers";
 import { delegate } from "@/utils/gov";
 import CustomAlert from "@/components/CustomAlert.vue";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 
 @Component({
   name: "GovDeposit",

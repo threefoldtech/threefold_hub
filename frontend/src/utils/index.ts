@@ -7,12 +7,13 @@ import { BigNumber, ethers } from "ethers";
 import bepapi from "../json/bepabi.json";
 import gravityabi from "../json/gravityabi.json";
 import { loadConfig } from "./config";
-import { Api, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
+import { Api, CosmosBaseTendermintV1Beta1GetLatestBlockResponse, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import Long from "long";
 import { snakeToCamelCase } from "./camel";
 import { myRegistry } from "./registry"
 import { submitWithCheck, simulate } from "./txs";
 import { waitBscTransaction } from "./eth";
+import { formatUnits } from "ethers/lib/utils";
 const UINT256_MAX_INT = ethers.BigNumber.from(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 );
@@ -45,9 +46,15 @@ export async function sendToCosmos(
     gravityabi as any,
     signer
   );
-    const senderAddress = (
-      await window.ethereum.request({ method: "eth_requestAccounts" })
-    )[0];
+  const senderAddress = (
+    await window.ethereum.request({ method: "eth_requestAccounts" })
+  )[0];
+  const balance = ethers.BigNumber.from(
+    await bepContract.balanceOf(senderAddress)
+  );
+  if (balance.lt(amount)) {
+      throw new Error("Account balance of " + formatUnits(balance, 7) + " is less than the amount being sent of " + formatUnits(amount, 7) + ".")
+  }
   const allowance = ethers.BigNumber.from(
     await bepContract.allowance(senderAddress, gravity_contract_address)
   );
@@ -203,9 +210,23 @@ export async function pendingSendToEth(
   const sender = (await signer.getAccounts())[0].address;
   const queryClient = new Api({ baseUrl: cosmos_rest });
   const response = await queryClient.gravity.gravityV1GetPendingSendToEth(
-    { senderAddress: sender },
+    { sender_address: sender },
     { format: "json" }
   );
-  snakeToCamelCase(response.data)
   return response.data as GravityV1QueryPendingSendToEthResponse;
+}
+export async function currentHeight(
+  cosmos_rest: string,
+  chain_id: string
+): Promise<CosmosBaseTendermintV1Beta1GetLatestBlockResponse> {
+  if (!window.keplr) {
+    throw new Error("keplr is not installed");
+  }
+  const signer = window.keplr.getOfflineSigner(chain_id);
+  const sender = (await signer.getAccounts())[0].address;
+  const queryClient = new Api({ baseUrl: cosmos_rest });
+  const response = await queryClient.cosmos.cosmosBaseTendermintV1Beta1GetLatestBlock(
+    { format: "json" }
+  );
+  return response.data as CosmosBaseTendermintV1Beta1GetLatestBlockResponse;
 }

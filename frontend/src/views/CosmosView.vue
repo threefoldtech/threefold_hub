@@ -33,7 +33,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { sendToCosmos } from "@/utils";
 import { Config } from "@/utils/config";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 import CustomAlert from "@/components/CustomAlert.vue";
 import { bech32 } from "bech32";
 import { BigNumber } from "ethers";
@@ -57,10 +57,13 @@ export default class Cosmos extends Vue {
   }
 
   parseAmount(): BigNumber {
+    if (this.amount == "") {
+      throw new Error("Amount is required")
+    }
     const decimals = this.$store.state.config.tft_decimals || 0;
     const amountBN = parseUnits(this.amount || "0", decimals);
     if (amountBN.lte(0)) {
-      throw new Error("amount must be positive")
+      throw new Error("Amount must be a positive number")
     }
     return amountBN
   }
@@ -75,11 +78,14 @@ export default class Cosmos extends Vue {
   }
   
   bech32Address(address: string) {
+    if (this.amount == "") {
+      throw new Error("Address is required")
+    }
     try {
       const { prefix } = bech32.decode(address);
       return prefix === "tf" ? true : "Address must have tf prefix";
     } catch {
-      return "Not a valid Threefold Hub ";
+      return "Not a valid Threefold Hub address ";
     }
   }
 
