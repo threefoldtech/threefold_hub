@@ -19,6 +19,21 @@ async function accountBalance(
     return response.data as CosmosBankV1Beta1QueryBalanceResponse;
 }
 
+async function simulateWithBalanceCheck(
+    client: SigningStargateClient,
+    cosmos_rest: string,
+    signerAddress: string,
+    opPayment: BigNumber,
+    messages: readonly EncodeObject[],
+    memo?: string
+) {
+    const balance = await accountBalance(cosmos_rest, signerAddress, "TFT");
+    const balanceNumber = BigNumber.from(balance.balance?.amount);
+    if (balanceNumber.lt(opPayment)) {
+        throw new Error("Transaction requires " + formatUnits(opPayment, 7) + ", account balance is " + formatUnits(balanceNumber, 7))
+    }
+    return simulate(client, signerAddress, messages, memo);
+}
 async function simulate(
     client: SigningStargateClient,
     signerAddress: string,
@@ -74,5 +89,6 @@ async function submitWithCheck(
 
 export {
     submitWithCheck,
-    simulate
+    simulate,
+    simulateWithBalanceCheck
 }

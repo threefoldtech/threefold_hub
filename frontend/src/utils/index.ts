@@ -10,7 +10,7 @@ import { loadConfig } from "./config";
 import { Api, CosmosBaseTendermintV1Beta1GetLatestBlockResponse, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import Long from "long";
 import { myRegistry } from "./registry"
-import { submitWithCheck, simulate } from "./txs";
+import { submitWithCheck, simulateWithBalanceCheck } from "./txs";
 import { waitBscTransaction } from "./eth";
 import { formatUnits } from "ethers/lib/utils";
 const UINT256_MAX_INT = ethers.BigNumber.from(
@@ -125,6 +125,7 @@ export function sendToEth(
 
 export function sendToEthFees(
   tendermint_rpc: string,
+  cosmos_rest: string,
   gas_price: string,
   chain_id: string,
   destination: string,
@@ -161,7 +162,7 @@ export function sendToEthFees(
           ethDest: destination,
         }),
       };
-      return simulate(client, account.bech32Address, [message]);
+      return simulateWithBalanceCheck(client, cosmos_rest, account.bech32Address, amount.add(bridge_fees), [message]);
     });
 
 }
