@@ -62,10 +62,13 @@ export default class GovDeposit extends Vue {
   }
 
   parseAmount(): BigNumber {
+    if (this.amount == "") {
+      throw new Error("Amount is required")
+    }
     const decimals = this.$store.state.config.tft_decimals || 0;
     const amountBN = parseUnits(this.amount || "0", decimals);
     if (amountBN.lte(0)) {
-      throw new Error("amount must be positive")
+      throw new Error("Amount must be positive")
     }
     return amountBN
   }

@@ -9,7 +9,6 @@ import gravityabi from "../json/gravityabi.json";
 import { loadConfig } from "./config";
 import { Api, CosmosBaseTendermintV1Beta1GetLatestBlockResponse, GravityV1QueryPendingSendToEthResponse } from "@/rest/cosmos";
 import Long from "long";
-import { snakeToCamelCase } from "./camel";
 import { myRegistry } from "./registry"
 import { submitWithCheck, simulate } from "./txs";
 import { waitBscTransaction } from "./eth";

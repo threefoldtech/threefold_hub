@@ -60,10 +60,13 @@ export default class TextProposal extends Vue {
   initialDeposit = "1";
 
   parseAmount(): BigNumber {
+    if (this.initialDeposit == "") {
+      throw new Error("Amount is required")
+    }
     const decimals = this.$store.state.config.tft_decimals || 0;
     const amountBN = parseUnits(this.initialDeposit || "0", decimals);
     if (amountBN.lte(0)) {
-      throw new Error("amount must be positive")
+      throw new Error("Amount must be positive")
     }
     return amountBN
   }
@@ -79,14 +82,14 @@ export default class TextProposal extends Vue {
 
   nonemptyTitle() {
     if (this.title === "") {
-      return "title can't be blank"
+      return "Title is required"
     }
     return true
   }
 
   nonemptyDescription() {
     if (this.description === "") {
-      return "description can't be blank"
+      return "Description is required"
     }
     return true
   }

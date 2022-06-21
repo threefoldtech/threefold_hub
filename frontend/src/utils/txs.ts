@@ -3,7 +3,6 @@ import { EncodeObject } from "@cosmjs/proto-signing";
 import { DeliverTxResponse, GasPrice, SigningStargateClient, StdFee, calculateFee } from "@cosmjs/stargate";
 import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { snakeToCamelCase } from "./camel";
 
 async function accountBalance(
     cosmos_rest: string,

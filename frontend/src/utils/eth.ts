@@ -29,15 +29,18 @@ function waitBscTransaction(provider: any, txHash: string, timeout?: number): Pr
  * @return {Boolean}
 */
 function validateBSCAddress(address: string) {
+    if (address.length == 0) {
+        throw new Error("Address must be non-empty")
+    }
     if (address.length != 42) {
-        throw new Error("address length must be 42")
+        throw new Error("Address length must be 42")
     }
     if (!address.startsWith("0x")) {
-        throw new Error("address must start with 0x")
+        throw new Error("Address must start with 0x")
     }
     if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
         // check if it has the basic requirements of an address
-        throw new Error("address must consist only of valid hex characters after 0x")
+        throw new Error("Address must consist only of valid hex characters after 0x")
     } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
         // If it's all small caps or all all caps, return true
         return;
