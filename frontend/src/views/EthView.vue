@@ -2,10 +2,11 @@
   <v-container>
     <h1>Send to BSC</h1>
 
-    <form @submit.prevent="onSendToEth()">
+    <v-form v-model="valid" @submit.prevent="onSendToEth()">
       <v-text-field
         label="Amount"
         placeholder="Amount"
+        type="number"
         v-model="amount"
         @input="debounceTxFees"
         :rules="[money]"
@@ -45,13 +46,13 @@
           color="primary"
           x-large
           type="submit"
-          :disabled="empty || loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Send
         </v-btn>
       </v-row>
-    </form>
+    </v-form>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
@@ -77,6 +78,7 @@ import { debounce } from "debounce";
 export default class Eth extends Vue {
   loading = false;
   result: any = null;
+  valid = false;
   error: string | null = null;
 
   amount = "";

@@ -9,6 +9,7 @@
         label="Initial Deposit"
         placeholder="Initial Deposit"
         v-model="initialDeposit"
+        type="number"
         :rules="[money]"
       />
 

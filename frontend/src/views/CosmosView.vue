@@ -2,8 +2,8 @@
   <v-container>
     <h1>Send to Threefold Hub</h1>
 
-    <form @submit.prevent="onSendToCosmos()">
-      <v-text-field label="Amount" placeholder="Amount" v-model="amount" :rules="[money]" />
+    <v-form v-model="valid" @submit.prevent="onSendToCosmos()">
+      <v-text-field label="Amount" type="number" placeholder="Amount" v-model="amount" :rules="[money]" />
 
       <v-text-field
         label="Destination"
@@ -17,13 +17,13 @@
           color="primary"
           x-large
           type="submit"
-          :disabled="inValid || loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Send
         </v-btn>
       </v-row>
-    </form>
+    </v-form>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
   </v-container>
@@ -47,14 +47,11 @@ import { BigNumber } from "ethers";
 export default class Cosmos extends Vue {
   loading = false;
   result: any = null;
+  valid = false;
   error: string | null = null;
 
   amount = "";
   destination = "";
-
-  get inValid() {
-    return this.money() !== true || this.bech32Address(this.destination) !== true;
-  }
 
   parseAmount(): BigNumber {
     if (this.amount == "") {

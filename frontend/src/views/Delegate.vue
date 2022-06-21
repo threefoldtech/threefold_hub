@@ -5,10 +5,11 @@
         Delegate to <small>{{ address }}</small>
       </h1>
 
-      <form @submit.prevent="onDelegate()">
+      <v-form v-model="valid" @submit.prevent="onDelegate()">
         <v-text-field
           label="Amount"
           placeholder="Amount"
+          type="number"
           :rules="[money]"
           v-model="amount"
         />
@@ -16,12 +17,12 @@
         <v-btn
           color="primary"
           type="submit"
-          :disabled="inValid || loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Submit
         </v-btn>
-      </form>
+      </v-form>
     </div>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
@@ -50,15 +51,12 @@ export default class GovDeposit extends Vue {
   address = "";
   loading = false;
   result: any = null;
+  valid = false;
   error: string | null = null;
 
   created() {
     this.loading = false;
     this.address = this.$route.params.address;
-  }
-
-  get inValid() {
-    return this.money() !== true;
   }
 
   parseAmount(): BigNumber {

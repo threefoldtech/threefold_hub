@@ -8,11 +8,12 @@
       <v-text-field label="Name" v-model="name" :rules="[nonemptyName]" />
       <v-text-field
         label="Initial Deposit"
+        type="number"
         placeholder="Initial Deposit"
         v-model="initialDeposit"
         :rules="[money]"
       />
-      <v-text-field ref="chainHeight" label="Height" type="number" v-model="height" :rules="[futuristic]" />
+      <v-text-field ref="chainHeight" @keydown="heightKeyDown" label="Height" type="number" v-model="height" :rules="[futuristic]" />
 
       <v-row justify="space-between" class="mt-5 ml-0">
         <h3>Operating Systems</h3>
@@ -143,6 +144,16 @@ export default class SoftwareProposal extends Vue {
     }
     return true
   }
+  
+  heightKeyDown(e: any) {
+    console.log(e.key)
+    console.log(/^[+\-e]$/.test(e.key))
+    
+    if (/^[+\-e.]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   onSubmitSoftwareUpgradeProposal() {
     const { title, description, name, height, initialDeposit, systems } = this;
 

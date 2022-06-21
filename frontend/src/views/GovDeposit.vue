@@ -1,27 +1,28 @@
 <template>
   <v-container>
-    <div v-if="proposal">
+    <div>
       <h1>
         Deposit to <small>{{ proposal.content.title }}</small>
       </h1>
 
-      <form @submit.prevent="onDeposit()">
+      <v-form v-model="valid" @submit.prevent="onDeposit()">
         <v-text-field
           label="Amount"
           placeholder="Amount"
+          type="number"
           v-model="amount"
-          :hint="'Min deposit is ' + proposal.min_deposit"
+          :rules="[money]"
         />
 
         <v-btn
           color="primary"
           type="submit"
-          :disabled="loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Submit
         </v-btn>
-      </form>
+      </v-form>
     </div>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
@@ -51,6 +52,7 @@ export default class GovDeposit extends Vue {
 
   loading = false;
   result: any = null;
+  valid = false;
   error: string | null = null;
 
   created() {
@@ -58,6 +60,7 @@ export default class GovDeposit extends Vue {
 
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
+        console.log(proposal.proposal)
         this.proposal = proposal.proposal;
       })
       .catch((err) => {
@@ -66,6 +69,26 @@ export default class GovDeposit extends Vue {
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  parseAmount(): BigNumber {
+    if (this.amount == "") {
+      throw new Error("Amount is required")
+    }
+    const decimals = this.$store.state.config.tft_decimals || 0;
+    const amountBN = parseUnits(this.amount || "0", decimals);
+    if (amountBN.lte(0)) {
+      throw new Error("Amount must be positive")
+    }
+    return amountBN
+  }
+  money() {
+    try {
+      this.parseAmount()
+      return true;
+    } catch (err: any) {
+      return err.message
+    }
   }
 
   onDeposit() {
@@ -79,7 +102,7 @@ export default class GovDeposit extends Vue {
       this.$store.state.config.gas_price,
       this.$store.state.config.chain_id,
       this.proposal.proposal_id,
-      parseUnits(this.amount, this.$store.state.config.tft_decimals),
+      this.parseAmount(),
       this.$store.state.config.proposal_denom
     )
       .then((res) => {
