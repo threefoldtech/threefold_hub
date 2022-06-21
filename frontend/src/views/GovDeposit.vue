@@ -60,7 +60,6 @@ export default class GovDeposit extends Vue {
 
     getProposal(this.$store.state.config.cosmos_rest, this.$route.params.id)
       .then((proposal) => {
-        console.log(proposal.proposal)
         this.proposal = proposal.proposal;
       })
       .catch((err) => {

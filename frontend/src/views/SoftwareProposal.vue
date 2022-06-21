@@ -146,9 +146,6 @@ export default class SoftwareProposal extends Vue {
   }
   
   heightKeyDown(e: any) {
-    console.log(e.key)
-    console.log(/^[+\-e]$/.test(e.key))
-    
     if (/^[+\-e.]$/.test(e.key)) {
       e.preventDefault();
     }
