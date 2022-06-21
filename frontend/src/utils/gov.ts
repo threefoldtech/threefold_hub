@@ -1,6 +1,5 @@
 import { CosmosGovV1Beta1QueryProposalsResponse, Api, CosmosGovV1Beta1QueryProposalResponse, CosmosGovV1Beta1QueryParamsResponse, CosmosGovV1Beta1QueryVotesResponse, CosmosGovV1Beta1QueryDepositsResponse, CosmosGovV1Beta1QueryTallyResultResponse, CosmosStakingV1Beta1QueryValidatorsResponse } from "@/rest/cosmos";
 import { GasPrice, SigningStargateClient } from "@cosmjs/stargate";
-import { snakeToCamelCase } from "./camel"
 import { myRegistry } from "./registry";
 import { MsgDeposit, MsgSubmitProposal, MsgVote } from "../types/cosmos/gov/v1beta1/tx";
 import { MsgDelegate } from "../types/cosmos/staking/v1beta1/tx";

@@ -8,11 +8,12 @@
       <v-text-field label="Name" v-model="name" :rules="[nonemptyName]" />
       <v-text-field
         label="Initial Deposit"
+        type="number"
         placeholder="Initial Deposit"
         v-model="initialDeposit"
         :rules="[money]"
       />
-      <v-text-field ref="chainHeight" label="Height" type="number" v-model="height" :rules="[futuristic]" />
+      <v-text-field ref="chainHeight" @keydown="heightKeyDown" label="Height" type="number" v-model="height" :rules="[futuristic]" />
 
       <v-row justify="space-between" class="mt-5 ml-0">
         <h3>Operating Systems</h3>
@@ -97,10 +98,13 @@ export default class SoftwareProposal extends Vue {
   }
 
   parseAmount(): BigNumber {
+    if (this.initialDeposit == "") {
+      throw new Error("Amount is required")
+    }
     const decimals = this.$store.state.config.tft_decimals || 0;
     const amountBN = parseUnits(this.initialDeposit || "0", decimals);
     if (amountBN.lte(0)) {
-      throw new Error("amount must be positive")
+      throw new Error("Amount must be positive")
     }
     return amountBN
   }
@@ -116,30 +120,37 @@ export default class SoftwareProposal extends Vue {
 
   nonemptyTitle() {
     if (this.title == "") {
-      return "title can't be blank"
+      return "Title is required"
     }
     return true
   }
 
   nonemptyName() {
     if (this.name == "") {
-      return "name can't be blank"
+      return "Name is required"
     }
     return true
   }
 
   nonemptyDescription() {
     if (this.description == "") {
-      return "description can't be blank"
+      return "Description is required"
     }
     return true
   }
   futuristic() {
     if (this.height <= this.chainHeight) {
-      return "height must be in the future (after " + this.chainHeight + ")"
+      return "Height must be in the future (after " + this.chainHeight + ")"
     }
     return true
   }
+  
+  heightKeyDown(e: any) {
+    if (/^[+\-e.]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   onSubmitSoftwareUpgradeProposal() {
     const { title, description, name, height, initialDeposit, systems } = this;
 

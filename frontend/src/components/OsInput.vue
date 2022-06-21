@@ -44,17 +44,17 @@ export default class OsInput extends Vue {
 
   validUrl() {
     if (this.url === null || this.url === "") {
-      return "url must be non empty"
+      return "URL is required"
     }
     let url;    
     try {
       url = new URL(this.url);
     } catch (err: any) {
-      return "invalid url: " + err;
+      return "Invalid url";
     }
 
     if (url.protocol !== "http:" && url.protocol !== "https:") {
-      return "url must be http or https";
+      return "URL must be http or https";
     }
     return true;
   }

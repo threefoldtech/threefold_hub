@@ -5,10 +5,11 @@
         Delegate to <small>{{ address }}</small>
       </h1>
 
-      <form @submit.prevent="onDelegate()">
+      <v-form v-model="valid" @submit.prevent="onDelegate()">
         <v-text-field
           label="Amount"
           placeholder="Amount"
+          type="number"
           :rules="[money]"
           v-model="amount"
         />
@@ -16,12 +17,12 @@
         <v-btn
           color="primary"
           type="submit"
-          :disabled="inValid || loading"
+          :disabled="loading || !valid"
           :loading="loading"
         >
           Submit
         </v-btn>
-      </form>
+      </v-form>
     </div>
 
     <CustomAlert :loading="loading" :result="result" :error="error" />
@@ -50,6 +51,7 @@ export default class GovDeposit extends Vue {
   address = "";
   loading = false;
   result: any = null;
+  valid = false;
   error: string | null = null;
 
   created() {
@@ -57,15 +59,14 @@ export default class GovDeposit extends Vue {
     this.address = this.$route.params.address;
   }
 
-  get inValid() {
-    return this.money() !== true;
-  }
-
   parseAmount(): BigNumber {
+    if (this.amount == "") {
+      throw new Error("Amount is required")
+    }
     const decimals = this.$store.state.config.tft_decimals || 0;
     const amountBN = parseUnits(this.amount || "0", decimals);
     if (amountBN.lte(0)) {
-      throw new Error("amount must be positive")
+      throw new Error("Amount must be positive")
     }
     return amountBN
   }
