@@ -105,6 +105,7 @@ export default class Eth extends Vue {
       }
       sendToEthFees(
         config.tendermint_rpc,
+        config.cosmos_rest,
         config.gas_price,
         config.chain_id,
         destination,
