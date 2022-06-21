@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <h1>
+      <h1 v-if="proposal">
         Deposit to <small>{{ proposal.content.title }}</small>
       </h1>
 
