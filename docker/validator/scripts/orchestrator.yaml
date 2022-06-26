@@ -3,8 +3,8 @@ exec: |
   bash -c '
     VALOPER_ADDRESS=$(threefold_hubd keys show $KEYNAME --bech=val --keyring-backend test | grep -i address | cut -d ":" -f 2)
     ORCHESTRATOR_ADDRESS=$(threefold_hubd keys show $KEYNAME  --keyring-backend test | grep -i address | cut -d ":" -f 2 )
-    threefold_hubd tx gravity set-orchestrator-address $VALOPER_ADDRESS $ORCHESTRATOR_ADDRESS $ETHEREUM_ADDRESS --from $KEYNAME --chain-id $CHAIN_ID --keyring-backend test --yes
-    /root/gbt -a tf orchestrator --cosmos-phrase "$MNEMONICS" -e "$ETHEREUM_PRIV_KEY" --gravity-contract-address "$GRAVITY_ADDRESS" -f 1TFT --ethereum-rpc "$ETHEREUM_RPC"
+    threefold_hubd tx gravity set-orchestrator-address $VALOPER_ADDRESS $ORCHESTRATOR_ADDRESS $ETHEREUM_ADDRESS --from $KEYNAME --chain-id $CHAIN_ID --keyring-backend test --gas-prices $GAS_PRICES --gas-adjustment $GAS_ADJUSTMENT --yes
+    /root/gbt -a tf orchestrator --cosmos-phrase "$MNEMONICS" -e "$ETHEREUM_PRIV_KEY" --gravity-contract-address "$GRAVITY_ADDRESS"  --ethereum-rpc "$ETHEREUM_RPC" --fees $ORCHESTRATOR_FEES
   '
 after:
   - setup_validator
