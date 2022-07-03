@@ -28,9 +28,10 @@ exec: |
       --commission-max-change-rate="0.01" \
       --min-self-delegation="100" \
       --gas="auto" \
-      --gas-prices="0.00stake" \
       --from=$KEYNAME \
       --keyring-backend="test" \
+      --gas-prices $GAS_PRICES \
+      --gas-adjustment $GAS_ADJUSTMENT \
       --yes
    fi
   done
