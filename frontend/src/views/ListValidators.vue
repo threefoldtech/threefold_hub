@@ -10,13 +10,13 @@
     <v-data-table :headers="headers" :items="validators" :loading="loading">
 
       <template v-slot:[`item.commission`]="{ item }">
-        {{ +item.commission.commissionRates.rate * 100 }}%
+        {{ +item.commission.commission_rates.rate * 100 }}%
       </template>
 
       <template v-slot:[`item.details`]="{ item }">
         <v-btn
           color="primary"
-          @click="$router.push('/delegate/' + item.operatorAddress)"
+          @click="$router.push('/delegate/' + item.operator_address)"
         >
           Delegate
         </v-btn>
@@ -31,7 +31,8 @@ import {
   CosmosStakingV1Beta1QueryValidatorsResponse,
 } from "@/rest/cosmos";
 import { listValidators, parameters, tally } from "@/utils/gov";
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { formatUnits } from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 import VoteCircle from "@/components/VoteCircle.vue";
 
 @Component({
@@ -42,7 +43,7 @@ import VoteCircle from "@/components/VoteCircle.vue";
 })
 export default class ListGov extends Vue {
   headers: { text: string; value: string }[] = [
-    { text: "Address", value: "operatorAddress" },
+    { text: "Address", value: "operator_address" },
     { text: "Voting power", value: "tokens" },
     { text: "Commission", value: "commission" },
     { text: "Delegate", value: "details" },

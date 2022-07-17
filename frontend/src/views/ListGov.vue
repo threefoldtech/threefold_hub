@@ -21,7 +21,7 @@
             </li>
             <li>
               Veto Threshold:
-              <strong>{{ normalize(tally.vetoThreshold) }}</strong>
+              <strong>{{ normalize(tally.veto_threshold) }}</strong>
             </li>
           </ul>
         </div>
@@ -35,13 +35,13 @@
               <li>
                 Min Deposit:
                 <strong>
-                  {{ deposit.minDeposit[0].amount }}
-                  {{ deposit.minDeposit[0].denom }}
+                  {{ deposit.min_deposit[0].amount }}
+                  {{ deposit.min_deposit[0].denom }}
                 </strong>
               </li>
               <li>
                 Max Deposit Period:
-                <strong>{{ deposit.maxDepositPeriod }}</strong>
+                <strong>{{ deposit.max_deposit_period }}</strong>
               </li>
             </ul>
           </div>
@@ -52,7 +52,7 @@
             <h4>Voting Parameters</h4>
             <ul style="list-style: square">
               <li>
-                Voting Period: <strong>{{ voting.votingPeriod }}</strong>
+                Voting Period: <strong>{{ voting.voting_period }}</strong>
               </li>
             </ul>
           </div>
@@ -89,16 +89,15 @@
         {{ item.status.replace("PROPOSAL_STATUS_", "") }}
       </template>
 
-      <template v-slot:[`item.finalTallyResult`]="{ item }">
+      <template v-slot:[`item.final_tally_result`]="{ item }">
         <VoteCircle
-          :yes="+item.finalTallyResult.yes"
-          :no="+item.finalTallyResult.no"
-          :noWithVeto="+item.finalTallyResult.noWithVeto"
+          :yes="+item.final_tally_result.yes"
+          :no="+item.final_tally_result.no"
+          :noWithVeto="+item.final_tally_result.no_with_veto"
         />
       </template>
-
-      <template v-slot:[`item.submitTime`]="{ item }">
-        {{ item.submitTime | toUTC }}
+      <template v-slot:[`item.submit_time`]="{ item }">
+        {{ item.submit_time | toUTC }}
       </template>
 
       <template v-slot:[`item.type`]="{ item }">
@@ -108,7 +107,7 @@
       <template v-slot:[`item.details`]="{ item }">
         <v-btn
           color="primary"
-          @click="$router.push('/proposal/' + item.proposalId)"
+          @click="$router.push('/proposal/' + item.proposal_id)"
         >
           View Details
         </v-btn>
@@ -124,7 +123,8 @@ import {
   CosmosGovV1Beta1QueryProposalsResponse,
 } from "@/rest/cosmos";
 import { listProposals, parameters, tally } from "@/utils/gov";
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { formatUnits} from "ethers/lib/utils";
+import { parseUnits } from "@/utils/money";
 import VoteCircle from "@/components/VoteCircle.vue";
 
 @Component({
@@ -135,12 +135,12 @@ import VoteCircle from "@/components/VoteCircle.vue";
 })
 export default class ListGov extends Vue {
   headers: { text: string; value: string }[] = [
-    { text: "ID", value: "proposalId" },
+    { text: "ID", value: "proposal_id" },
     { text: "Title", value: "content.title" },
     { text: "Type", value: "type" },
     { text: "Status", value: "status" },
-    { text: "Votes", value: "finalTallyResult" },
-    { text: "Submitted", value: "submitTime" },
+    { text: "Votes", value: "final_tally_result" },
+    { text: "Submitted", value: "submit_time" },
     { text: "Details", value: "details" },
   ];
 
@@ -148,9 +148,9 @@ export default class ListGov extends Vue {
   loading = false;
 
   // params
-  tally: CosmosGovV1Beta1QueryParamsResponse["tallyParams"] | null = null;
+  tally: CosmosGovV1Beta1QueryParamsResponse["tally_params"] | null = null;
   deposit: any | null = null;
-  voting: CosmosGovV1Beta1QueryParamsResponse["votingParams"] | null = null;
+  voting: CosmosGovV1Beta1QueryParamsResponse["voting_params"] | null = null;
   error: string | null = null;
 
   normalize(v?: string): string {
@@ -165,9 +165,9 @@ export default class ListGov extends Vue {
       if (proposal.status == "PROPOSAL_STATUS_VOTING_PERIOD") {
         let currentTally = await tally(
           this.$store.state.config.cosmos_rest,
-          proposal.proposalId || ""
+          proposal.proposal_id || ""
         );
-        proposal.finalTallyResult = currentTally.tally;
+        proposal.final_tally_result = currentTally.tally;
       }
     }
   }
@@ -177,13 +177,13 @@ export default class ListGov extends Vue {
 
     parameters(this.$store.state.config.cosmos_rest)
       .then((res) => {
-        this.tally = res.tallyParams!;
-        this.deposit = res.depositParams!;
-        this.deposit.minDeposit[0].amount = formatUnits(
-          this.deposit.minDeposit[0].amount,
+        this.tally = res.tally_params!;
+        this.deposit = res.deposit_params!;
+        this.deposit.min_deposit[0].amount = formatUnits(
+          this.deposit.min_deposit[0].amount,
           this.$store.state.config.tft_decimals
         );
-        this.voting = res.votingParams!;
+        this.voting = res.voting_params!;
       })
       .catch((err: any) => {
         this.error = "Couldn't get voting parameters (refresh to try again): " + err.message

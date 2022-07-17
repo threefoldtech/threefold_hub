@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "./money";
 
 export interface Config {
   gravity_contract_address: string;
