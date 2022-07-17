@@ -2,7 +2,7 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
-The main module is a fork of [the gravity module](https://github.com/Gravity-Bridge/Gravity-Bridge/tree/main/module/x/gravity) with slight modifications.
+The main module is [a fork](docs/gravity_fork.md) of [the gravity module](https://github.com/Gravity-Bridge/Gravity-Bridge/tree/main/module/x/gravity) with slight modifications.
 ## Prerequisites
 
 For working with accounts (for both BSC and tfhub chain), you need to
