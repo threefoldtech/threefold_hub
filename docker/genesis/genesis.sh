@@ -50,4 +50,4 @@ sed -i 's/enable = false/enable = true/' $TENDERMIN_APP_CONFIG
 
 sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/' $COSMOS_CONFIG
 
-echo 'gbt -a tf orchestrator --cosmos-phrase "'$THREEFOLD_ACCOUNT_MNEMONICS'" -e "'$DELEGATOR_ETH_PRIVATE_KEY'" --gravity-contract-address "'$GRAVITY_CONTRACT_ADDRESS'" -f '$(( 250000 * $MIN_GAS_PRICE ))'TFT --ethereum-rpc "'$ETH_ENDPOINT'"' > ~/.gbt/gbt-cmd.sh
+echo 'gbt -a tf orchestrator --cosmos-phrase "'$THREEFOLD_ACCOUNT_MNEMONICS'" -e "'$DELEGATOR_ETH_PRIVATE_KEY'" --gravity-contract-address "'$GRAVITY_CONTRACT_ADDRESS'" -f '$(( 375000 * $MIN_GAS_PRICE ))'TFT --ethereum-rpc "'$ETH_ENDPOINT'"' > ~/.gbt/gbt-cmd.sh

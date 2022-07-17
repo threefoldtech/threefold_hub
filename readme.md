@@ -2,6 +2,16 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
+The main module is [a fork](docs/gravity_fork.md) of [the gravity module](https://github.com/Gravity-Bridge/Gravity-Bridge/tree/main/module/x/gravity) with slight modifications.
+## Prerequisites
+
+For working with accounts (for both BSC and tfhub chain), you need to
+
+1. Install and set [Metamask](https://metamask.io/) and [Keplr](https://www.keplr.app/) wallets.
+2. Fund your Metamask wallet with BNB (you can use [testnet](https://docs.bscscan.com/misc-tools-and-utilities/public-rpc-nodes) and fund from this [faucet](https://testnet.binance.org/faucet-smart)).
+3. Add the TFT asset in Metamask (using the correct TFT contract address, on testnet, the TFT contract address is `0xDC5a9199e2604A6BF4A99A583034506AE53F4B34`)
+4. The frontend website asks to add the chain to Keplr when it's first visited. Make sure to select the proper chain ID from Keplr after the chain is added.
+
 ## Requirements
 
 1. [Go toolchain](https://go.dev)
@@ -34,7 +44,7 @@ The gravity contracts are available [here](https://github.com/Gravity-Bridge/Gra
 Deploy the [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3/solidity/contracts/Gravity.sol) contract with the following parameters:
 
 - `_gravityId` is [a random 32 byte value to prevent signature reuse](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/main/docs/design/parameters.md#gravity_id). It must match the id entered in the `genesis.json` file where it is a UTF-8 encoded string, by converting it to hex and appending zeros to the right until its length is 64. After that, it must be prefixed with `0x`.
-Since It is a string in the genesis file, it is easier to define that first and convert that to the hex encoded value needed in deploying the contract instead of generating a random hex encoded 32 byte value here and converting it to a string later.  Note that the UTF-8 encoding of the string may not exceed 32 bytes ( the character `€` for example is encoded in UTF-8 using 3 bytes).  
+Since It is a string in the genesis file, it is easier to define that first and convert that to the hex encoded value needed in deploying the contract instead of generating a random hex encoded 32 byte value here and converting it to a string later.  Note that the UTF-8 encoding of the string may not exceed 32 bytes ( the character `€` for example is encoded in UTF-8 using 3 bytes).
 
 Let's take `my-threefoldhub` as the gravityId. It can be converted to the required value for the contract using Python for example:
 
@@ -54,6 +64,7 @@ The [`Gravity.sol`](https://github.com/Gravity-Bridge/Gravity-Bridge/blob/v1.5.3
 If deploying on BSC testnet, there is [a faucet available for testnet BNB's](https://testnet.binance.org/faucet-smart).
 The Environment in the deployment tab in remix should be set to "Injected Web3".
 
+Note that in case of tfhub chain resets, you need to re-deploy the gravity contract and re-configure using the new contract address.
 ### The threefold hub chain
 
 The command `ignite chain build` installs the `threefold_hubd` binary.
@@ -121,7 +132,7 @@ Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/d
 
 ```toml
 [orchestrator]
-relayer_enabled = true 
+relayer_enabled = true
 
 [relayer]
 batch_request_mode = "EveryBatch"
