@@ -2,6 +2,16 @@
 
 **threefoldhub** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com).
 
+The main module is a fork of [the gravity module](https://github.com/Gravity-Bridge/Gravity-Bridge/tree/main/module/x/gravity) with slight modifications.
+## Prerequisites
+
+For working with accounts (for both BSC and tfhub chain), you need to
+
+1. Install and set [Metamask](https://metamask.io/) and [Keplr](https://www.keplr.app/) wallets.
+2. Fund your Metamask wallet with BNB (you can use [testnet](https://docs.bscscan.com/misc-tools-and-utilities/public-rpc-nodes) and fund from this [faucet](https://testnet.binance.org/faucet-smart)).
+3. Add the TFT asset in Metamask (using the correct TFT contract address, on testnet, the TFT contract address is `0xDC5a9199e2604A6BF4A99A583034506AE53F4B34`)
+4. Connect Keplr to the tfhub chain ID (even if it's a local setup)
+
 ## Requirements
 
 1. [Go toolchain](https://go.dev)
@@ -31,6 +41,7 @@ The gravity contract is available [here](https://github.com/Gravity-Bridge/Gravi
 - `validators` is a list of Binance account addresses that corresponds to the validators. Example: `["0xD6DBC796aC81DC34bDe3864f1F2c8f40742D85Dc"]`
 - `powers` are the signing power of each validator, they are normalized such that their sum is `2 ** 32`. Example: `[4294967296]`
 
+Note that in case of tfhub chain resets, you need to re-deploy the gravity contract and re-configure using the new contract address.
 ### The threefold hub chain
 
 The command `ignite chain build` install the `threefold_hubd` binary.
@@ -97,7 +108,7 @@ Download the [`gbt`](https://github.com/Gravity-Bridge/Gravity-Bridge/releases/d
 
 ```toml
 [orchestrator]
-relayer_enabled = true 
+relayer_enabled = true
 
 [relayer]
 batch_request_mode = "EveryBatch"
